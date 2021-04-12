@@ -1,6 +1,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gpu.js/1.0.2/gpu.min.js" integrity="sha512-cr2nuynSuSV6MGtWlympE0qd1g1TKBuEhv9lcfbW8HrE9UbPPc8zMwcje1fb9w2kzxqRnsizh6c+YbE6Ab7wpg==" crossorigin="anonymous">
     import Bootstrap5 from "./components/Bootstrap5.svelte"
-	import {textTolist} from './store'
+	import {textTolist, size, best_matches} from './store'
+	import {initialize} from './genetic'
+
+
+
+
 	let lista = []
 	export let fileContents
 	window.onload = function () {
@@ -18,7 +23,8 @@
                     var fileReader = new FileReader();
                     fileReader.onload = function (e) {
                         fileContents = document.getElementById('filecontents');
-                        lista = textTolist(fileReader.result);
+                        textTolist(fileReader.result);
+						initialize(20, size, 500, best_matches);
                     }
                     fileReader.readAsText(fileTobeRead);
                 }
