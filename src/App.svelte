@@ -1,13 +1,16 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gpu.js/1.0.2/gpu.min.js" integrity="sha512-cr2nuynSuSV6MGtWlympE0qd1g1TKBuEhv9lcfbW8HrE9UbPPc8zMwcje1fb9w2kzxqRnsizh6c+YbE6Ab7wpg==" crossorigin="anonymous">
-    import Bootstrap5 from "./components/Bootstrap5.svelte"
+<script>
+    import FileInput from "./components/FileInput.svelte"
 	import {textTolist, size, best_matches} from './store'
 	import {initialize} from './genetic'
+	import Pagination from '@fouita/pagination'
 
+    let lista = ['abc','de'] //pagar isso aqui apenas para teste
+    let current = 0
+    let num_items=lista.length
+    let per_page=1
+    export let fileContents
+    export let sz
 
-
-
-	let lista = []
-	export let fileContents
 	window.onload = function () {
         //Check the support for the File API support
         if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -40,20 +43,23 @@
     }
 </script>
 
-<Bootstrap5 />
 <main>
-	<div class="mb-3">
-		<label for="txtfiletoread" class="form-label">Selecione um arquivo de turmas</label>
-		<input class="form-control" type="file" id="txtfiletoread">
+	<link href="https://unpkg.com/tailwindcss@0.3.0/dist/tailwind.min.css" rel="stylesheet">
+    
+    <FileInput />
+   
+    <div class="mb-3">
+		<label for="size" class="form-label">Selecione um arquivo de turmas</label>
+		<input class="form-control" type="number" id="size" bind:value={sz}>
 	</div>
-	<div>Conteúdo do arquivo:</div>
-    <div id="filecontents">
-    </div>
-	<ul class="list-group">
-		{#each lista as num }
-			<li class="list-group-item">{num}</li>
-		{/each}
-	</ul>
+    <div class="max-w-xs rounded overflow-hidden shadow-lg my-2">
+        <div class="px-6 py-4">
+          <p class="text-grey-darker text-base">
+            {lista[current-1]}
+          </p>
+        </div>
+      </div>
+	<Pagination bind:current={current} {num_items} {per_page} />
 </main>
 
 <style>
