@@ -1,6 +1,6 @@
 <script>
     import FileInput from './components/FileInput.svelte'
-	import { textTolist, size, best_matches } from './store'
+	import { textTolist, best_matches } from './store'
 	import { init } from './genetic'
 	import Pagination from '@fouita/pagination'
 

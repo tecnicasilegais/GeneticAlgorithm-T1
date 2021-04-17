@@ -37,3 +37,20 @@ if(typeof(Array.prototype.shuffle) === 'undefined'){
         return this;
     }
 }
+
+if(typeof(Array.prototype.argmin) === 'undefined'){
+    Array.prototype.argmin = function(){
+        if (this.length == 0){
+            return -1;
+        }
+        let min = this[0];
+        let i_min = 0;
+
+        for(int i=0; i<this.length; i++){
+            if(this[i] < min){
+                i_min = i;
+            }
+        }
+        return min;
+    }
+}

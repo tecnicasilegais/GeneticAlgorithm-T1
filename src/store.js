@@ -1,4 +1,3 @@
-export let size;
 export let best_matches = {};
 
 export function textTolist(text){
