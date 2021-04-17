@@ -1,7 +1,7 @@
 <script>
     import FileInput from './components/FileInput.svelte'
-	import {textTolist, size, best_matches} from './store'
-	import {initialize} from './genetic'
+	import { textTolist, size, best_matches } from './store'
+	import { init } from './genetic'
 	import Pagination from '@fouita/pagination'
 
     let lista = ['abc','de'] //pagar isso aqui apenas para teste
@@ -27,7 +27,7 @@
                     fileReader.onload = function (e) {
                         fileContents = document.getElementById('filecontents');
                         textTolist(fileReader.result);
-						initialize(20, size, 500, best_matches);
+						init(10, 500, best_matches);
                     }
                     fileReader.readAsText(fileTobeRead);
                 }

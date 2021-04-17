@@ -1,5 +1,5 @@
 export let size;
-export let best_matches = [];
+export let best_matches = {};
 
 export function textTolist(text){
     let lines = text.trim().split('\n');
@@ -14,10 +14,11 @@ export function textTolist(text){
         best_b[x] = collect_values(lines[i]);
         x++;
     }
-    best_matches[0] = best_a;
-    best_matches[1] = best_b;
+    best_matches["best_a"] = best_a;
+    best_matches["best_b"] = best_b;
+    best_matches["size"] = best_a[0].length;
 
-    console.log(best_a)
+    console.log(best_matches);
 }
 
 const collect_values = (line) => {

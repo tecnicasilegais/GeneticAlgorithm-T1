@@ -2,14 +2,20 @@
 import { generate_random_population } from './util.js';
 
 //globals
-let ind_example = [];
-
 let dados_b = [];
 let dados_a = [];
 
 let population = [];
 let offspring = [];
 let fitness = []; //fitness of each individual from the population
+
+let GENERATIONS = 50;
+let CHROMOSOME = 0;
+
+let mut_chance = 1; //chance of mutation 0..1
+let mut_max = Math.floor(CHROMOSOME/3); //max of individuals that can be mutated in a single generation
+let cros_chance = 1; //chance of crossover
+
 
 const solution_found = () => {
     if(Math.max(...fitness) === Math.pow(fitness.length, 2));
@@ -42,21 +48,46 @@ const fitness_individual = (individual) => {//min
     return aptitude_a + aptitude_b;
 }
 
+/**
+ * Mutate by swapping two random positions of individual's genes
+ * @param individual
+ */
+const swapMutation = (individual) => {
+    let pos1 = Math.floor(Math.random() * CHROMOSOME);
+    let pos2 = Math.floor(Math.random() * CHROMOSOME);
+
+    let aux = individual[pos1];
+    individual[pos1] = individual[pos2];
+    individual[pos2] = aux;
+}
+
+const handle_mutation = () => {
+    for(i=0; i<mut_max; i++){
+        let chance = Math.random(); //random between 0..1
+
+        if(chance < mut_chance){
+            mutate(population[Math.floor(Math.random() * population.length)]);
+        }
+    }
+}
+
 //selection method
 const selection = () => {
-    let mutation_chance = 3;
-    let chance = Math.random()*10;
-
-    if(chance < mutation_chance){
-       //mutate
-    }
-
+    handle_mutation();
     //crossoverfunc()
 }
 
-export const initialize = (pop_size = 20, size, ngen, best_matches) => {
-    population = [...generate_random_population(pop_size, size)];
+export const init = (pop_size = 20, ngen, best_matches) => {
+    //fill globals
+    GENERATIONS = ngen;
+    CHROMOSOME = best_matches["size"];
+
+    population = generate_random_population(pop_size, CHROMOSOME);
     console.log(population);
+}
+
+export const run_ga = () => {
+
     /*
         console.log("Generation 0:");
 
@@ -81,23 +112,5 @@ export const initialize = (pop_size = 20, size, ngen, best_matches) => {
                 break;
             }
         }*/
-
-
 }
 
-
-
-
-if(typeof(Array.prototype.shuffle) === 'undefined'){
-    Array.prototype.shuffle = function(){
-        let i = this.length, j, temp;
-        if ( i === 0 ) return this;
-        while ( --i ) {
-            j = Math.floor( Math.random() * ( i + 1 ) );
-            temp = this[i];
-            this[i] = this[j];
-            this[j] = temp;
-        }
-        return this;
-    }
-}
