@@ -1,49 +1,48 @@
+//imports
+import { generate_random_population } from './util.js';
 
+//globals
 let ind_example = [];
 
 let dados_b = [];
 let dados_a = [];
 
 let population = [];
-let partial_population = [];
+let offspring = [];
 let fitness = []; //fitness of each individual from the population
-
-
-const generate_population = (pop_size) => {
-    for(let i=0; i<pop_size; i++){
-        population[i] = [...ind_example].shuffle();
-    }
-    return population;
-}
 
 const solution_found = () => {
     if(Math.max(...fitness) === Math.pow(fitness.length, 2));
 }
 
+//population fitness
 const fitness_func = () => {
     for(let i=0; i<population.length; i++){
         fitness[i] = fitness_individual(population[i]);
     }
 }
 
-const fitness_individual = (individual) => {
-    let nota_a, nota_b = 0;
-    for(let i=0; i<individual.length; i++){
-        let idxb = individual[i]-1;
-        for(let j=0; j<dados_a[idxb].length; j++){
-            if(dados_a[idxb][j] == idxb+1){//B
-                nota_a = dados_a[idxb].length - j;
+//individual fitness
+const fitness_individual = (individual) => {//min
+    let aptitude_a, aptitude_b = 0;
+    //iterates individual (i = index of A, individual[i] = index of B, values = i+1 and individual[i]+1)
+    for(let a=0; a<individual.length; a++){
+        let b = individual[a]; //b person (B1, B2 etc.)
+        for(let i=0; i<dados_a[a].length; i++){
+            if(dados_a[a][i] == b){//B
+                aptitude_a = i;
             }
         }
-        for(let j=0; j<dados_b[individual[i]].length; j++){
-            if(dados_b[individual[i]] == i+1){//A
-                nota_b = dados_b[individual[i]].length - j;
+        for(let i=0; i<dados_b[b].length; i++){
+            if(dados_b[b][i] == a){//A
+                aptitude_b = i;
             }
         }
     }
-    return nota_a + nota_b;
+    return aptitude_a + aptitude_b;
 }
 
+//selection method
 const selection = () => {
     let mutation_chance = 3;
     let chance = Math.random()*10;
@@ -56,9 +55,8 @@ const selection = () => {
 }
 
 export const initialize = (pop_size = 20, size, ngen, best_matches) => {
-    ind_example = Array.from({length: size}, (e, i) => i);
-    generate_population(pop_size)
-    console.log(best_matches);
+    population = [...generate_random_population(pop_size, size)];
+    console.log(population);
     /*
         console.log("Generation 0:");
 
