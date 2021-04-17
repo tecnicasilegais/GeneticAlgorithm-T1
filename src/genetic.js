@@ -1,7 +1,9 @@
 //imports
+import { writable } from 'svelte/store';
 import { generate_random_population } from './util.js';
 import { random, randomInt } from 'mathjs';
 
+export let storep = writable([])
 //globals
 let dados_b = [];
 let dados_a = [];
@@ -103,7 +105,7 @@ export const init = (pop_size = 20, ngen, best_matches) => {
     CHROMOSOME = best_matches["size"];
 
     population = generate_random_population(pop_size, CHROMOSOME);
-    console.log(population);
+    storep.set(population);
 }
 
 export const run_ga = () => {

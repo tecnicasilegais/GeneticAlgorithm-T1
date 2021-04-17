@@ -1,12 +1,15 @@
 <script>
     import FileInput from './components/FileInput.svelte'
-	import { textTolist, best_matches } from './store'
-	import { init } from './genetic'
+	import { textTolist, store } from './store'
+	import { init,storep } from './genetic'
 	import Pagination from '@fouita/pagination'
-
+    let bm;
+    let pp;
+    store.subscribe(best_matches => { bm = best_matches });
+    storep.subscribe(population => { pp = population });
     let lista = ['abc','de'] //pagar isso aqui apenas para teste
     let current = 0
-    let num_items=lista.length
+    let num_items= pp.length == undefined ? 0 : pp.length
     let per_page=1
     export let fileContents
     export let sz
@@ -27,7 +30,8 @@
                     fileReader.onload = function (e) {
                         fileContents = document.getElementById('filecontents');
                         textTolist(fileReader.result);
-						init(10, 500, best_matches);
+                        let aux = {}
+						init(10, 500, bm);
                     }
                     fileReader.readAsText(fileTobeRead);
                 }
@@ -55,11 +59,11 @@
     <div class='max-w-xs rounded overflow-hidden shadow-lg my-2'>
         <div class='px-6 py-4'>
           <p class='text-grey-darker text-base'>
-            {lista[current-1]}
+            {pp[current-1]}
           </p>
         </div>
       </div>
-	<Pagination bind:current={current} {num_items} {per_page} />
+	<Pagination bind:current={current} bind:num_items={pp.length} {per_page} />
 </main>
 
 <style>

@@ -1,8 +1,9 @@
-export let best_matches = {};
-
+import { writable } from 'svelte/store';
+let best_matches = {}
+export let store = writable([])
 export function textTolist(text){
     let lines = text.trim().split('\n');
-    size = lines[0];
+    let size = lines[0];
     let best_a = [];
     let best_b = [];
     for(let i=1; i<parseInt(size)+1; i++){
@@ -17,7 +18,7 @@ export function textTolist(text){
     best_matches["best_b"] = best_b;
     best_matches["size"] = best_a[0].length;
 
-    console.log(best_matches);
+    store.set(best_matches)
 }
 
 const collect_values = (line) => {

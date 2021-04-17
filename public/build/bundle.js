@@ -470,12 +470,63 @@ var app = (function () {
     	}
     }
 
-    let size;
-    let best_matches = [];
+    const subscriber_queue = [];
+    /**
+     * Create a `Writable` store that allows both updating and reading by subscription.
+     * @param {*=}value initial value
+     * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+     */
+    function writable(value, start = noop) {
+        let stop;
+        const subscribers = [];
+        function set(new_value) {
+            if (safe_not_equal(value, new_value)) {
+                value = new_value;
+                if (stop) { // store is ready
+                    const run_queue = !subscriber_queue.length;
+                    for (let i = 0; i < subscribers.length; i += 1) {
+                        const s = subscribers[i];
+                        s[1]();
+                        subscriber_queue.push(s, value);
+                    }
+                    if (run_queue) {
+                        for (let i = 0; i < subscriber_queue.length; i += 2) {
+                            subscriber_queue[i][0](subscriber_queue[i + 1]);
+                        }
+                        subscriber_queue.length = 0;
+                    }
+                }
+            }
+        }
+        function update(fn) {
+            set(fn(value));
+        }
+        function subscribe(run, invalidate = noop) {
+            const subscriber = [run, invalidate];
+            subscribers.push(subscriber);
+            if (subscribers.length === 1) {
+                stop = start(set) || noop;
+            }
+            run(value);
+            return () => {
+                const index = subscribers.indexOf(subscriber);
+                if (index !== -1) {
+                    subscribers.splice(index, 1);
+                }
+                if (subscribers.length === 0) {
+                    stop();
+                    stop = null;
+                }
+            };
+        }
+        return { set, update, subscribe };
+    }
 
+    let best_matches = {};
+    let store = writable([]);
     function textTolist(text){
         let lines = text.trim().split('\n');
-        size = lines[0];
+        let size = lines[0];
         let best_a = [];
         let best_b = [];
         for(let i=1; i<parseInt(size)+1; i++){
@@ -486,8 +537,11 @@ var app = (function () {
             best_b[x] = collect_values(lines[i]);
             x++;
         }
-        best_matches[0] = best_a;
-        best_matches[1] = best_b;
+        best_matches["best_a"] = best_a;
+        best_matches["best_b"] = best_b;
+        best_matches["size"] = best_a[0].length;
+
+        store.set(best_matches);
     }
 
     const collect_values = (line) => {
@@ -495,56 +549,25 @@ var app = (function () {
         let out = [];
         let line_txt = line.trim().split(" ");
         for(let i=1; i<line_txt.length; i++){
-            out[i-1] = line_txt[i].substr(1);
+            out[i-1] = (parseInt(line_txt[i].substr(1))-1);
         }
         return out;
     };
 
-    let ind_example = [];
-
-    let population = [];
-
-
-    const generate_population = (pop_size) => {
-        for(let i=0; i<pop_size; i++){
-            population[i] = [...ind_example].shuffle();
+    /**
+     * Generates a random population
+     * @param k_population size of population
+     * @param k_individual size of individuals
+     * @returns {[]}
+     */
+    const generate_random_population = (k_population, k_individual) => {
+        let ind_example = Array.from({length: k_individual}, (e, i) => i);
+        let sample = [];
+        for(let i=0; i<k_population; i++){
+            sample[i] = [...ind_example].shuffle();
         }
-        return population;
+        return sample
     };
-
-    const initialize = (pop_size = 20, size, ngen, best_matches) => {
-        ind_example = Array.from({length: size}, (e, i) => i);
-        generate_population(pop_size);
-        console.log(best_matches);
-        /*
-            console.log("Generation 0:");
-
-            //fitness_func();
-            console.log(population);
-            console.log(fitness);
-
-            if(solution_found()){
-                console.log('Solution found!');
-                console.log('printa o individuo');
-            }
-
-            for(let i=1; i<ngen; i++){
-                //selection();
-                //population = [...partial_population];
-                //fitness_func();
-                console.log('\n\nGeneration', i, ':');
-                console.log(population);
-                if(solution_found()){
-                    console.log('Solution found!');
-                    console.log('printa o individuo');
-                    break;
-                }
-            }*/
-
-
-    };
-
-
 
 
     if(typeof(Array.prototype.shuffle) === 'undefined'){
@@ -560,6 +583,34 @@ var app = (function () {
             return this;
         };
     }
+
+    if(typeof(Array.prototype.argmin) === 'undefined'){
+        Array.prototype.argmin = function(){
+            if (this.length == 0){
+                return -1;
+            }
+            let min = this[0];
+
+            for(let i=0; i<this.length; i++){
+                if(this[i] < min);
+            }
+            return min;
+        };
+    }
+
+    //imports
+
+    let storep = writable([]);
+
+    let population = [];
+    let CHROMOSOME = 0;
+
+    const init$1 = (pop_size = 20, ngen, best_matches) => {
+        CHROMOSOME = best_matches["size"];
+
+        population = generate_random_population(pop_size, CHROMOSOME);
+        storep.set(population);
+    };
 
     /* node_modules\@fouita\pagination\src\ChevronLeft.svelte generated by Svelte v3.19.1 */
 
@@ -1289,34 +1340,41 @@ var app = (function () {
     	let div2;
     	let div1;
     	let p;
-    	let t5_value = /*lista*/ ctx[2][/*current*/ ctx[1] - 1] + "";
+    	let t5_value = /*pp*/ ctx[1][/*current*/ ctx[2] - 1] + "";
     	let t5;
     	let t6;
     	let updating_current;
+    	let updating_num_items;
     	let current;
     	let dispose;
     	const fileinput = new FileInput({ $$inline: true });
 
     	function input_input_handler() {
     		input_updating = true;
-    		/*input_input_handler*/ ctx[6].call(input);
+    		/*input_input_handler*/ ctx[8].call(input);
     	}
 
     	function pagination_current_binding(value) {
-    		/*pagination_current_binding*/ ctx[7].call(null, value);
+    		/*pagination_current_binding*/ ctx[9].call(null, value);
     	}
 
-    	let pagination_props = {
-    		num_items: /*num_items*/ ctx[3],
-    		per_page: /*per_page*/ ctx[4]
-    	};
+    	function pagination_num_items_binding(value) {
+    		/*pagination_num_items_binding*/ ctx[10].call(null, value);
+    	}
 
-    	if (/*current*/ ctx[1] !== void 0) {
-    		pagination_props.current = /*current*/ ctx[1];
+    	let pagination_props = { per_page: /*per_page*/ ctx[3] };
+
+    	if (/*current*/ ctx[2] !== void 0) {
+    		pagination_props.current = /*current*/ ctx[2];
+    	}
+
+    	if (/*pp*/ ctx[1].length !== void 0) {
+    		pagination_props.num_items = /*pp*/ ctx[1].length;
     	}
 
     	const pagination = new Pagination({ props: pagination_props, $$inline: true });
     	binding_callbacks.push(() => bind(pagination, "current", pagination_current_binding));
+    	binding_callbacks.push(() => bind(pagination, "num_items", pagination_num_items_binding));
 
     	const block = {
     		c: function create() {
@@ -1339,23 +1397,23 @@ var app = (function () {
     			create_component(pagination.$$.fragment);
     			attr_dev(link, "href", "https://unpkg.com/tailwindcss@0.3.0/dist/tailwind.min.css");
     			attr_dev(link, "rel", "stylesheet");
-    			add_location(link, file$4, 46, 1, 1742);
+    			add_location(link, file$4, 50, 1, 1920);
     			attr_dev(label, "for", "size");
     			attr_dev(label, "class", "form-label");
-    			add_location(label, file$4, 51, 2, 1888);
+    			add_location(label, file$4, 55, 2, 2066);
     			attr_dev(input, "class", "form-control");
     			attr_dev(input, "type", "number");
     			attr_dev(input, "id", "size");
-    			add_location(input, file$4, 52, 2, 1967);
+    			add_location(input, file$4, 56, 2, 2145);
     			attr_dev(div0, "class", "mb-3");
-    			add_location(div0, file$4, 50, 4, 1866);
+    			add_location(div0, file$4, 54, 4, 2044);
     			attr_dev(p, "class", "text-grey-darker text-base");
-    			add_location(p, file$4, 56, 10, 2156);
+    			add_location(p, file$4, 60, 10, 2334);
     			attr_dev(div1, "class", "px-6 py-4");
-    			add_location(div1, file$4, 55, 8, 2121);
+    			add_location(div1, file$4, 59, 8, 2299);
     			attr_dev(div2, "class", "max-w-xs rounded overflow-hidden shadow-lg my-2");
-    			add_location(div2, file$4, 54, 4, 2050);
-    			add_location(main, file$4, 45, 0, 1733);
+    			add_location(div2, file$4, 58, 4, 2228);
+    			add_location(main, file$4, 49, 0, 1911);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1387,13 +1445,19 @@ var app = (function () {
     			}
 
     			input_updating = false;
-    			if ((!current || dirty & /*current*/ 2) && t5_value !== (t5_value = /*lista*/ ctx[2][/*current*/ ctx[1] - 1] + "")) set_data_dev(t5, t5_value);
+    			if ((!current || dirty & /*pp, current*/ 6) && t5_value !== (t5_value = /*pp*/ ctx[1][/*current*/ ctx[2] - 1] + "")) set_data_dev(t5, t5_value);
     			const pagination_changes = {};
 
-    			if (!updating_current && dirty & /*current*/ 2) {
+    			if (!updating_current && dirty & /*current*/ 4) {
     				updating_current = true;
-    				pagination_changes.current = /*current*/ ctx[1];
+    				pagination_changes.current = /*current*/ ctx[2];
     				add_flush_callback(() => updating_current = false);
+    			}
+
+    			if (!updating_num_items && dirty & /*pp*/ 2) {
+    				updating_num_items = true;
+    				pagination_changes.num_items = /*pp*/ ctx[1].length;
+    				add_flush_callback(() => updating_num_items = false);
     			}
 
     			pagination.$set(pagination_changes);
@@ -1429,9 +1493,20 @@ var app = (function () {
     }
 
     function instance$3($$self, $$props, $$invalidate) {
+    	let bm;
+    	let pp;
+
+    	store.subscribe(best_matches => {
+    		bm = best_matches;
+    	});
+
+    	storep.subscribe(population => {
+    		$$invalidate(1, pp = population);
+    	});
+
     	let lista = ["abc", "de"]; //pagar isso aqui apenas para teste
     	let current = 0;
-    	let num_items = lista.length;
+    	let num_items = pp.length == undefined ? 0 : pp.length;
     	let per_page = 1;
     	let { fileContents } = $$props;
     	let { sz } = $$props;
@@ -1456,9 +1531,9 @@ var app = (function () {
     						var fileReader = new FileReader();
 
     						fileReader.onload = function (e) {
-    							$$invalidate(5, fileContents = document.getElementById("filecontents"));
+    							$$invalidate(4, fileContents = document.getElementById("filecontents"));
     							textTolist(fileReader.result);
-    							initialize(20, size, 500, best_matches);
+    							init$1(10, 500, bm);
     						};
 
     						fileReader.readAsText(fileTobeRead);
@@ -1486,27 +1561,35 @@ var app = (function () {
 
     	function pagination_current_binding(value) {
     		current = value;
-    		$$invalidate(1, current);
+    		$$invalidate(2, current);
+    	}
+
+    	function pagination_num_items_binding(value) {
+    		pp.length = value;
+    		$$invalidate(1, pp);
     	}
 
     	$$self.$set = $$props => {
-    		if ("fileContents" in $$props) $$invalidate(5, fileContents = $$props.fileContents);
+    		if ("fileContents" in $$props) $$invalidate(4, fileContents = $$props.fileContents);
     		if ("sz" in $$props) $$invalidate(0, sz = $$props.sz);
     	};
 
     	$$self.$capture_state = () => ({
     		FileInput,
     		textTolist,
-    		size,
-    		best_matches,
-    		initialize,
+    		store,
+    		init: init$1,
+    		storep,
     		Pagination,
+    		bm,
+    		pp,
     		lista,
     		current,
     		num_items,
     		per_page,
     		fileContents,
     		sz,
+    		undefined,
     		window,
     		document,
     		FileReader,
@@ -1514,11 +1597,13 @@ var app = (function () {
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ("lista" in $$props) $$invalidate(2, lista = $$props.lista);
-    		if ("current" in $$props) $$invalidate(1, current = $$props.current);
-    		if ("num_items" in $$props) $$invalidate(3, num_items = $$props.num_items);
-    		if ("per_page" in $$props) $$invalidate(4, per_page = $$props.per_page);
-    		if ("fileContents" in $$props) $$invalidate(5, fileContents = $$props.fileContents);
+    		if ("bm" in $$props) bm = $$props.bm;
+    		if ("pp" in $$props) $$invalidate(1, pp = $$props.pp);
+    		if ("lista" in $$props) lista = $$props.lista;
+    		if ("current" in $$props) $$invalidate(2, current = $$props.current);
+    		if ("num_items" in $$props) num_items = $$props.num_items;
+    		if ("per_page" in $$props) $$invalidate(3, per_page = $$props.per_page);
+    		if ("fileContents" in $$props) $$invalidate(4, fileContents = $$props.fileContents);
     		if ("sz" in $$props) $$invalidate(0, sz = $$props.sz);
     	};
 
@@ -1528,20 +1613,23 @@ var app = (function () {
 
     	return [
     		sz,
+    		pp,
     		current,
-    		lista,
-    		num_items,
     		per_page,
     		fileContents,
+    		bm,
+    		lista,
+    		num_items,
     		input_input_handler,
-    		pagination_current_binding
+    		pagination_current_binding,
+    		pagination_num_items_binding
     	];
     }
 
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$3, create_fragment$4, safe_not_equal, { fileContents: 5, sz: 0 });
+    		init(this, options, instance$3, create_fragment$4, safe_not_equal, { fileContents: 4, sz: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -1553,7 +1641,7 @@ var app = (function () {
     		const { ctx } = this.$$;
     		const props = options.props || {};
 
-    		if (/*fileContents*/ ctx[5] === undefined && !("fileContents" in props)) {
+    		if (/*fileContents*/ ctx[4] === undefined && !("fileContents" in props)) {
     			console.warn("<App> was created without expected prop 'fileContents'");
     		}
 

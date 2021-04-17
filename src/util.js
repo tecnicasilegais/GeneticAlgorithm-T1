@@ -46,7 +46,7 @@ if(typeof(Array.prototype.argmin) === 'undefined'){
         let min = this[0];
         let i_min = 0;
 
-        for(int i=0; i<this.length; i++){
+        for(let i=0; i<this.length; i++){
             if(this[i] < min){
                 i_min = i;
             }
