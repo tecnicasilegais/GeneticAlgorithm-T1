@@ -1,6 +1,6 @@
 
 (function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.head.appendChild(r) })(window.document);
-var app = (function () {
+var app = (function (process) {
     'use strict';
 
     function noop() { }
@@ -173,6 +173,19 @@ var app = (function () {
     }
     const outroing = new Set();
     let outros;
+    function group_outros() {
+        outros = {
+            r: 0,
+            c: [],
+            p: outros // parent group
+        };
+    }
+    function check_outros() {
+        if (!outros.r) {
+            run_all(outros.c);
+        }
+        outros = outros.p;
+    }
     function transition_in(block, local) {
         if (block && block.i) {
             outroing.delete(block);
@@ -412,19 +425,19 @@ var app = (function () {
     			t2 = space();
     			input = element("input");
     			attr_dev(path, "d", "M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z");
-    			add_location(path, file, 5, 8, 327);
+    			add_location(path, file, 5, 8, 339);
     			attr_dev(svg, "class", "w-8 h-8");
     			attr_dev(svg, "fill", "currentColor");
     			attr_dev(svg, "xmlns", "http://www.w3.org/2000/svg");
     			attr_dev(svg, "viewBox", "0 0 20 20");
-    			add_location(svg, file, 4, 4, 221);
+    			add_location(svg, file, 4, 4, 233);
     			attr_dev(span, "class", "mt-2 text-base leading-normal");
-    			add_location(span, file, 7, 4, 494);
+    			add_location(span, file, 7, 4, 506);
     			attr_dev(input, "type", "file");
     			attr_dev(input, "class", "hidden");
     			attr_dev(input, "id", "txtfiletoread");
-    			add_location(input, file, 8, 4, 564);
-    			attr_dev(label, "class", "w-64 flex flex-col items-center px-4 py-6 bg-ba text-gray-200 rounded-lg shadow-lg tracking-wide uppercase border border-gray-200 cursor-pointer hover:bg-white hover:text-black");
+    			add_location(input, file, 8, 4, 576);
+    			attr_dev(label, "class", "w-64 flex flex-col items-center px-4 py-6 bg-ba text-gray-200 w-1/3 h-1/2 rounded-lg shadow-lg tracking-wide uppercase border border-gray-200 cursor-pointer hover:bg-white hover:text-black");
     			add_location(label, file, 3, 0, 23);
     		},
     		l: function claim(nodes) {
@@ -1330,51 +1343,38 @@ var app = (function () {
     const { document: document_1 } = globals;
     const file$4 = "src\\App.svelte";
 
-    function create_fragment$4(ctx) {
-    	let link;
+    // (68:4) {#if pp.length > 0}
+    function create_if_block(ctx) {
+    	let div1;
+    	let div0;
+    	let p;
+    	let t0_value = /*pp*/ ctx[3][/*current*/ ctx[4] - 1] + "";
     	let t0;
     	let t1;
-    	let main;
-    	let t2;
-    	let div0;
-    	let label;
-    	let t4;
-    	let input;
-    	let input_updating = false;
-    	let t5;
     	let div2;
-    	let div1;
-    	let p;
-    	let t6_value = /*pp*/ ctx[1][/*current*/ ctx[2] - 1] + "";
-    	let t6;
-    	let t7;
     	let updating_current;
     	let updating_num_items;
     	let current;
-    	let dispose;
-    	const fileinput = new FileInput({ $$inline: true });
-
-    	function input_input_handler() {
-    		input_updating = true;
-    		/*input_input_handler*/ ctx[8].call(input);
-    	}
 
     	function pagination_current_binding(value) {
-    		/*pagination_current_binding*/ ctx[9].call(null, value);
+    		/*pagination_current_binding*/ ctx[12].call(null, value);
     	}
 
     	function pagination_num_items_binding(value) {
-    		/*pagination_num_items_binding*/ ctx[10].call(null, value);
+    		/*pagination_num_items_binding*/ ctx[13].call(null, value);
     	}
 
-    	let pagination_props = { per_page: /*per_page*/ ctx[3] };
+    	let pagination_props = {
+    		ref: "green",
+    		per_page: /*per_page*/ ctx[5]
+    	};
 
-    	if (/*current*/ ctx[2] !== void 0) {
-    		pagination_props.current = /*current*/ ctx[2];
+    	if (/*current*/ ctx[4] !== void 0) {
+    		pagination_props.current = /*current*/ ctx[4];
     	}
 
-    	if (/*pp*/ ctx[1].length !== void 0) {
-    		pagination_props.num_items = /*pp*/ ctx[1].length;
+    	if (/*pp*/ ctx[3].length !== void 0) {
+    		pagination_props.num_items = /*pp*/ ctx[3].length;
     	}
 
     	const pagination = new Pagination({ props: pagination_props, $$inline: true });
@@ -1383,87 +1383,45 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			link = element("link");
-    			t0 = space();
-    			t1 = space();
-    			main = element("main");
-    			create_component(fileinput.$$.fragment);
-    			t2 = space();
-    			div0 = element("div");
-    			label = element("label");
-    			label.textContent = "Selecione um arquivo de turmas";
-    			t4 = space();
-    			input = element("input");
-    			t5 = space();
-    			div2 = element("div");
     			div1 = element("div");
+    			div0 = element("div");
     			p = element("p");
-    			t6 = text(t6_value);
-    			t7 = space();
+    			t0 = text(t0_value);
+    			t1 = space();
+    			div2 = element("div");
     			create_component(pagination.$$.fragment);
-    			attr_dev(link, "href", "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css");
-    			attr_dev(link, "rel", "stylesheet");
-    			add_location(link, file$4, 49, 4, 1928);
-    			attr_dev(label, "for", "size");
-    			attr_dev(label, "class", "form-label");
-    			add_location(label, file$4, 57, 5, 2137);
-    			attr_dev(input, "class", "border-2 border-gray-300 p-2 w-1/3 bg-dark");
-    			attr_dev(input, "type", "number");
-    			attr_dev(input, "id", "size");
-    			add_location(input, file$4, 58, 2, 2216);
-    			attr_dev(div0, "class", "mb-3");
-    			add_location(div0, file$4, 56, 4, 2112);
-    			attr_dev(p, "class", "text-grey-darker text-center text-white");
-    			add_location(p, file$4, 62, 10, 2448);
-    			attr_dev(div1, "class", "px-6 py-4");
-    			add_location(div1, file$4, 61, 8, 2413);
-    			attr_dev(div2, "class", "max-w-xs rounded overflow-hidden bg-gray-600 shadow-lg my-2");
-    			add_location(div2, file$4, 60, 4, 2330);
-    			add_location(main, file$4, 52, 0, 2070);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    			attr_dev(p, "class", "text-grey-700 text-center");
+    			add_location(p, file$4, 70, 12, 2929);
+    			attr_dev(div0, "class", "px-6 py-4");
+    			add_location(div0, file$4, 69, 8, 2892);
+    			attr_dev(div1, "class", "rounded overflow-hidden bg-gray-600 shadow-lg my-1 w-1/3");
+    			add_location(div1, file$4, 68, 4, 2812);
+    			attr_dev(div2, "class", "w-1/3 content-center");
+    			add_location(div2, file$4, 75, 4, 3051);
     		},
     		m: function mount(target, anchor) {
-    			append_dev(document_1.head, link);
-    			insert_dev(target, t0, anchor);
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, div0);
+    			append_dev(div0, p);
+    			append_dev(p, t0);
     			insert_dev(target, t1, anchor);
-    			insert_dev(target, main, anchor);
-    			mount_component(fileinput, main, null);
-    			append_dev(main, t2);
-    			append_dev(main, div0);
-    			append_dev(div0, label);
-    			append_dev(div0, t4);
-    			append_dev(div0, input);
-    			set_input_value(input, /*sz*/ ctx[0]);
-    			append_dev(main, t5);
-    			append_dev(main, div2);
-    			append_dev(div2, div1);
-    			append_dev(div1, p);
-    			append_dev(p, t6);
-    			append_dev(main, t7);
-    			mount_component(pagination, main, null);
+    			insert_dev(target, div2, anchor);
+    			mount_component(pagination, div2, null);
     			current = true;
-    			dispose = listen_dev(input, "input", input_input_handler);
     		},
-    		p: function update(ctx, [dirty]) {
-    			if (!input_updating && dirty & /*sz*/ 1) {
-    				set_input_value(input, /*sz*/ ctx[0]);
-    			}
-
-    			input_updating = false;
-    			if ((!current || dirty & /*pp, current*/ 6) && t6_value !== (t6_value = /*pp*/ ctx[1][/*current*/ ctx[2] - 1] + "")) set_data_dev(t6, t6_value);
+    		p: function update(ctx, dirty) {
+    			if ((!current || dirty & /*pp, current*/ 24) && t0_value !== (t0_value = /*pp*/ ctx[3][/*current*/ ctx[4] - 1] + "")) set_data_dev(t0, t0_value);
     			const pagination_changes = {};
 
-    			if (!updating_current && dirty & /*current*/ 4) {
+    			if (!updating_current && dirty & /*current*/ 16) {
     				updating_current = true;
-    				pagination_changes.current = /*current*/ ctx[2];
+    				pagination_changes.current = /*current*/ ctx[4];
     				add_flush_callback(() => updating_current = false);
     			}
 
-    			if (!updating_num_items && dirty & /*pp*/ 2) {
+    			if (!updating_num_items && dirty & /*pp*/ 8) {
     				updating_num_items = true;
-    				pagination_changes.num_items = /*pp*/ ctx[1].length;
+    				pagination_changes.num_items = /*pp*/ ctx[3].length;
     				add_flush_callback(() => updating_num_items = false);
     			}
 
@@ -1471,23 +1429,234 @@ var app = (function () {
     		},
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(fileinput.$$.fragment, local);
     			transition_in(pagination.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
-    			transition_out(fileinput.$$.fragment, local);
     			transition_out(pagination.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div1);
+    			if (detaching) detach_dev(t1);
+    			if (detaching) detach_dev(div2);
+    			destroy_component(pagination);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block.name,
+    		type: "if",
+    		source: "(68:4) {#if pp.length > 0}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$4(ctx) {
+    	let link;
+    	let t0;
+    	let main;
+    	let t1;
+    	let div0;
+    	let label0;
+    	let t3;
+    	let input0;
+    	let input0_updating = false;
+    	let t4;
+    	let div1;
+    	let label1;
+    	let t6;
+    	let input1;
+    	let input1_updating = false;
+    	let t7;
+    	let div2;
+    	let label2;
+    	let t9;
+    	let input2;
+    	let input2_updating = false;
+    	let t10;
+    	let current;
+    	let dispose;
+    	const fileinput = new FileInput({ $$inline: true });
+
+    	function input0_input_handler() {
+    		input0_updating = true;
+    		/*input0_input_handler*/ ctx[9].call(input0);
+    	}
+
+    	function input1_input_handler() {
+    		input1_updating = true;
+    		/*input1_input_handler*/ ctx[10].call(input1);
+    	}
+
+    	function input2_input_handler() {
+    		input2_updating = true;
+    		/*input2_input_handler*/ ctx[11].call(input2);
+    	}
+
+    	let if_block = /*pp*/ ctx[3].length > 0 && create_if_block(ctx);
+
+    	const block = {
+    		c: function create() {
+    			link = element("link");
+    			t0 = space();
+    			main = element("main");
+    			create_component(fileinput.$$.fragment);
+    			t1 = space();
+    			div0 = element("div");
+    			label0 = element("label");
+    			label0.textContent = "Tamanho da população";
+    			t3 = space();
+    			input0 = element("input");
+    			t4 = space();
+    			div1 = element("div");
+    			label1 = element("label");
+    			label1.textContent = "Chance de mutação";
+    			t6 = space();
+    			input1 = element("input");
+    			t7 = space();
+    			div2 = element("div");
+    			label2 = element("label");
+    			label2.textContent = "Chance de crossover";
+    			t9 = space();
+    			input2 = element("input");
+    			t10 = space();
+    			if (if_block) if_block.c();
+    			attr_dev(link, "href", "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css");
+    			attr_dev(link, "rel", "stylesheet");
+    			add_location(link, file$4, 49, 4, 1910);
+    			attr_dev(label0, "for", "popsize");
+    			attr_dev(label0, "class", "form-label");
+    			add_location(label0, file$4, 56, 5, 2080);
+    			attr_dev(input0, "class", "border-2 border-gray-300 p-2 w-1/3 bg-dark text-black");
+    			attr_dev(input0, "min", "1");
+    			attr_dev(input0, "type", "number");
+    			attr_dev(input0, "id", "popsize");
+    			add_location(input0, file$4, 57, 2, 2152);
+    			attr_dev(div0, "class", "mb-3");
+    			add_location(div0, file$4, 55, 4, 2055);
+    			attr_dev(label1, "for", "mutcha");
+    			attr_dev(label1, "class", "form-label");
+    			add_location(label1, file$4, 60, 5, 2312);
+    			attr_dev(input1, "class", "border-2 border-gray-300 p-2 w-1/3 bg-dark text-black");
+    			attr_dev(input1, "step", "0.01");
+    			attr_dev(input1, "min", "0");
+    			attr_dev(input1, "max", "1");
+    			attr_dev(input1, "type", "number");
+    			attr_dev(input1, "id", "mutcha");
+    			add_location(input1, file$4, 61, 2, 2380);
+    			attr_dev(div1, "class", "mb-3");
+    			add_location(div1, file$4, 59, 4, 2287);
+    			attr_dev(label2, "for", "crosscha");
+    			attr_dev(label2, "class", "form-label");
+    			add_location(label2, file$4, 64, 5, 2559);
+    			attr_dev(input2, "class", "border-2 border-gray-300 p-2 w-1/3 bg-dark text-black");
+    			attr_dev(input2, "step", "0.01");
+    			attr_dev(input2, "min", "0");
+    			attr_dev(input2, "max", "1");
+    			attr_dev(input2, "type", "number");
+    			attr_dev(input2, "id", "crosscha");
+    			add_location(input2, file$4, 65, 2, 2631);
+    			attr_dev(div2, "class", "mb-3");
+    			add_location(div2, file$4, 63, 4, 2534);
+    			add_location(main, file$4, 51, 0, 2013);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			append_dev(document_1.head, link);
+    			insert_dev(target, t0, anchor);
+    			insert_dev(target, main, anchor);
+    			mount_component(fileinput, main, null);
+    			append_dev(main, t1);
+    			append_dev(main, div0);
+    			append_dev(div0, label0);
+    			append_dev(div0, t3);
+    			append_dev(div0, input0);
+    			set_input_value(input0, /*pz*/ ctx[1]);
+    			append_dev(main, t4);
+    			append_dev(main, div1);
+    			append_dev(div1, label1);
+    			append_dev(div1, t6);
+    			append_dev(div1, input1);
+    			set_input_value(input1, /*cm*/ ctx[2]);
+    			append_dev(main, t7);
+    			append_dev(main, div2);
+    			append_dev(div2, label2);
+    			append_dev(div2, t9);
+    			append_dev(div2, input2);
+    			set_input_value(input2, /*cc*/ ctx[0]);
+    			append_dev(main, t10);
+    			if (if_block) if_block.m(main, null);
+    			current = true;
+
+    			dispose = [
+    				listen_dev(input0, "input", input0_input_handler),
+    				listen_dev(input1, "input", input1_input_handler),
+    				listen_dev(input2, "input", input2_input_handler)
+    			];
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (!input0_updating && dirty & /*pz*/ 2) {
+    				set_input_value(input0, /*pz*/ ctx[1]);
+    			}
+
+    			input0_updating = false;
+
+    			if (!input1_updating && dirty & /*cm*/ 4) {
+    				set_input_value(input1, /*cm*/ ctx[2]);
+    			}
+
+    			input1_updating = false;
+
+    			if (!input2_updating && dirty & /*cc*/ 1) {
+    				set_input_value(input2, /*cc*/ ctx[0]);
+    			}
+
+    			input2_updating = false;
+
+    			if (/*pp*/ ctx[3].length > 0) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    					transition_in(if_block, 1);
+    				} else {
+    					if_block = create_if_block(ctx);
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(main, null);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(fileinput.$$.fragment, local);
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(fileinput.$$.fragment, local);
+    			transition_out(if_block);
     			current = false;
     		},
     		d: function destroy(detaching) {
     			detach_dev(link);
     			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(main);
     			destroy_component(fileinput);
-    			destroy_component(pagination);
-    			dispose();
+    			if (if_block) if_block.d();
+    			run_all(dispose);
     		}
     	};
 
@@ -1511,15 +1680,14 @@ var app = (function () {
     	});
 
     	storep.subscribe(population => {
-    		$$invalidate(1, pp = population);
+    		$$invalidate(3, pp = population);
     	});
 
-    	let lista = ["abc", "de"]; //pagar isso aqui apenas para teste
     	let current = 0;
     	let num_items = pp.length == undefined ? 0 : pp.length;
     	let per_page = 1;
     	let { fileContents } = $$props;
-    	let { sz } = $$props;
+    	let { cc } = $$props, { pz } = $$props, { cm } = $$props;
 
     	window.onload = function () {
     		//Check the support for the File API support
@@ -1541,7 +1709,7 @@ var app = (function () {
     						var fileReader = new FileReader();
 
     						fileReader.onload = function (e) {
-    							$$invalidate(4, fileContents = document.getElementById("filecontents"));
+    							$$invalidate(6, fileContents = document.getElementById("filecontents"));
     							textTolist(fileReader.result);
     							init$1(10, 500, bm);
     						};
@@ -1558,30 +1726,42 @@ var app = (function () {
     		}
     	};
 
-    	const writable_props = ["fileContents", "sz"];
+    	const writable_props = ["fileContents", "cc", "pz", "cm"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<App> was created with unknown prop '${key}'`);
     	});
 
-    	function input_input_handler() {
-    		sz = to_number(this.value);
-    		$$invalidate(0, sz);
+    	function input0_input_handler() {
+    		pz = to_number(this.value);
+    		$$invalidate(1, pz);
+    	}
+
+    	function input1_input_handler() {
+    		cm = to_number(this.value);
+    		$$invalidate(2, cm);
+    	}
+
+    	function input2_input_handler() {
+    		cc = to_number(this.value);
+    		$$invalidate(0, cc);
     	}
 
     	function pagination_current_binding(value) {
     		current = value;
-    		$$invalidate(2, current);
+    		$$invalidate(4, current);
     	}
 
     	function pagination_num_items_binding(value) {
     		pp.length = value;
-    		$$invalidate(1, pp);
+    		$$invalidate(3, pp);
     	}
 
     	$$self.$set = $$props => {
-    		if ("fileContents" in $$props) $$invalidate(4, fileContents = $$props.fileContents);
-    		if ("sz" in $$props) $$invalidate(0, sz = $$props.sz);
+    		if ("fileContents" in $$props) $$invalidate(6, fileContents = $$props.fileContents);
+    		if ("cc" in $$props) $$invalidate(0, cc = $$props.cc);
+    		if ("pz" in $$props) $$invalidate(1, pz = $$props.pz);
+    		if ("cm" in $$props) $$invalidate(2, cm = $$props.cm);
     	};
 
     	$$self.$capture_state = () => ({
@@ -1591,14 +1771,16 @@ var app = (function () {
     		init: init$1,
     		storep,
     		Pagination,
+    		ppid: process.ppid,
     		bm,
     		pp,
-    		lista,
     		current,
     		num_items,
     		per_page,
     		fileContents,
-    		sz,
+    		cc,
+    		pz,
+    		cm,
     		undefined,
     		window,
     		document,
@@ -1608,13 +1790,14 @@ var app = (function () {
 
     	$$self.$inject_state = $$props => {
     		if ("bm" in $$props) bm = $$props.bm;
-    		if ("pp" in $$props) $$invalidate(1, pp = $$props.pp);
-    		if ("lista" in $$props) lista = $$props.lista;
-    		if ("current" in $$props) $$invalidate(2, current = $$props.current);
+    		if ("pp" in $$props) $$invalidate(3, pp = $$props.pp);
+    		if ("current" in $$props) $$invalidate(4, current = $$props.current);
     		if ("num_items" in $$props) num_items = $$props.num_items;
-    		if ("per_page" in $$props) $$invalidate(3, per_page = $$props.per_page);
-    		if ("fileContents" in $$props) $$invalidate(4, fileContents = $$props.fileContents);
-    		if ("sz" in $$props) $$invalidate(0, sz = $$props.sz);
+    		if ("per_page" in $$props) $$invalidate(5, per_page = $$props.per_page);
+    		if ("fileContents" in $$props) $$invalidate(6, fileContents = $$props.fileContents);
+    		if ("cc" in $$props) $$invalidate(0, cc = $$props.cc);
+    		if ("pz" in $$props) $$invalidate(1, pz = $$props.pz);
+    		if ("cm" in $$props) $$invalidate(2, cm = $$props.cm);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -1622,15 +1805,18 @@ var app = (function () {
     	}
 
     	return [
-    		sz,
+    		cc,
+    		pz,
+    		cm,
     		pp,
     		current,
     		per_page,
     		fileContents,
     		bm,
-    		lista,
     		num_items,
-    		input_input_handler,
+    		input0_input_handler,
+    		input1_input_handler,
+    		input2_input_handler,
     		pagination_current_binding,
     		pagination_num_items_binding
     	];
@@ -1639,7 +1825,7 @@ var app = (function () {
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$3, create_fragment$4, safe_not_equal, { fileContents: 4, sz: 0 });
+    		init(this, options, instance$3, create_fragment$4, safe_not_equal, { fileContents: 6, cc: 0, pz: 1, cm: 2 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -1651,12 +1837,20 @@ var app = (function () {
     		const { ctx } = this.$$;
     		const props = options.props || {};
 
-    		if (/*fileContents*/ ctx[4] === undefined && !("fileContents" in props)) {
+    		if (/*fileContents*/ ctx[6] === undefined && !("fileContents" in props)) {
     			console.warn("<App> was created without expected prop 'fileContents'");
     		}
 
-    		if (/*sz*/ ctx[0] === undefined && !("sz" in props)) {
-    			console.warn("<App> was created without expected prop 'sz'");
+    		if (/*cc*/ ctx[0] === undefined && !("cc" in props)) {
+    			console.warn("<App> was created without expected prop 'cc'");
+    		}
+
+    		if (/*pz*/ ctx[1] === undefined && !("pz" in props)) {
+    			console.warn("<App> was created without expected prop 'pz'");
+    		}
+
+    		if (/*cm*/ ctx[2] === undefined && !("cm" in props)) {
+    			console.warn("<App> was created without expected prop 'cm'");
     		}
     	}
 
@@ -1668,11 +1862,27 @@ var app = (function () {
     		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
-    	get sz() {
+    	get cc() {
     		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
-    	set sz(value) {
+    	set cc(value) {
+    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get pz() {
+    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set pz(value) {
+    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get cm() {
+    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set cm(value) {
     		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
@@ -1686,5 +1896,5 @@ var app = (function () {
 
     return app;
 
-}());
+}(process));
 //# sourceMappingURL=bundle.js.map
