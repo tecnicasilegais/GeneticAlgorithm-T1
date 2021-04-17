@@ -1406,20 +1406,20 @@ var app = (function () {
     			add_location(link, file$4, 49, 4, 1928);
     			attr_dev(label, "for", "size");
     			attr_dev(label, "class", "form-label");
-    			add_location(label, file$4, 57, 5, 2137);
+    			add_location(label, file$4, 57, 5, 2115);
     			attr_dev(input, "class", "border-2 border-gray-300 p-2 w-1/3 bg-dark");
     			attr_dev(input, "type", "number");
     			attr_dev(input, "id", "size");
-    			add_location(input, file$4, 58, 2, 2216);
+    			add_location(input, file$4, 58, 2, 2194);
     			attr_dev(div0, "class", "mb-3");
-    			add_location(div0, file$4, 56, 4, 2112);
+    			add_location(div0, file$4, 56, 4, 2090);
     			attr_dev(p, "class", "text-grey-darker text-center text-white");
-    			add_location(p, file$4, 62, 10, 2448);
+    			add_location(p, file$4, 62, 10, 2426);
     			attr_dev(div1, "class", "px-6 py-4");
-    			add_location(div1, file$4, 61, 8, 2413);
+    			add_location(div1, file$4, 61, 8, 2391);
     			attr_dev(div2, "class", "max-w-xs rounded overflow-hidden bg-gray-600 shadow-lg my-2");
-    			add_location(div2, file$4, 60, 4, 2330);
-    			add_location(main, file$4, 52, 0, 2070);
+    			add_location(div2, file$4, 60, 4, 2308);
+    			add_location(main, file$4, 52, 0, 2048);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
