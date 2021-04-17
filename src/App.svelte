@@ -3,13 +3,12 @@
 	import { textTolist, store } from './store';
 	import { init,storep } from './genetic';
 	import Pagination from '@fouita/pagination';
-import { ppid } from 'process';
-    let bm;
-    let pp;
-    store.subscribe(best_matches => { bm = best_matches });
-    storep.subscribe(population => { pp = population });
+    import { ppid } from 'process';
+    let fjd;
+    storep.subscribe(fill_json_data => {fjd = fill_json_data });
+    
     let current = 0;
-    let num_items= pp.length == undefined ? 0 : pp.length;
+    let num_items= fjd.length == undefined ? 0 : fjd.length;
     let per_page=1;
     export let fileContents;
     export let cc,pz,cm;
@@ -30,8 +29,6 @@ import { ppid } from 'process';
                     fileReader.onload = function (e) {
                         fileContents = document.getElementById('filecontents');
                         textTolist(fileReader.result);
-                        let aux = {}
-						init(10, 500, bm);
                     }
                     fileReader.readAsText(fileTobeRead);
                 }
@@ -64,17 +61,19 @@ import { ppid } from 'process';
     <div class='mb-3'>
 	    <label for='crosscha' class='form-label'>Chance de crossover</label>
 		<input class='border-2 border-gray-300 p-2 w-1/3 bg-dark text-black' step="0.01" min="0" max="1" type='number' id='crosscha' bind:value={cc}>
-	</div>
-    {#if pp.length > 0}
+    </div>
+    {#if fjd.generation >= 0}
     <div class='rounded overflow-hidden bg-gray-600 shadow-lg my-1 w-1/3'>
         <div class='px-6 py-4'>
             <p class='text-grey-700 text-center'>
-                {pp[current-1]}
+                Geração: {fjd.generation}<br />
+                População: {fjd.population}<br />
+                Valor da fitness: {fjd.fitnesses} Mutações: {fjd.mutations} Convergência: {fjd.convergence}
             </p>
         </div>
     </div>
     <div class='w-1/3 content-center'>
-	    <Pagination ref="green" bind:current={current} bind:num_items={pp.length} {per_page} />
+	    <Pagination ref="green" bind:current={current} bind:num_items={fjd.length} {per_page} />
     </div>
     {/if}
 </main>
