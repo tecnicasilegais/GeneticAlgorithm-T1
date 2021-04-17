@@ -1,5 +1,5 @@
 <script>
-    import FileInput from "./components/FileInput.svelte"
+    import FileInput from './components/FileInput.svelte'
 	import {textTolist, size, best_matches} from './store'
 	import {initialize} from './genetic'
 	import Pagination from '@fouita/pagination'
@@ -32,29 +32,29 @@
                     fileReader.readAsText(fileTobeRead);
                 }
                 else {
-                    alert("Por favor selecione arquivo texto");
+                    alert('Por favor selecione arquivo texto');
                 }
 
             }, false);
         }
         else {
-            alert("Arquivo(s) não suportado(s)");
+            alert('Arquivo(s) não suportado(s)');
         }
     }
 </script>
 
 <main>
-	<link href="https://unpkg.com/tailwindcss@0.3.0/dist/tailwind.min.css" rel="stylesheet">
+	<link href='https://unpkg.com/tailwindcss@0.3.0/dist/tailwind.min.css' rel='stylesheet'>
     
     <FileInput />
    
-    <div class="mb-3">
-		<label for="size" class="form-label">Selecione um arquivo de turmas</label>
-		<input class="form-control" type="number" id="size" bind:value={sz}>
+    <div class='mb-3'>
+		<label for='size' class='form-label'>Selecione um arquivo de turmas</label>
+		<input class='form-control' type='number' id='size' bind:value={sz}>
 	</div>
-    <div class="max-w-xs rounded overflow-hidden shadow-lg my-2">
-        <div class="px-6 py-4">
-          <p class="text-grey-darker text-base">
+    <div class='max-w-xs rounded overflow-hidden shadow-lg my-2'>
+        <div class='px-6 py-4'>
+          <p class='text-grey-darker text-base'>
             {lista[current-1]}
           </p>
         </div>
