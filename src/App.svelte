@@ -1,18 +1,17 @@
 <script>
-    import FileInput from './components/FileInput.svelte'
-	import { textTolist, store } from './store'
-	import { init,storep } from './genetic'
-	import Pagination from '@fouita/pagination'
+    import FileInput from './components/FileInput.svelte';
+	import { textTolist, store } from './store';
+	import { init,storep } from './genetic';
+	import Pagination from '@fouita/pagination';
     let bm;
     let pp;
     store.subscribe(best_matches => { bm = best_matches });
     storep.subscribe(population => { pp = population });
-    let lista = ['abc','de'] //pagar isso aqui apenas para teste
-    let current = 0
-    let num_items= pp.length == undefined ? 0 : pp.length
-    let per_page=1
-    export let fileContents
-    export let sz
+    let current = 0;
+    let num_items= pp.length == undefined ? 0 : pp.length;
+    let per_page=1;
+    export let fileContents;
+    export let cc,pz,cm;
 
 	window.onload = function () {
         //Check the support for the File API support
@@ -47,20 +46,27 @@
     }
 </script>
 <svelte:head>
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link href='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css' rel='stylesheet'>
 </svelte:head>
-<svelte:body />
 <main>
     
     <FileInput />
    
     <div class='mb-3'>
-	    <label for='size' class='form-label'>Selecione um arquivo de turmas</label>
-		<input class='border-2 border-gray-300 p-2 w-1/3 bg-dark'  type='number' id='size' bind:value={sz}>
+	    <label for='popsize' class='form-label'>Tamanho da população</label>
+		<input class='border-2 border-gray-300 p-2 w-1/3 bg-dark text-black' min="1" type='number' id='popsize' bind:value={pz}>
+	</div>
+    <div class='mb-3'>
+	    <label for='mutcha' class='form-label'>Chance de mutação</label>
+		<input class='border-2 border-gray-300 p-2 w-1/3 bg-dark text-black' step="0.01" min="0" max="1" type='number' id='mutcha' bind:value={cm}>
+	</div>
+    <div class='mb-3'>
+	    <label for='crosscha' class='form-label'>Chance de crossover</label>
+		<input class='border-2 border-gray-300 p-2 w-1/3 bg-dark text-black' step="0.01" min="0" max="1" type='number' id='crosscha' bind:value={cc}>
 	</div>
     <div class='max-w-xs rounded overflow-hidden bg-gray-600 shadow-lg my-2'>
         <div class='px-6 py-4'>
-          <p class='text-grey-darker text-center text-white'>
+          <p class='text-grey-darker text-center'>
             {pp[current-1]}
           </p>
         </div>
@@ -71,6 +77,6 @@
 <style>
     :global(body) {
 		background-color: #1d3040;
-        color: #919599;
+        color: #ffffff;
 	}
 </style>
