@@ -3,6 +3,7 @@
 	import { textTolist, store } from './store';
 	import { init,storep } from './genetic';
 	import Pagination from '@fouita/pagination';
+import { ppid } from 'process';
     let bm;
     let pp;
     store.subscribe(best_matches => { bm = best_matches });
@@ -64,19 +65,23 @@
 	    <label for='crosscha' class='form-label'>Chance de crossover</label>
 		<input class='border-2 border-gray-300 p-2 w-1/3 bg-dark text-black' step="0.01" min="0" max="1" type='number' id='crosscha' bind:value={cc}>
 	</div>
-    <div class='max-w-xs rounded overflow-hidden bg-gray-600 shadow-lg my-2'>
+    {#if pp.length > 0}
+    <div class='rounded overflow-hidden bg-gray-600 shadow-lg my-1 w-1/3'>
         <div class='px-6 py-4'>
-          <p class='text-grey-darker text-center'>
-            {pp[current-1]}
-          </p>
+            <p class='text-grey-700 text-center'>
+                {pp[current-1]}
+            </p>
         </div>
-      </div>
-	<Pagination bind:current={current} bind:num_items={pp.length} {per_page} />
+    </div>
+    <div class='w-1/3 content-center'>
+	    <Pagination ref="green" bind:current={current} bind:num_items={pp.length} {per_page} />
+    </div>
+    {/if}
 </main>
 
 <style>
     :global(body) {
 		background-color: #1d3040;
-        color: #ffffff;
+        color: white !important;
 	}
 </style>
