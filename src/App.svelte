@@ -46,19 +46,21 @@
         }
     }
 </script>
-
+<svelte:head>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</svelte:head>
+<svelte:body class:name={bg-black} />
 <main>
-	<link href='https://unpkg.com/tailwindcss@0.3.0/dist/tailwind.min.css' rel='stylesheet'>
     
     <FileInput />
    
     <div class='mb-3'>
-		<label for='size' class='form-label'>Selecione um arquivo de turmas</label>
-		<input class='form-control' type='number' id='size' bind:value={sz}>
+	    <label for='size' class='form-label'>Selecione um arquivo de turmas</label>
+		<input class='border-2 border-gray-300 p-2 w-1/3 bg-dark'  type='number' id='size' bind:value={sz}>
 	</div>
-    <div class='max-w-xs rounded overflow-hidden shadow-lg my-2'>
+    <div class='max-w-xs rounded overflow-hidden bg-gray-600 shadow-lg my-2'>
         <div class='px-6 py-4'>
-          <p class='text-grey-darker text-base'>
+          <p class='text-grey-darker text-center text-white'>
             {pp[current-1]}
           </p>
         </div>
@@ -67,4 +69,8 @@
 </main>
 
 <style>
+    :global(body) {
+		background-color: #1d3040;
+        color: #919599;
+	}
 </style>
