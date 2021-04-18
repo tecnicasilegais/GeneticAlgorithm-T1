@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import { init } from './genetic';
+
 let best_matches = {}
 export let store = writable([])
 export function textTolist(text){

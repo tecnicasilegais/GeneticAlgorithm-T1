@@ -1,6 +1,6 @@
 
 (function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.head.appendChild(r) })(window.document);
-var app = (function (process) {
+var app = (function () {
     'use strict';
 
     function noop() { }
@@ -425,19 +425,19 @@ var app = (function (process) {
     			t2 = space();
     			input = element("input");
     			attr_dev(path, "d", "M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z");
-    			add_location(path, file, 5, 8, 339);
+    			add_location(path, file, 5, 8, 354);
     			attr_dev(svg, "class", "w-8 h-8");
     			attr_dev(svg, "fill", "currentColor");
     			attr_dev(svg, "xmlns", "http://www.w3.org/2000/svg");
     			attr_dev(svg, "viewBox", "0 0 20 20");
-    			add_location(svg, file, 4, 4, 233);
+    			add_location(svg, file, 4, 4, 248);
     			attr_dev(span, "class", "mt-2 text-base leading-normal");
-    			add_location(span, file, 7, 4, 506);
+    			add_location(span, file, 7, 4, 521);
     			attr_dev(input, "type", "file");
     			attr_dev(input, "class", "hidden");
     			attr_dev(input, "id", "txtfiletoread");
-    			add_location(input, file, 8, 4, 576);
-    			attr_dev(label, "class", "w-64 flex flex-col items-center px-4 py-6 bg-ba text-gray-200 w-1/3 h-1/2 rounded-lg shadow-lg tracking-wide uppercase border border-gray-200 cursor-pointer hover:bg-white hover:text-black");
+    			add_location(input, file, 8, 4, 591);
+    			attr_dev(label, "class", "w-64 flex flex-col mx-16 lg:mx-40 items-center px-4 py-6 bg-ba text-gray-200 w-1/3 h-1/2 rounded-lg shadow-lg tracking-wide uppercase border border-gray-200 cursor-pointer hover:bg-white hover:text-black");
     			add_location(label, file, 3, 0, 23);
     		},
     		l: function claim(nodes) {
@@ -658,7 +658,6 @@ var app = (function (process) {
     };
 
     let best_matches = {};
-    let store = writable([]);
     function textTolist(text){
         let lines = text.trim().split('\n');
         let size = lines[0];
@@ -1404,46 +1403,60 @@ var app = (function (process) {
     const { document: document_1 } = globals;
     const file$4 = "src\\App.svelte";
 
-    // (65:4) {#if fjd.generation >= 0}
+    function get_each_context$1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[12] = list[i];
+    	child_ctx[14] = i;
+    	return child_ctx;
+    }
+
+    // (64:4) {#if fjd.generation >= 0}
     function create_if_block(ctx) {
-    	let div1;
-    	let div0;
     	let p;
     	let t0;
     	let t1_value = /*fjd*/ ctx[3].generation + "";
     	let t1;
-    	let br0;
     	let t2;
-    	let t3_value = /*fjd*/ ctx[3].population + "";
-    	let t3;
-    	let br1;
+    	let table;
+    	let tr;
+    	let th0;
     	let t4;
-    	let t5_value = /*fjd*/ ctx[3].fitnesses + "";
-    	let t5;
+    	let th1;
     	let t6;
-    	let t7_value = /*fjd*/ ctx[3].mutations + "";
     	let t7;
+    	let div2;
+    	let div0;
     	let t8;
-    	let t9_value = /*fjd*/ ctx[3].convergence + "";
+    	let t9_value = /*fjd*/ ctx[3].mutations + "";
     	let t9;
     	let t10;
-    	let div2;
+    	let div1;
+    	let a;
+    	let t11;
+    	let t12_value = /*fjd*/ ctx[3].convergence + "";
+    	let t12;
+    	let t13;
+    	let div3;
     	let updating_current;
     	let updating_num_items;
     	let current;
+    	let each_value = /*fjd*/ ctx[3].population;
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    	}
 
     	function pagination_current_binding(value) {
-    		/*pagination_current_binding*/ ctx[11].call(null, value);
+    		/*pagination_current_binding*/ ctx[10].call(null, value);
     	}
 
     	function pagination_num_items_binding(value) {
-    		/*pagination_num_items_binding*/ ctx[12].call(null, value);
+    		/*pagination_num_items_binding*/ ctx[11].call(null, value);
     	}
 
-    	let pagination_props = {
-    		ref: "green",
-    		per_page: /*per_page*/ ctx[5]
-    	};
+    	let pagination_props = { per_page: /*per_page*/ ctx[5] };
 
     	if (/*current*/ ctx[4] !== void 0) {
     		pagination_props.current = /*current*/ ctx[4];
@@ -1459,62 +1472,119 @@ var app = (function (process) {
 
     	const block = {
     		c: function create() {
-    			div1 = element("div");
-    			div0 = element("div");
     			p = element("p");
     			t0 = text("Geração: ");
     			t1 = text(t1_value);
-    			br0 = element("br");
-    			t2 = text("\r\n                População: ");
-    			t3 = text(t3_value);
-    			br1 = element("br");
-    			t4 = text("\r\n                Valor da fitness: ");
-    			t5 = text(t5_value);
-    			t6 = text(" Mutações: ");
-    			t7 = text(t7_value);
-    			t8 = text(" Convergência: ");
+    			t2 = space();
+    			table = element("table");
+    			tr = element("tr");
+    			th0 = element("th");
+    			th0.textContent = "População";
+    			t4 = space();
+    			th1 = element("th");
+    			th1.textContent = "Fitnesses";
+    			t6 = space();
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			t7 = space();
+    			div2 = element("div");
+    			div0 = element("div");
+    			t8 = text("Mutações: ");
     			t9 = text(t9_value);
     			t10 = space();
-    			div2 = element("div");
+    			div1 = element("div");
+    			a = element("a");
+    			t11 = text("Convergência: ");
+    			t12 = text(t12_value);
+    			t13 = space();
+    			div3 = element("div");
     			create_component(pagination.$$.fragment);
-    			add_location(br0, file$4, 68, 41, 2901);
-    			add_location(br1, file$4, 69, 43, 2952);
-    			attr_dev(p, "class", "text-grey-700 text-center");
-    			add_location(p, file$4, 67, 12, 2821);
-    			attr_dev(div0, "class", "px-6 py-4");
-    			add_location(div0, file$4, 66, 8, 2784);
-    			attr_dev(div1, "class", "rounded overflow-hidden bg-gray-600 shadow-lg my-1 w-1/3");
-    			add_location(div1, file$4, 65, 4, 2704);
-    			attr_dev(div2, "class", "w-1/3 content-center");
-    			add_location(div2, file$4, 74, 4, 3119);
+    			attr_dev(p, "class", "text-lg text-center font-bold m-5");
+    			add_location(p, file$4, 64, 8, 2642);
+    			attr_dev(th0, "class", "px-4 py-3");
+    			add_location(th0, file$4, 67, 16, 2881);
+    			attr_dev(th1, "class", "p-0");
+    			attr_dev(th1, "width", "110px");
+    			add_location(th1, file$4, 68, 16, 2935);
+    			attr_dev(tr, "class", "text-left border-b-2 border-gray-300 ");
+    			add_location(tr, file$4, 66, 12, 2812);
+    			attr_dev(table, "class", "rounded-t-lg m-5 w-5/6 mx-auto bg-gray-200 text-gray-800");
+    			add_location(table, file$4, 65, 8, 2726);
+    			attr_dev(div0, "class", "flex-1");
+    			add_location(div0, file$4, 78, 12, 3364);
+    			attr_dev(a, "href", "#");
+    			attr_dev(a, "class", "mx-auto m-inline-block rounded-full text-white \r\n                  bg-yellow-400 hover:bg-yellow-500 duration-300 \r\n                  text-xs font-bold \r\n                  mr-1 md:mr-2 mb-2 px-2 md:px-4 py-1 \r\n                  opacity-90 hover:opacity-100");
+    			add_location(a, file$4, 80, 16, 3468);
+    			attr_dev(div1, "class", "flex-2");
+    			add_location(div1, file$4, 79, 12, 3429);
+    			attr_dev(div2, "class", "flex space-x-4 m-5 w-5/6 mx-auto");
+    			add_location(div2, file$4, 77, 8, 3304);
+    			attr_dev(div3, "class", "w-5/6 mx-36 lg:ml-96 lg:pl-80");
+    			add_location(div3, file$4, 89, 8, 3862);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div1, anchor);
-    			append_dev(div1, div0);
-    			append_dev(div0, p);
+    			insert_dev(target, p, anchor);
     			append_dev(p, t0);
     			append_dev(p, t1);
-    			append_dev(p, br0);
-    			append_dev(p, t2);
-    			append_dev(p, t3);
-    			append_dev(p, br1);
-    			append_dev(p, t4);
-    			append_dev(p, t5);
-    			append_dev(p, t6);
-    			append_dev(p, t7);
-    			append_dev(p, t8);
-    			append_dev(p, t9);
-    			insert_dev(target, t10, anchor);
+    			insert_dev(target, t2, anchor);
+    			insert_dev(target, table, anchor);
+    			append_dev(table, tr);
+    			append_dev(tr, th0);
+    			append_dev(tr, t4);
+    			append_dev(tr, th1);
+    			append_dev(table, t6);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(table, null);
+    			}
+
+    			insert_dev(target, t7, anchor);
     			insert_dev(target, div2, anchor);
-    			mount_component(pagination, div2, null);
+    			append_dev(div2, div0);
+    			append_dev(div0, t8);
+    			append_dev(div0, t9);
+    			append_dev(div2, t10);
+    			append_dev(div2, div1);
+    			append_dev(div1, a);
+    			append_dev(a, t11);
+    			append_dev(a, t12);
+    			insert_dev(target, t13, anchor);
+    			insert_dev(target, div3, anchor);
+    			mount_component(pagination, div3, null);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
     			if ((!current || dirty & /*fjd*/ 8) && t1_value !== (t1_value = /*fjd*/ ctx[3].generation + "")) set_data_dev(t1, t1_value);
-    			if ((!current || dirty & /*fjd*/ 8) && t3_value !== (t3_value = /*fjd*/ ctx[3].population + "")) set_data_dev(t3, t3_value);
-    			if ((!current || dirty & /*fjd*/ 8) && t5_value !== (t5_value = /*fjd*/ ctx[3].fitnesses + "")) set_data_dev(t5, t5_value);
-    			if ((!current || dirty & /*fjd*/ 8) && t7_value !== (t7_value = /*fjd*/ ctx[3].mutations + "")) set_data_dev(t7, t7_value);
-    			if ((!current || dirty & /*fjd*/ 8) && t9_value !== (t9_value = /*fjd*/ ctx[3].convergence + "")) set_data_dev(t9, t9_value);
+
+    			if (dirty & /*fjd*/ 8) {
+    				each_value = /*fjd*/ ctx[3].population;
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$1(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block$1(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(table, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
+    			}
+
+    			if ((!current || dirty & /*fjd*/ 8) && t9_value !== (t9_value = /*fjd*/ ctx[3].mutations + "")) set_data_dev(t9, t9_value);
+    			if ((!current || dirty & /*fjd*/ 8) && t12_value !== (t12_value = /*fjd*/ ctx[3].convergence + "")) set_data_dev(t12, t12_value);
     			const pagination_changes = {};
 
     			if (!updating_current && dirty & /*current*/ 16) {
@@ -1541,9 +1611,14 @@ var app = (function (process) {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div1);
-    			if (detaching) detach_dev(t10);
+    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(t2);
+    			if (detaching) detach_dev(table);
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(t7);
     			if (detaching) detach_dev(div2);
+    			if (detaching) detach_dev(t13);
+    			if (detaching) detach_dev(div3);
     			destroy_component(pagination);
     		}
     	};
@@ -1552,7 +1627,64 @@ var app = (function (process) {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(65:4) {#if fjd.generation >= 0}",
+    		source: "(64:4) {#if fjd.generation >= 0}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (71:12) {#each fjd.population as pop, i}
+    function create_each_block$1(ctx) {
+    	let tr;
+    	let td0;
+    	let t0_value = /*pop*/ ctx[12] + "";
+    	let t0;
+    	let t1;
+    	let td1;
+    	let t2_value = /*fjd*/ ctx[3].fitnesses[/*i*/ ctx[14]] + "";
+    	let t2;
+    	let t3;
+
+    	const block = {
+    		c: function create() {
+    			tr = element("tr");
+    			td0 = element("td");
+    			t0 = text(t0_value);
+    			t1 = space();
+    			td1 = element("td");
+    			t2 = text(t2_value);
+    			t3 = space();
+    			attr_dev(td0, "class", "px-4 py-3");
+    			add_location(td0, file$4, 72, 20, 3133);
+    			attr_dev(td1, "class", "px-4 py-3");
+    			add_location(td1, file$4, 73, 20, 3187);
+    			attr_dev(tr, "class", "bg-gray-100 border-b border-gray-200");
+    			add_location(tr, file$4, 71, 16, 3062);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, tr, anchor);
+    			append_dev(tr, td0);
+    			append_dev(td0, t0);
+    			append_dev(tr, t1);
+    			append_dev(tr, td1);
+    			append_dev(td1, t2);
+    			append_dev(tr, t3);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*fjd*/ 8 && t0_value !== (t0_value = /*pop*/ ctx[12] + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*fjd*/ 8 && t2_value !== (t2_value = /*fjd*/ ctx[3].fitnesses[/*i*/ ctx[14]] + "")) set_data_dev(t2, t2_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(tr);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block$1.name,
+    		type: "each",
+    		source: "(71:12) {#each fjd.population as pop, i}",
     		ctx
     	});
 
@@ -1588,17 +1720,17 @@ var app = (function (process) {
 
     	function input0_input_handler() {
     		input0_updating = true;
-    		/*input0_input_handler*/ ctx[8].call(input0);
+    		/*input0_input_handler*/ ctx[7].call(input0);
     	}
 
     	function input1_input_handler() {
     		input1_updating = true;
-    		/*input1_input_handler*/ ctx[9].call(input1);
+    		/*input1_input_handler*/ ctx[8].call(input1);
     	}
 
     	function input2_input_handler() {
     		input2_updating = true;
-    		/*input2_input_handler*/ ctx[10].call(input2);
+    		/*input2_input_handler*/ ctx[9].call(input2);
     	}
 
     	let if_block = /*fjd*/ ctx[3].generation >= 0 && create_if_block(ctx);
@@ -1631,42 +1763,42 @@ var app = (function (process) {
     			if (if_block) if_block.c();
     			attr_dev(link, "href", "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css");
     			attr_dev(link, "rel", "stylesheet");
-    			add_location(link, file$4, 46, 4, 1793);
+    			add_location(link, file$4, 44, 4, 1682);
     			attr_dev(label0, "for", "popsize");
     			attr_dev(label0, "class", "form-label");
-    			add_location(label0, file$4, 53, 5, 1963);
+    			add_location(label0, file$4, 51, 5, 1865);
     			attr_dev(input0, "class", "border-2 border-gray-300 p-2 w-1/3 bg-dark text-black");
     			attr_dev(input0, "min", "1");
     			attr_dev(input0, "type", "number");
     			attr_dev(input0, "id", "popsize");
-    			add_location(input0, file$4, 54, 2, 2035);
-    			attr_dev(div0, "class", "mb-3");
-    			add_location(div0, file$4, 52, 4, 1938);
+    			add_location(input0, file$4, 52, 2, 1937);
+    			attr_dev(div0, "class", "m-5 w-5/6 mx-auto");
+    			add_location(div0, file$4, 50, 4, 1827);
     			attr_dev(label1, "for", "mutcha");
     			attr_dev(label1, "class", "form-label");
-    			add_location(label1, file$4, 57, 5, 2195);
+    			add_location(label1, file$4, 55, 5, 2110);
     			attr_dev(input1, "class", "border-2 border-gray-300 p-2 w-1/3 bg-dark text-black");
     			attr_dev(input1, "step", "0.01");
     			attr_dev(input1, "min", "0");
     			attr_dev(input1, "max", "1");
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "id", "mutcha");
-    			add_location(input1, file$4, 58, 2, 2263);
-    			attr_dev(div1, "class", "mb-3");
-    			add_location(div1, file$4, 56, 4, 2170);
+    			add_location(input1, file$4, 56, 2, 2178);
+    			attr_dev(div1, "class", "m-5 w-5/6 mx-auto");
+    			add_location(div1, file$4, 54, 4, 2072);
     			attr_dev(label2, "for", "crosscha");
     			attr_dev(label2, "class", "form-label");
-    			add_location(label2, file$4, 61, 5, 2442);
+    			add_location(label2, file$4, 59, 5, 2370);
     			attr_dev(input2, "class", "border-2 border-gray-300 p-2 w-1/3 bg-dark text-black");
     			attr_dev(input2, "step", "0.01");
     			attr_dev(input2, "min", "0");
     			attr_dev(input2, "max", "1");
     			attr_dev(input2, "type", "number");
     			attr_dev(input2, "id", "crosscha");
-    			add_location(input2, file$4, 62, 2, 2514);
-    			attr_dev(div2, "class", "mb-3");
-    			add_location(div2, file$4, 60, 4, 2417);
-    			add_location(main, file$4, 48, 0, 1896);
+    			add_location(input2, file$4, 60, 2, 2442);
+    			attr_dev(div2, "class", "m-5 w-5/6 mx-auto");
+    			add_location(div2, file$4, 58, 4, 2332);
+    			add_location(main, file$4, 46, 0, 1785);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1783,7 +1915,6 @@ var app = (function (process) {
     	});
 
     	let current = 0;
-    	let num_items = fjd.length == undefined ? 0 : fjd.length;
     	let per_page = 1;
     	let { fileContents } = $$props;
     	let { cc } = $$props, { pz } = $$props, { cm } = $$props;
@@ -1865,20 +1996,15 @@ var app = (function (process) {
     	$$self.$capture_state = () => ({
     		FileInput,
     		textTolist,
-    		store,
-    		init: init$1,
     		storep,
     		Pagination,
-    		ppid: process.ppid,
     		fjd,
     		current,
-    		num_items,
     		per_page,
     		fileContents,
     		cc,
     		pz,
     		cm,
-    		undefined,
     		window,
     		document,
     		FileReader,
@@ -1888,7 +2014,6 @@ var app = (function (process) {
     	$$self.$inject_state = $$props => {
     		if ("fjd" in $$props) $$invalidate(3, fjd = $$props.fjd);
     		if ("current" in $$props) $$invalidate(4, current = $$props.current);
-    		if ("num_items" in $$props) num_items = $$props.num_items;
     		if ("per_page" in $$props) $$invalidate(5, per_page = $$props.per_page);
     		if ("fileContents" in $$props) $$invalidate(6, fileContents = $$props.fileContents);
     		if ("cc" in $$props) $$invalidate(0, cc = $$props.cc);
@@ -1908,7 +2033,6 @@ var app = (function (process) {
     		current,
     		per_page,
     		fileContents,
-    		num_items,
     		input0_input_handler,
     		input1_input_handler,
     		input2_input_handler,
@@ -1991,5 +2115,5 @@ var app = (function (process) {
 
     return app;
 
-}(process));
+}());
 //# sourceMappingURL=bundle.js.map
