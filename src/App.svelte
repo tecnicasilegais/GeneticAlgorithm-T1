@@ -78,7 +78,7 @@
         <div class="flex space-x-4 m-5 w-5/6 mx-auto">
             <div class="flex-1">Mutações: {fjd.mutations}</div>
             <div class="flex-2"> 
-                <a href='#' class='mx-auto m-inline-block rounded-full text-white 
+                <a href='' class='mx-auto m-inline-block rounded-full text-white 
                   bg-yellow-400 hover:bg-yellow-500 duration-300 
                   text-xs font-bold 
                   mr-1 md:mr-2 mb-2 px-2 md:px-4 py-1 

@@ -19,8 +19,8 @@ let convergence = 0;
 let GENERATIONS = 50;
 let CHROMOSOME = 0;
 
-let mtpb = 1; //chance of mutation 0..1
-let cxpb = 1; //chance of crossover
+let MTPB = 1; //chance of mutation 0..1
+let CXPB = 1; //chance of crossover
 
 const reset_variables = () => {
     offspring = [];
@@ -80,7 +80,7 @@ const handle_mutation = () => {
     for(i=0; i<population.length; i++){ //every individual has a chance of mutation
         let chance = random(); //random between 0..1
 
-        if(chance < mtpb){
+        if(chance < MTPB){
             index = randomInt(population.length);
             mutations.push(index);
             mutate(population[index]);
@@ -131,7 +131,7 @@ const selection = () => {
         tourn2 = tournament();
         parent1 = population[tourn1];
         parent2 = population[tourn2];
-        if(random() < cxpb) { //crossover
+        if(random() < CXPB) { //crossover
             [offspring[i], offspring[i+1]] = cycle_crossover(parent1, parent2);
         }else{
             [offspring[i], offspring[i+1]] = [parent1, parent2];
@@ -164,13 +164,15 @@ const next_generation = (gen) => {
 
 }
 
-export const init = (pop_size = 20, ngen, best_matches) => {
+export const init = (pop_size = 20, ngen, best_matches, mutpb, cxpb) => {
     //fill globals
     console.log(best_matches.best_a)
     GENERATIONS = ngen;
     CHROMOSOME = best_matches.size;
     dados_a = best_matches.best_a;
     dados_b = best_matches.best_b;
+    MTPB = mutpb;
+    CXPB = cxpb;
 
     population = generate_random_population(pop_size, CHROMOSOME);
     fitness_func();
