@@ -4,11 +4,11 @@ import { generate_random_population, fill_json_data } from './util.js';
 import { random, randomInt } from 'mathjs';
 
 export let storep = writable([])
+export let store_solution = writable([])
 
 //globals
 let dados_b = [];
 let dados_a = [];
-let solution;
 
 let population = [];
 let offspring = [];
@@ -42,32 +42,31 @@ const fitness_func = () => {
 
 //individual fitness
 const fitness_individual = (individual) => {//min
-    let aptitude_a, aptitude_b = 0;
+    let [aptitude_a, aptitude_b] = [0, 0];
     //iterates individual (i = index of A, individual[i] = index of B, values = i+1 and individual[i]+1)
     for(let a=0; a<individual.length; a++){
         let b = individual[a]; //b person (B1, B2 etc.)
         for(let i=0; i<dados_a[a].length; i++){
             if(dados_a[a][i] == b){//B
-                aptitude_a = i;
+                aptitude_a += i;
             }
         }
         for(let i=0; i<dados_b[b].length; i++){
             if(dados_b[b][i] == a){//A
-                aptitude_b = i;
+                aptitude_b += i;
             }
         }
     }
-    return aptitude_a + aptitude_b;
+    return 2*(aptitude_a + aptitude_b);
 }
 
 /**
  * Mutate by swapping two random positions of individual's genes
  * @param individual
  */
-const swapMutation = (individual) => {
+const swap_mutation = (individual) => {
 
-    let [i, j] = randomInt(2, 0, CHROMOSOME);
-
+    let [i, j] = randomInt([2], 0, CHROMOSOME);
     [individual[i], individual[j]] = [individual[j], individual[i]];
 
 }
@@ -77,13 +76,13 @@ const handle_elitism = () => {
 }
 
 const handle_mutation = () => {
-    for(i=0; i<population.length; i++){ //every individual has a chance of mutation
+    for(let i=0; i<population.length; i++){ //every individual has a chance of mutation
         let chance = random(); //random between 0..1
 
         if(chance < MTPB){
-            index = randomInt(population.length);
+            let index = randomInt(population.length);
             mutations.push(index);
-            mutate(population[index]);
+            swap_mutation(population[index]);
         }
     }
 }
@@ -92,7 +91,7 @@ const cycle_crossover = (parent1, parent2) => {
     let initial = randomInt(CHROMOSOME);
     let curr = initial;
     let cycle = [initial];
-    last_p2_element = parent2[initial];
+    let last_p2_element = parent2[initial];
     let [child1, child2] = [[] , []];
 
     let index=1;
@@ -127,10 +126,9 @@ const selection = () => {
     handle_elitism();
 
     for( let i=0; i<population.length; i+=2){
-        tourn1 = tournament();
-        tourn2 = tournament();
-        parent1 = population[tourn1];
-        parent2 = population[tourn2];
+        let [tourn1, tourn2] = [tournament(), tournament()];
+        let [parent1, parent2] = [population[tourn1], population[tourn2]];
+
         if(random() < CXPB) { //crossover
             [offspring[i], offspring[i+1]] = cycle_crossover(parent1, parent2);
         }else{
@@ -138,7 +136,7 @@ const selection = () => {
         }
     }
     if(population.length % 2 === 0){
-        offspring[population.length-1] = tournament(); //adds a random parent to fill offspring
+        offspring[population.length-1] = population[tournament()]; //adds a random parent to fill offspring
     }
 
 }
@@ -159,6 +157,10 @@ const next_generation = (gen) => {
 
     if(solution_found()){
         solution = population[fitness.argmin()];
+        store_solution.set({
+            'individual': solution,
+            'fitness': 0,
+        })
         return true;
     }
 
@@ -166,7 +168,6 @@ const next_generation = (gen) => {
 
 export const init = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => {
     //fill globals
-    console.log(best_matches.best_a)
     GENERATIONS = ngen;
     CHROMOSOME = best_matches.size;
     dados_a = best_matches.best_a;
@@ -179,7 +180,11 @@ export const init = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => 
 
     if(solution_found()){
         solution = population[fitness.argmin()];
-        console.log(solution);
+        store_solution.set({
+            'individual': solution,
+            'fitness': 0,
+        })
+        return true;
     }
 
     storep.set(fill_json_data(0, population, fitness, mutations, convergence));
@@ -187,9 +192,17 @@ export const init = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => 
 }
 
 export const run_ga = () => {
+    end = false;
     for(let i=1; i<GENERATIONS; i++){
         let end = next_generation(i);
-        if(end){break;}
+        if(end === true){break;}
+    }
+    if(end === false){
+        let m = fitness.argmin();
+        store_solution.set({
+            'individual': population[m],
+            'fitness': fitness[m],
+        })
     }
 }
 

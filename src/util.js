@@ -50,8 +50,9 @@ if(typeof(Array.prototype.argmin) === 'undefined'){
         for(let i=0; i<this.length; i++){
             if(this[i] < min){
                 i_min = i;
+                min = this[i];
             }
         }
-        return min;
+        return i_min;
     }
 }
