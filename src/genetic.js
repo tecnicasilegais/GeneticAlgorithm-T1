@@ -114,12 +114,12 @@ const cycle_crossover = (parent1, parent2) => {
 }
 
 const tournament = () => {
-    indexes = randomInt(2, 0, CHROMOSOME);
+    let [i, j] = randomInt([2], 0, CHROMOSOME);
 
-    if(fitness[indexes[0]] < fitness[indexes[1]]) {
-        return indexes[0];
+    if(fitness[i] < fitness[j]) {
+        return i;
     }else{
-        return indexes[1];
+        return j;
     }
 }
 
@@ -164,7 +164,7 @@ const next_generation = (gen) => {
 
 }
 
-export const init = (pop_size = 20, ngen, best_matches, mutpb, cxpb) => {
+export const init = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => {
     //fill globals
     console.log(best_matches.best_a)
     GENERATIONS = ngen;

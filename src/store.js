@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { init } from './genetic';
+import { init, run_ga } from './genetic';
 let best_matches = {}
 export let store = writable([])
 export function textTolist(text){
@@ -19,6 +19,7 @@ export function textTolist(text){
     best_matches["best_b"] = best_b;
     best_matches["size"] = best_a[0].length;
     init(10, 500, best_matches);
+    run_ga();
 }
 
 const collect_values = (line) => {
