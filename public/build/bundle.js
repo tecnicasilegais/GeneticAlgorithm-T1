@@ -638,7 +638,7 @@ var app = (function (process) {
         return aptitude_a + aptitude_b;
     };
 
-    const init$1 = (pop_size = 20, ngen, best_matches) => {
+    const init$1 = (pop_size = 20, ngen, best_matches, mutpb, cxpb) => {
         //fill globals
         console.log(best_matches.best_a);
         CHROMOSOME = best_matches.size;
