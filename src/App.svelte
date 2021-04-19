@@ -5,11 +5,8 @@
 	import Pagination from '@fouita/pagination';
     let fjd = [];
     storep.subscribe(fill_json_data => {fjd = fill_json_data });
-    function handleClick() {
-		console.log(fjd);
-	}
+ 
     function fjdshow(i) {
-        console.log(fjd[i])
 		return fjd[i]
 	}
     let current = 1;
@@ -68,7 +65,7 @@
     </div>
     {#if fjd.length > 0}
 
-        <p class='text-lg text-center font-bold m-5' on:click={handleClick}>Geração: {fjdshow(current-1).generation}</p>
+        <p class='text-lg text-center font-bold m-5'>Geração: {fjdshow(current-1).generation}</p>
         <table class='rounded-t-lg m-5 w-5/6 mx-auto bg-gray-200 text-gray-800'>
             <tr class='text-left border-b-2 border-gray-300 ' >
                 <th class='px-4 py-3'>População</th>
