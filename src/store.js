@@ -3,7 +3,7 @@ import { init, run_ga } from './genetic';
 
 let best_matches = {}
 export let store = writable([])
-export function textTolist(text){
+export function textTolist(text,pz,cc,cm,gz){
     let lines = text.trim().split('\n');
     let size = lines[0];
     let best_a = [];
@@ -19,7 +19,7 @@ export function textTolist(text){
     best_matches["best_a"] = best_a;
     best_matches["best_b"] = best_b;
     best_matches["size"] = best_a[0].length;
-    init(10, 500, best_matches);
+    init(pz, gz, best_matches,cm,cc);
     run_ga();
 }
 
