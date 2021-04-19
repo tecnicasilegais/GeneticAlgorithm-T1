@@ -160,7 +160,7 @@ const next_generation = (gen) => {
         store_solution.set({
             'individual': solution,
             'fitness': 0,
-            'matches': decodify_individual(solution);
+            'matches': decodify_individual(solution),
         })
         return true;
     }
@@ -184,7 +184,7 @@ export const init = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => 
         store_solution.set({
             'individual': solution,
             'fitness': 0,
-            'matches': decodify_individual(solution);
+            'matches': decodify_individual(solution),
         })
         return true;
     }
@@ -195,7 +195,7 @@ export const init = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => 
 
 export const run_ga = () => {
     let end = false;
-    for(let i=1; i<GENERATIONS; i++){
+    for(let i=1; i<=GENERATIONS; i++){
         end = next_generation(i);
         if(end === true){break;}
     }
@@ -204,7 +204,7 @@ export const run_ga = () => {
         store_solution.set({
             'individual': population[m],
             'fitness': fitness[m],
-            'matches': decodify_individual(population[m]);
+            'matches': decodify_individual(population[m]),
         })
     }
 }

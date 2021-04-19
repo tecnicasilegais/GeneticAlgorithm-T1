@@ -15,6 +15,7 @@ export const decodify_individual = (individual) => {
     for(let i=0; i<individual.length; i++){
         di_json["A" + i] = "B" + individual[i];
     }
+    return di_json;
 }
 
 /**
