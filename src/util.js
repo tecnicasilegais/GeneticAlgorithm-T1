@@ -20,10 +20,10 @@ export const fill_json_cycle = (cycle, temperature, roommate, h, acc_worse) => {
     }
 }
 
-export const decodify_individual = (individual) => {
+export const decodify_individual = (chromosome) => {
     let di_json = {};
-    for(let i=0; i<individual.length; i++){
-        di_json["A" + (i+1)] = "B" + (individual[i]+1);
+    for(let i=0; i<chromosome.length; i++){
+        di_json["A" + (i+1)] = "B" + (chromosome[i]+1);
     }
     return di_json;
 }

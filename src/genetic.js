@@ -1,6 +1,6 @@
 //imports
 import { writable } from 'svelte/store';
-import { generate_random_population, fill_json_data, decodify_individual } from './util.js';
+import { generate_random_population, fill_json_data, decodify_chromosome } from './util.js';
 import { random, randomInt } from 'mathjs';
 
 export let storep = writable([])
@@ -15,7 +15,7 @@ let dados_a = [];
 let population = [];
 let population_size = 0;
 let offspring = [];
-let fitness = []; //fitness of each individual from the population
+let fitness = []; //fitness of each chromosome from the population
 let mutations = [];
 let convergence = 0;
 
@@ -35,7 +35,7 @@ const update_hall_of_fame = (gen) => {
     let [index, fit] = fitness.doubleMin();
     if(fit < hall_of_fame.fitness){
         hall_of_fame.gen = gen;
-        hall_of_fame.individual = population[index];
+        hall_of_fame.chromosome = population[index];
         hall_of_fame.fitness = fit;
     }
 }
@@ -48,16 +48,16 @@ const solution_found = () => {
 //population fitness
 const fitness_func = () => {
     for(let i=0; i<population.length; i++){
-        fitness[i] = fitness_individual(population[i]);
+        fitness[i] = fitness_chromosome(population[i]);
     }
 }
 
-//individual fitness
-const fitness_individual = (individual) => {//min
+//chromosome fitness
+const fitness_chromosome = (chromosome) => {//min
     let [aptitude_a, aptitude_b] = [0, 0];
-    //iterates individual (i = index of A, individual[i] = index of B, values = i+1 and individual[i]+1)
-    for(let a=0; a<individual.length; a++){
-        let b = individual[a]; //b person (B1, B2 etc.)
+    //iterates chromosome (i = index of A, chromosome[i] = index of B, values = i+1 and chromosome[i]+1)
+    for(let a=0; a<chromosome.length; a++){
+        let b = chromosome[a]; //b person (B1, B2 etc.)
         for(let i=0; i<dados_a[a].length; i++){
             if(dados_a[a][i] == b){//B
                 aptitude_a += i;
@@ -73,13 +73,13 @@ const fitness_individual = (individual) => {//min
 }
 
 /**
- * Mutate by swapping two random positions of individual's genes
- * @param individual
+ * Mutate by swapping two random positions of chromosome's genes
+ * @param chromosome
  */
-const swap_mutation = (individual) => {
+const swap_mutation = (chromosome) => {
 
     let [i, j] = randomInt([2], 0, CHROMOSOME);
-    [individual[i], individual[j]] = [individual[j], individual[i]];
+    [chromosome[i], chromosome[j]] = [chromosome[j], chromosome[i]];
 
 }
 
@@ -88,7 +88,7 @@ const handle_elitism = () => {
 }
 
 const handle_mutation = () => {
-    for(let i=0; i<population.length; i++){ //every individual has a chance of mutation
+    for(let i=0; i<population.length; i++){
         let chance = random(); //random between 0..1
 
         if(chance < MTPB){
@@ -172,18 +172,18 @@ const next_generation = (gen) => {
     if(solution_found()){
         let solution = population[fitness.argmin()];
         store_solution.set({
-            'individual': solution,
+            'chromosome': solution,
             'fitness': 0,
-            'decodified': decodify_individual(solution),
+            'decodified': decodify_chromosome(solution),
             'halloffame': hall_of_fame,
-            'decod_hof': decodify_individual(hall_of_fame.individual)
+            'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
         })
         console.log({
-            'individual': solution,
+            'chromosome': solution,
             'fitness': 0,
-            'decodified': decodify_individual(solution),
+            'decodified': decodify_chromosome(solution),
             'halloffame': hall_of_fame,
-            'decod_hof': decodify_individual(hall_of_fame.individual)
+            'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
         })
         return true;
     }
@@ -205,18 +205,18 @@ export const init = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => 
     let [idx, min] = fitness.doubleMin();
     hall_of_fame = {
         'gen': 0,
-        'individual': population[idx],
+        'chromosome': population[idx],
         'fitness': min,
     }
 
     if(solution_found()){
         let solution = population[fitness.argmin()];
         store_solution.set({
-            'individual': solution,
+            'chromosome': solution,
             'fitness': 0,
-            'decodified': decodify_individual(population[solution]),
+            'decodified': decodify_chromosome(population[solution]),
             'halloffame': hall_of_fame,
-            'decod_hof': decodify_individual(hall_of_fame.individual)
+            'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
         })
         return true;
     }
@@ -233,11 +233,11 @@ export const run_ga = () => {
     if(end === false){
         let m = fitness.argmin();
         store_solution.set({
-            'individual': population[m],
+            'chromosome': population[m],
             'fitness': fitness[m],
-            'decodified': decodify_individual(population[m]),
+            'decodified': decodify_chromosome(population[m]),
             'halloffame': hall_of_fame,
-            'decod_hof': decodify_individual(hall_of_fame.individual)
+            'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
         })
     }
 }
