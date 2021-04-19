@@ -13,7 +13,7 @@ export const fill_json_data = (generation, population, fitnesses, mutations, con
 export const decodify_individual = (individual) => {
     let di_json = {};
     for(let i=0; i<individual.length; i++){
-        di_json["A" + i+1] = "B" + individual[i+1];
+        di_json["A" + (i+1)] = "B" + (individual[i]+1);
     }
     return di_json;
 }
@@ -63,5 +63,23 @@ if(typeof(Array.prototype.argmin) === 'undefined'){
             }
         }
         return i_min;
+    }
+}
+
+if(typeof(Array.prototype.doubleMin) === 'undefined'){
+    Array.prototype.doubleMin = function(){
+        if (this.length == 0){
+            return -1;
+        }
+        let min = this[0];
+        let i_min = 0;
+
+        for(let i=0; i<this.length; i++){
+            if(this[i] < min){
+                i_min = i;
+                min = this[i];
+            }
+        }
+        return [i_min, min];
     }
 }

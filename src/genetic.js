@@ -1,16 +1,19 @@
 //imports
 import { writable } from 'svelte/store';
-import { generate_random_population, fill_json_data } from './util.js';
+import { generate_random_population, fill_json_data, decodify_individual } from './util.js';
 import { random, randomInt } from 'mathjs';
 
 export let storep = writable([])
 export let store_solution = writable([])
 
 //globals
+let hall_of_fame = {}
+
 let dados_b = [];
 let dados_a = [];
 
 let population = [];
+let population_size = 0;
 let offspring = [];
 let fitness = []; //fitness of each individual from the population
 let mutations = [];
@@ -26,6 +29,15 @@ const reset_variables = () => {
     offspring = [];
     fitness = [];
     mutations = [];
+}
+
+const update_hall_of_fame = (gen) => {
+    let [index, fit] = fitness.doubleMin();
+    if(fit < hall_of_fame.fitness){
+        hall_of_fame.gen = gen;
+        hall_of_fame.individual = population[index];
+        hall_of_fame.fitness = fit;
+    }
 }
 
 //checks if this generation contains the solution
@@ -81,7 +93,7 @@ const handle_mutation = () => {
 
         if(chance < MTPB){
             let index = randomInt(population.length);
-            mutations.push(index);
+            mutations.push(index+1);
             swap_mutation(population[index]);
         }
     }
@@ -113,7 +125,7 @@ const cycle_crossover = (parent1, parent2) => {
 }
 
 const tournament = () => {
-    let [i, j] = randomInt([2], 0, CHROMOSOME);
+    let [i, j] = randomInt([2], 0, population_size);
 
     if(fitness[i] < fitness[j]) {
         return i;
@@ -153,13 +165,25 @@ const next_generation = (gen) => {
 
     fitness_func();
 
+    update_hall_of_fame(gen);
+
     storep.update(n => [...n, fill_json_data(gen, population, fitness, mutations, convergence)]);
 
     if(solution_found()){
-        solution = population[fitness.argmin()];
+        let solution = population[fitness.argmin()];
         store_solution.set({
             'individual': solution,
             'fitness': 0,
+            'decodified': decodify_individual(solution),
+            'halloffame': hall_of_fame,
+            'decod_hof': decodify_individual(hall_of_fame.individual)
+        })
+        console.log({
+            'individual': solution,
+            'fitness': 0,
+            'decodified': decodify_individual(solution),
+            'halloffame': hall_of_fame,
+            'decod_hof': decodify_individual(hall_of_fame.individual)
         })
         return true;
     }
@@ -168,6 +192,7 @@ const next_generation = (gen) => {
 
 export const init = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => {
     //fill globals
+    population_size = pop_size;
     GENERATIONS = ngen;
     CHROMOSOME = best_matches.size;
     dados_a = best_matches.best_a;
@@ -177,17 +202,26 @@ export const init = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => 
 
     population = generate_random_population(pop_size, CHROMOSOME);
     fitness_func();
+    let [idx, min] = fitness.doubleMin();
+    hall_of_fame = {
+        'gen': 0,
+        'individual': population[idx],
+        'fitness': min,
+    }
 
     if(solution_found()){
-        solution = population[fitness.argmin()];
+        let solution = population[fitness.argmin()];
         store_solution.set({
             'individual': solution,
             'fitness': 0,
+            'decodified': decodify_individual(population[solution]),
+            'halloffame': hall_of_fame,
+            'decod_hof': decodify_individual(hall_of_fame.individual)
         })
         return true;
     }
     storep.set([fill_json_data(0, population, fitness, mutations, convergence)]);
-    console.log(fill_json_data(0, population, fitness, mutations, convergence));
+    //console.log(fill_json_data(0, population, fitness, mutations, convergence));
 }
 
 export const run_ga = () => {
@@ -201,6 +235,9 @@ export const run_ga = () => {
         store_solution.set({
             'individual': population[m],
             'fitness': fitness[m],
+            'decodified': decodify_individual(population[m]),
+            'halloffame': hall_of_fame,
+            'decod_hof': decodify_individual(hall_of_fame.individual)
         })
     }
 }
