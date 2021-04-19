@@ -13,7 +13,7 @@ export const fill_json_data = (generation, population, fitnesses, mutations, con
 export const decodify_individual = (individual) => {
     let di_json = {};
     for(let i=0; i<individual.length; i++){
-        di_json["A" + i] = "B" + individual[i];
+        di_json["A" + i+1] = "B" + individual[i+1];
     }
     return di_json;
 }
