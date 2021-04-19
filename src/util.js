@@ -4,9 +4,18 @@ export const fill_json_data = (generation, population, fitnesses, mutations, con
         'generation': generation,
         'population': population,
         'fitnesses': fitnesses,
+        'best_one': fitnesses.argmin(),
         'mutations': mutations,
         'convergence': convergence
     };
+}
+
+export const decodify_individual = (individual) => {
+    let di_json = {};
+    for(let i=0; i<individual.length; i++){
+        di_json["A" + i] = "B" + individual[i];
+    }
+    return di_json;
 }
 
 /**
