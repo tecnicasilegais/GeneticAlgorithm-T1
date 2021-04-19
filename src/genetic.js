@@ -192,9 +192,9 @@ export const init = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => 
 }
 
 export const run_ga = () => {
-    end = false;
+    let end = false;
     for(let i=1; i<GENERATIONS; i++){
-        let end = next_generation(i);
+        end = next_generation(i);
         if(end === true){break;}
     }
     if(end === false){

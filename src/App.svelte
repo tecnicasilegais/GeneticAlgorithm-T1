@@ -5,12 +5,15 @@
 	import Pagination from '@fouita/pagination';
     let fjd;
     storep.subscribe(fill_json_data => {fjd = fill_json_data });
-    
+    console.log(fjd)
     let current = 0;
     let per_page=1;
     export let fileContents;
     export let cc,pz,cm;
-
+    function fldshow() {
+		console.log(fjd)
+        console.log(fjd.length)
+	}
 	window.onload = function () {
         //Check the support for the File API support
         if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -62,7 +65,7 @@
     </div>
     
     {#if fjd.generation >= 0}
-        <p class='text-lg text-center font-bold m-5'>Geração: {fjd.generation}</p>
+        <p class='text-lg text-center font-bold m-5' on:click|once={fldshow}>Geração: {fjd.generation}</p>
         <table class='rounded-t-lg m-5 w-5/6 mx-auto bg-gray-200 text-gray-800'>
             <tr class='text-left border-b-2 border-gray-300 ' >
                 <th class='px-4 py-3'>População</th>
@@ -84,7 +87,7 @@
                   mr-1 md:mr-2 mb-2 px-2 md:px-4 py-1 
                   opacity-90 hover:opacity-100'>
                   Convergência: {fjd.convergence}
-              </a>
+                </a>
             </div>
         </div>
         <div class="w-5/6 mx-36 lg:ml-96 lg:pl-80">
