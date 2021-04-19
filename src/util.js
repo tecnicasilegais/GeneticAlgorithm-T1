@@ -10,6 +10,16 @@ export const fill_json_data = (generation, population, fitnesses, mutations, con
     };
 }
 
+export const fill_json_cycle = (cycle, temperature, roommate, h, acc_worse) => {
+    return {
+        'cycle': cycle,
+        'temperature': temperature,
+        'roommate': roommate,
+        'acc_worse': acc_worse,
+        'h': h
+    }
+}
+
 export const decodify_individual = (individual) => {
     let di_json = {};
     for(let i=0; i<individual.length; i++){
