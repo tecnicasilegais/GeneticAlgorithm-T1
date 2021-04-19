@@ -1,6 +1,6 @@
 //imports
 import { writable } from 'svelte/store';
-import { generate_random_population, fill_json_data, decodify_individual } from './util.js';
+import { generate_random_population, fill_json_data } from './util.js';
 import { random, randomInt } from 'mathjs';
 
 export let storep = writable([])
@@ -153,14 +153,13 @@ const next_generation = (gen) => {
 
     fitness_func();
 
-    storep.set(fill_json_data(gen, population, fitness, mutations, convergence));
+    storep.update(n => [...n, fill_json_data(gen, population, fitness, mutations, convergence)]);
 
     if(solution_found()){
         solution = population[fitness.argmin()];
         store_solution.set({
             'individual': solution,
             'fitness': 0,
-            'matches': decodify_individual(solution),
         })
         return true;
     }
@@ -184,22 +183,16 @@ export const init = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => 
         store_solution.set({
             'individual': solution,
             'fitness': 0,
-            'matches': decodify_individual(solution),
         })
         return true;
     }
-
-    storep.set(fill_json_data(0, population, fitness, mutations, convergence));
+    storep.set([fill_json_data(0, population, fitness, mutations, convergence)]);
     console.log(fill_json_data(0, population, fitness, mutations, convergence));
 }
 
 export const run_ga = () => {
     let end = false;
-<<<<<<< HEAD
-    for(let i=1; i<GENERATIONS; i++){
-=======
     for(let i=1; i<=GENERATIONS; i++){
->>>>>>> 5c2a74f117d8375cd8cc982c2e8abeba5b413b8a
         end = next_generation(i);
         if(end === true){break;}
     }
@@ -208,7 +201,6 @@ export const run_ga = () => {
         store_solution.set({
             'individual': population[m],
             'fitness': fitness[m],
-            'matches': decodify_individual(population[m]),
         })
     }
 }
