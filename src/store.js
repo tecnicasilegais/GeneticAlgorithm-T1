@@ -5,18 +5,18 @@ import { init_sa, run_sa } from './s_annealing';
 let best_matches = {}
 export let store = writable([])
 export function load_run_ga(text, psize, ngen, mutpb, cxpb){
-    load();
+    load(text);
     init_ga(psize, ngen, best_matches, mutpb, cxpb);
     run_ga();
 }
 
 export function load_run_sa(text, niter, decrease_factor){
-    load();
+    load(text);
     init_sa(niter, best_matches, decrease_factor);
     run_sa();
 }
 
-const load = () => {
+const load = (text) => {
     let lines = text.trim().split('\n');
     let size = lines[0];
     let best_a = [];

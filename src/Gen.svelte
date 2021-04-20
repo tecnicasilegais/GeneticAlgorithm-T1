@@ -11,7 +11,7 @@
     let current = 1;
     let per_page=1;
     export let fileContents;
-    export let cxpb,psize,mutpb,ngen;
+    export let cxpb, psize, mutpb, ngen;
     function showTable() {
         if(fileContents != null && ngen != null){
             load_run_ga(fileContents, psize, ngen, mutpb, cxpb);
