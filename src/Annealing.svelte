@@ -1,12 +1,12 @@
 <script>
-	import { load_run_ga } from './store';
+	import { textTolist } from './store';
 	import { storep } from './genetic';
 	import Pagination from '@fouita/pagination';
-    let fill_json_data_array = [];
-    storep.subscribe(fill_json_data => {fill_json_data_array = fill_json_data });
+    let fill_json_cycle_array = [];
+    storep.subscribe(fill_json_cycle => {fill_json_cycle_array = fill_json_cycle });
  
     function json_data(i) {
-		return fill_json_data_array[i]
+		return fill_json_cycle_array[i]
 	}
     let current = 1;
     let per_page=1;
@@ -14,7 +14,7 @@
     export let cc,pz,cm,gz;
     function showTable() {
         if(fileContents != null && gz != null){
-            load_run_ga(fileContents, pz, cc, cm,gz);
+            textTolist(fileContents, pz, cc, cm,gz);
             document.getElementById('inputs').style.display = "none";
         }else{
             alert('Preencha a geração e selecione um arquivo')
@@ -22,7 +22,7 @@
     }
     function reset(){
         let cc,pz,cm,gz,fileContents = null;
-        fill_json_data_array = [];
+        fill_json_cycle_array = [];
         document.getElementById('inputs').style.display = "block";
     }
 	window.onload = function () {
@@ -102,7 +102,7 @@
             </div>
         </div>
         <div id='show' >
-            {#if fill_json_data_array.length > 0}
+            {#if fill_json_cycle_array.length > 0}
                 <div class="flex items-center justify-inline self-center w-5/6 ">
                     <div class="grid grid-cols-2 px-2">
                         <p class='text-lg text-center font-bold m-5'>Geração: {json_data(current-1).generation}</p>
@@ -128,7 +128,7 @@
                 </div>
                 <div class="justify-between mb-5">
                     <div class="flex flex-col text-right items-center w-100 px-2">
-	                <Pagination bind:current={current} bind:num_items={fill_json_data_array.length} {per_page} />
+	                <Pagination bind:current={current} bind:num_items={fill_json_cycle_array.length} {per_page} />
                     </div>
                 </div>
             {/if}
