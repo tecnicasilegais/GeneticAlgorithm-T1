@@ -16,16 +16,16 @@
 	window.onload = function () {
         //Check the support for the File API support
         if (window.File && window.FileReader && window.FileList && window.Blob) {
-            var fileSelected = document.getElementById('txtfiletoread');
+            let fileSelected = document.getElementById('txtfiletoread');
             fileSelected.addEventListener('change', function (e) {
                 //Set the extension for the file
-                var fileExtension = /text.*/;
+                let fileExtension = /text.*/;
                 //Get the file object
-                var fileTobeRead = fileSelected.files[0];
+                let fileTobeRead = fileSelected.files[0];
                 //Check of the extension match
                 if (fileTobeRead.type.match(fileExtension)) {
                     //Initialize the FileReader object to read the 2file
-                    var fileReader = new FileReader();
+                    let fileReader = new FileReader();
                     fileReader.onload = function (e) {
                         fileContents = document.getElementById('filecontents');
                         textTolist(fileReader.result, pz, cc, cm,gz);
