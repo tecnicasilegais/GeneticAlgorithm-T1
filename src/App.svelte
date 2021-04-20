@@ -1,6 +1,5 @@
 <script>
-	import { Gen } from './Gen.svelte';
- 
+	import Gen from './Gen.svelte';
 </script>
     <Gen />
 <style>

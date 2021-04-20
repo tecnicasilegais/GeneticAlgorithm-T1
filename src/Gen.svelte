@@ -12,7 +12,19 @@
     let per_page=1;
     export let fileContents;
     export let cc,pz,cm,gz;
-
+    function showTable() {
+        if(fileContents != null && gz != null){
+            textTolist(fileContents, pz, cc, cm,gz);
+            document.getElementById('inputs').style.display = "none";
+        }else{
+            alert('Preencha a geração e selecione um arquivo')
+        }
+    }
+    function reset(){
+        let cc,pz,cm,gz,fileContents = null;
+        fill_json_data_array = [];
+        document.getElementById('inputs').style.display = "block";
+    }
 	window.onload = function () {
         //Check the support for the File API support
         if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -27,8 +39,7 @@
                     //Initialize the FileReader object to read the 2file
                     var fileReader = new FileReader();
                     fileReader.onload = function (e) {
-                        fileContents = document.getElementById('filecontents');
-                        textTolist(fileReader.result, pz, cc, cm,gz);
+                        fileContents = fileReader.result;
                     }
                     fileReader.readAsText(fileTobeRead);
                 }
@@ -48,8 +59,8 @@
     <link href='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css' rel='stylesheet'>
 </svelte:head>
 <main>
-    <div class="flex flex-col" id='inputs'>
-        <div class="w-100 bg-gradient-to-b mr-3">
+    <div class="flex flex-col" >
+        <div class="w-100 bg-gradient-to-b mr-3" id="inputs">
             <div class="flex flex-col">
                 <div id="converters-area" class="px-4 py-5">
                     <div class="flex flex-col text-white">
@@ -81,7 +92,7 @@
                         </div>
                         <div class="justify-between mb-5">
                             <div class="flex flex-col text-right items-center w-100 px-2">
-                                <button class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
+                                <button on:click={showTable} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
                                     Enviar
                                 </button>
                             </div>
@@ -92,7 +103,14 @@
         </div>
         <div id='show' >
             {#if fill_json_data_array.length > 0}
-                <p class='text-lg text-center font-bold m-5'>Geração: {json_data(current-1).generation}</p>
+                <div class="flex items-center justify-inline self-center w-5/6 ">
+                    <div class="grid grid-cols-2 px-2">
+                        <p class='text-lg text-center font-bold m-5'>Geração: {json_data(current-1).generation}</p>
+                        <button on:click={reset} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
+                            Reset
+                        </button>
+                    </div>
+                </div>
                 <table class='rounded-t-lg m-5 w-5/6 mx-auto bg-gray-200 text-gray-800'>
                     <tr class='text-left border-b-2 border-gray-300 ' >
                         <th class='px-4 py-3'>População</th>
