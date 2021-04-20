@@ -1,10 +1,8 @@
 <script>
 	import { load_run_sa } from './store';
 	import { storep } from './genetic';
-	import Pagination from '@fouita/pagination';
     let fill_json_cycle_array = [];
     storep.subscribe(fill_json_cycle => {fill_json_cycle_array = fill_json_cycle });
- 
     function json_data(i) {
 		return fill_json_cycle_array[i]
 	}
@@ -15,6 +13,7 @@
     function showTable() {
         if(fileContents != null && niter != null){
             load_run_sa(fileContents, niter, decrease_factor);
+            console.log(fill_json_cycle_array);
             document.getElementById('inputs').style.display = "none";
         }else{
             alert('Preencha a geração e selecione um arquivo')
@@ -95,7 +94,6 @@
         </div>
         <div id='show' >
             {#if fill_json_cycle_array.length > 0}
-                {fill_json_cycle_array[0]}
                 <div class="flex items-center justify-inline self-center w-5/6 ">
                     <div class="grid grid-cols-2 px-2">
                         <button on:click={reset} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">

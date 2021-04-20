@@ -1,6 +1,6 @@
 //imports
 import { writable } from 'svelte/store';
-import { generate_random_population, fill_json_data, decodify_individual } from './util.js';
+import { generate_random_population, fill_json_data, decodify_chromosome } from './util.js';
 import { random, randomInt } from 'mathjs';
 
 export let storep = writable([])

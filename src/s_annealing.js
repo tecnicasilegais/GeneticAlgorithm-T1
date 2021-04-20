@@ -1,6 +1,6 @@
 //imports
 import { writable } from 'svelte/store';
-import { generate_random_population, fill_json_cycle, decodify_individual } from './util.js';
+import { generate_random_population, fill_json_cycle, decodify_chromosome } from './util.js';
 import { random } from 'mathjs';
 
 export let storep = writable([])
@@ -51,7 +51,9 @@ export const init_sa = (niter, best_matches, decrease_factor) => {
     dados_a = best_matches.best_a;
     dados_b = best_matches.best_b;
 
-    let [roommate] = generate_random_population(1, r_size);
+    [roommate] = generate_random_population(1, r_size);
+
+    storep.set([]);
 
 }
 
@@ -59,7 +61,8 @@ const simulate = (i) => {
 
     h = heuristic(roommate);
 
-    storep.update([fill_json_cycle(i, temperature, roommate, h.toFixed(6), acc_worse)])
+    storep.update(n=>[...n, fill_json_cycle(i, temperature, roommate, h.toFixed(6), acc_worse)])
+    console.log(fill_json_cycle(i, temperature, roommate, h.toFixed(6), acc_worse))
     acc_worse = false;
 
     if (h === 0){
