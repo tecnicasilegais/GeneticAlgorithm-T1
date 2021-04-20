@@ -57,3 +57,14 @@ export const color_mutations = (i, mutations) => {
         return 'bg-green-600';
     }
 }
+
+
+export const color_worse = (accepted_worse) => {
+
+    if( accepted_worse){
+        return 'bg-gray-100';
+    }
+    else{
+        return 'bg-red-600';
+    }
+}

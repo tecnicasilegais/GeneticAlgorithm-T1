@@ -1,20 +1,17 @@
 <script>
-	import { load_run_sa } from './store';
+	import { load_run_sa, color_worse } from './store';
 	import { storep } from './s_annealing';
     let fill_json_cycle_array = [];
     storep.subscribe(fill_json_cycle => {fill_json_cycle_array = fill_json_cycle });
-    
-    let current = 1;
-    let per_page=1;
+
     export let fileContent;
     export let decrease_factor=0.6, niter=40;
     function showSA() {
-        if(fileContent !== undefined && niter !== undefined){
+        if(fileContent !== undefined){
             load_run_sa(fileContent, niter, decrease_factor);
-            console.log(fill_json_cycle_array);
             document.getElementById('input_sa').style.display = "none";
         }else{
-            alert('Preencha a geração e selecione um arquivo')
+            alert('Preencha os campos e selecione um arquivo')
         }
     }
     function reset_sa(){
@@ -24,20 +21,20 @@
 	window.onload = function () {
         //Check the support for the File API support
         if (window.File && window.FileReader && window.FileList && window.Blob) {
-            let fileSelected = document.getElementById('file_input_sa');
-            fileSelected.addEventListener('change', function (e) {
+            let fileSelected_sa = document.getElementById('file_input_sa');
+            fileSelected_sa.addEventListener('change', function (e) {
                 //Set the extension for the file
                 let fileExtension = /text.*/;
                 //Get the file object
-                let fileTobeRead = fileSelected.files[0];
+                let fileTobeRead_sa = fileSelected_sa.files[0];
                 //Check of the extension match
-                if (fileTobeRead.type.match(fileExtension)) {
+                if (fileTobeRead_sa.type.match(fileExtension)) {
                     //Initialize the FileReader object to read the 2file
-                    let fileReader = new FileReader();
-                    fileReader.onload = function (e) {
-                        fileContent = fileReader.result;
+                    let fileReader_sa = new FileReader();
+                    fileReader_sa.onload = function (e) {
+                        fileContent = fileReader_sa.result;
                     }
-                    fileReader.readAsText(fileTobeRead);
+                    fileReader_sa.readAsText(fileTobeRead_sa);
                 }
                 else {
                     alert('Por favor selecione arquivo texto');
@@ -104,7 +101,7 @@
                         <th class='p-0' width='110px'>Heurística</th>
                     </tr>
                     {#each fill_json_cycle_array as cycle, i}
-                        <tr class='bg-gray-100 border-b border-gray-200'>
+                        <tr class='{color_worse(cycle.acc_worse)} border-b border-gray-200'>
                             <td class='px-4 py-3'>{cycle.cycle}</td>
                             <td class='px-4 py-3'>{cycle.temperature}</td>
                             <td class='px-4 py-3'>{cycle.h}</td>
