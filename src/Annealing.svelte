@@ -1,27 +1,28 @@
 <script>
-	import { load_run_ga } from './store';
+	import { textTolist } from './store';
 	import { storep } from './genetic';
 	import Pagination from '@fouita/pagination';
-    let fill_json_data_array = [];
-    storep.subscribe(fill_json_data => {fill_json_data_array = fill_json_data });
+    let fill_json_cycle_array = [];
+    storep.subscribe(fill_json_cycle => {fill_json_cycle_array = fill_json_cycle });
  
     function json_data(i) {
-		return fill_json_data_array[i]
+		return fill_json_cycle_array[i]
 	}
     let current = 1;
     let per_page=1;
     export let fileContents;
-    export let cxpb,psize,mutpb,ngen;
+    export let cc,pz,cm,gz;
     function showTable() {
-        if(fileContents != null && ngen != null){
-            load_run_ga(fileContents, psize, ngen, mutpb, cxpb);
+        if(fileContents != null && gz != null){
+            textTolist(fileContents, pz, cc, cm,gz);
             document.getElementById('inputs').style.display = "none";
         }else{
             alert('Preencha a geração e selecione um arquivo')
         }
     }
     function reset(){
-        fill_json_data_array = [];
+        let cc,pz,cm,gz,fileContents = null;
+        fill_json_cycle_array = [];
         document.getElementById('inputs').style.display = "block";
     }
 	window.onload = function () {
@@ -74,19 +75,19 @@
                         <div class="flex items-center justify-between mb-5">
                             <div class="flex flex-col text-center w-3/6 px-2">
                                 <label for='popsize' class='form-label'>População</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' min='1' type='number' id='popsize' bind:value={psize}>
+	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' min='1' type='number' id='popsize' bind:value={pz}>
                             </div>
                             <div class="flex flex-col text-center w-3/6 px-2">
                                 <label for='popsize' class='form-label'>Gerações</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' min='1' type='number' id='gesize' bind:value={ngen}>
+	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' min='1' type='number' id='gesize' bind:value={gz}>
                             </div>
                             <div class="flex flex-col text-center w-3/6 px-2">
                                 <label for='mutcha' class='form-label'>Chance de mutação</label>
-                                <input class='border-2 border-gray-300 py-1 bg-white text-black' step='0.01' min='0' max='1' type='number' id='mutcha' bind:value={mutpb}>
+                                <input class='border-2 border-gray-300 py-1 bg-white text-black' step='0.01' min='0' max='1' type='number' id='mutcha' bind:value={cm}>
                             </div>
                             <div class="flex flex-col text-center w-3/6 px-2">
                                 <label for='crosscha' class='form-label'>Chance de crossover</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' step='0.01' min='0' max='1' type='number' id='crosscha' bind:value={cxpb}>
+	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' step='0.01' min='0' max='1' type='number' id='crosscha' bind:value={cc}>  
                             </div>
                         </div>
                         <div class="justify-between mb-5">
@@ -101,7 +102,7 @@
             </div>
         </div>
         <div id='show' >
-            {#if fill_json_data_array.length > 0}
+            {#if fill_json_cycle_array.length > 0}
                 <div class="flex items-center justify-inline self-center w-5/6 ">
                     <div class="grid grid-cols-2 px-2">
                         <p class='text-lg text-center font-bold m-5'>Geração: {json_data(current-1).generation}</p>
@@ -127,7 +128,7 @@
                 </div>
                 <div class="justify-between mb-5">
                     <div class="flex flex-col text-right items-center w-100 px-2">
-	                <Pagination bind:current={current} bind:num_items={fill_json_data_array.length} {per_page} />
+	                <Pagination bind:current={current} bind:num_items={fill_json_cycle_array.length} {per_page} />
                     </div>
                 </div>
             {/if}

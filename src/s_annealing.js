@@ -1,6 +1,6 @@
 //imports
 import { writable } from 'svelte/store';
-import { generate_random_population, fill_json_cycle, decodify_chromosome } from './util.js';
+import { generate_random_population, fill_json_cycle, decodify_individual } from './util.js';
 import { random } from 'mathjs';
 
 export let storep = writable([])
@@ -43,7 +43,7 @@ const heuristic = (roommates) => {//min
 }
 
 
-export const init = (niter, best_matches, decrease_factor) => {
+export const init_sa = (niter, best_matches, decrease_factor) => {
     //fill globals
     ITERATIONS = niter;
     r_size = best_matches.size;

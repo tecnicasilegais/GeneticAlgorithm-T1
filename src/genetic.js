@@ -190,7 +190,7 @@ const next_generation = (gen) => {
 
 }
 
-export const init = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => {
+export const init_ga = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => {
     //fill globals
     population_size = pop_size;
     GENERATIONS = ngen;
