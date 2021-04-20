@@ -1,7 +1,7 @@
 //imports
 import { writable } from 'svelte/store';
 import { generate_random_population, fill_json_cycle, decodify_chromosome } from './util.js';
-import { random } from 'mathjs';
+import { random, randomInt } from 'mathjs';
 
 export let storep = writable([])
 export let store_solution = writable([])
@@ -40,11 +40,13 @@ const heuristic = (roommates) => {//min
         for(let i=0; i<dados_a[a].length; i++){
             if(dados_a[a][i] == b){//B
                 aptitude_a += i;
+                break;
             }
         }
         for(let i=0; i<dados_b[b].length; i++){
             if(dados_b[b][i] == a){//A
                 aptitude_b += i;
+                break;q
             }
         }
     }
@@ -67,12 +69,20 @@ export const init_sa = (niter, best_matches, decrease_factor) => {
 
 }
 
+const generate_neighbour = (roommate) => {
+    let nr = [...roommate];
+
+    let [i, j] = randomInt([2], 0, roommate.length);
+    [nr[i], nr[j]] = [nr[j], nr[i]];
+
+    return nr;
+}
+
 const simulate = (i) => {
 
     h = heuristic(roommate);
 
     storep.update(n=>[...n, fill_json_cycle(i, temperature, roommate, h.toFixed(6), acc_worse)])
-    console.log(fill_json_cycle(i, temperature, roommate, h.toFixed(6), acc_worse))
     acc_worse = false;
 
     if (h === 0){
@@ -84,7 +94,7 @@ const simulate = (i) => {
         return true;
     }
 
-    [neighbour_roommate] = generate_random_population(1, r_size);
+    neighbour_roommate = generate_neighbour(roommate);
     let neighbour_h = heuristic(neighbour_roommate);
 
     energy = neighbour_h - h;

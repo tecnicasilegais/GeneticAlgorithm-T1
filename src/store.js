@@ -59,10 +59,10 @@ export const color_mutations = (i, mutations) => {
 
 export const color_worse = (accepted_worse) => {
 
-    if( accepted_worse){
-        return 'bg-gray-100';
+    if(accepted_worse){
+        return 'bg-red-600';
     }
     else{
-        return 'bg-red-600';
+        return 'bg-gray-100';
     }
 }

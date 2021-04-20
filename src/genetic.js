@@ -69,11 +69,13 @@ const fitness_chromosome = (chromosome) => {//min
         for(let i=0; i<dados_a[a].length; i++){
             if(dados_a[a][i] == b){//B
                 aptitude_a += i;
+                break;
             }
         }
         for(let i=0; i<dados_b[b].length; i++){
             if(dados_b[b][i] == a){//A
                 aptitude_b += i;
+                break;
             }
         }
     }
@@ -223,7 +225,7 @@ export const init_ga = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) 
         store_solution.set({
             'chromosome': solution,
             'fitness': 0,
-            'decodified': decodify_chromosome(population[solution]),
+            'decodified': decodify_chromosome(solution),
             'halloffame': hall_of_fame,
             'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
         })
