@@ -43,3 +43,17 @@ const collect_values = (line) => {
     }
     return out;
 }
+
+export const color_mutations = (i, mutations) => {
+    let count = mutations.filter(x => x == i).length;
+
+    if( count === 0){
+        return 'bg-gray-100';
+    }
+    else if (count === 1){
+        return 'bg-green-300';
+    }
+    else{
+        return 'bg-green-600';
+    }
+}

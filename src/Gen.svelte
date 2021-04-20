@@ -1,5 +1,5 @@
 <script>
-	import { load_run_ga } from './store';
+	import { load_run_ga, color_mutations } from './store';
 	import { storep } from './genetic';
 	import Pagination from '@fouita/pagination';
     let fill_json_data_array = [];
@@ -11,7 +11,7 @@
     let current = 1;
     let per_page=1;
     export let fileContents;
-    export let cxpb, psize, mutpb, ngen;
+    export let cxpb = 0.8, psize = 20, mutpb = 0.4, ngen = 100;
     function showTable() {
         if(fileContents != null && ngen != null){
             load_run_ga(fileContents, psize, ngen, mutpb, cxpb);
@@ -116,15 +116,12 @@
                         <th class='p-0' width='110px'>Fitnesses</th>
                     </tr>
                     {#each json_data(current-1).population as pop, i}
-                        <tr class='bg-gray-100 border-b border-gray-200'>
+                        <tr class='{color_mutations(i, json_data(current-1).mutations)} border-b border-gray-200'>
                             <td class='px-4 py-3'>{pop}</td>
                             <td class='px-4 py-3'>{json_data(current-1).fitnesses[i]}</td>
                         </tr>
                     {/each}
                 </table>
-                <div class="flex space-x-4 m-5 w-5/6 mx-auto">
-                    <div class="flex-1">Mutações: {json_data(current-1).mutations}</div>
-                </div>
                 <div class="justify-between mb-5">
                     <div class="flex flex-col text-right items-center w-100 px-2">
 	                <Pagination bind:current={current} bind:num_items={fill_json_data_array.length} {per_page} />

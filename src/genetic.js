@@ -25,6 +25,14 @@ let CHROMOSOME = 0;
 let MTPB = 1; //chance of mutation 0..1
 let CXPB = 1; //chance of crossover
 
+const clean = () => {
+    reset_variables();
+    hall_of_fame = {};
+    population = [];
+    population_size = 0;
+    convergence = 0;
+}
+
 const reset_variables = () => {
     offspring = [];
     fitness = [];
@@ -93,7 +101,7 @@ const handle_mutation = () => {
 
         if(chance < MTPB){
             let index = randomInt(population.length);
-            mutations.push(index+1);
+            mutations.push(index);
             swap_mutation(population[index]);
         }
     }
@@ -191,6 +199,7 @@ const next_generation = (gen) => {
 }
 
 export const init_ga = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => {
+    clean();
     //fill globals
     population_size = pop_size;
     GENERATIONS = ngen;
