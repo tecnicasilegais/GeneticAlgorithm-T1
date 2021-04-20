@@ -1,50 +1,23 @@
 <script>
-	import { load_run_sa, color_worse } from './store';
+	import { load_run_sa, color_worse, best_matches} from './store';
 	import { storep } from './s_annealing';
     let fill_json_cycle_array = [];
     storep.subscribe(fill_json_cycle => {fill_json_cycle_array = fill_json_cycle });
 
-    export let fileContent;
     export let decrease_factor=0.6, niter=40;
     function showSA() {
-        if(fileContent !== undefined){
-            load_run_sa(fileContent, niter, decrease_factor);
+        if(best_matches){
+            load_run_sa(niter, decrease_factor);
             document.getElementById('input_sa').style.display = "none";
         }else{
-            alert('Preencha os campos e selecione um arquivo')
+            alert('Selecione um arquivo!')
         }
     }
     function reset_sa(){
         fill_json_cycle_array = [];
         document.getElementById('input_sa').style.display = "block";
     }
-	window.onload = function () {
-        //Check the support for the File API support
-        if (window.File && window.FileReader && window.FileList && window.Blob) {
-            let fileSelected_sa = document.getElementById('file_input_sa');
-            fileSelected_sa.addEventListener('change', function (e) {
-                //Set the extension for the file
-                let fileExtension = /text.*/;
-                //Get the file object
-                let fileTobeRead_sa = fileSelected_sa.files[0];
-                //Check of the extension match
-                if (fileTobeRead_sa.type.match(fileExtension)) {
-                    //Initialize the FileReader object to read the 2file
-                    let fileReader_sa = new FileReader();
-                    fileReader_sa.onload = function (e) {
-                        fileContent = fileReader_sa.result;
-                    }
-                    fileReader_sa.readAsText(fileTobeRead_sa);
-                }
-                else {
-                    alert('Por favor selecione arquivo texto');
-                }
-            }, false);
-        }
-        else {
-            alert('Arquivo(s) não suportado(s)');
-        }
-    }
+
 </script>
 
 <svelte:head>
@@ -56,13 +29,6 @@
             <div class="flex flex-col">
                 <div id="converters-area" class="px-4 py-5">
                     <div class="flex flex-col text-white">
-
-                        <div class="flex items-center justify-between ml-40 mb-5">
-                            <div class="flex flex-col text-center w-5/6 px-2">
-                                <label for='file_input_sa' class='form-label'>Selecione um arquivo</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' type='file' id='file_input_sa' >
-                            </div>
-                        </div>
 
                         <div class="flex items-center justify-between mb-5">
                             <div class="flex flex-col text-center w-3/6 px-2">

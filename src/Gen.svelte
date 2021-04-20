@@ -1,5 +1,5 @@
 <script>
-	import { load_run_ga, color_mutations } from './store';
+	import { load_run_ga, color_mutations, best_matches } from './store';
 	import { storep } from './genetic';
 	import Pagination from '@fouita/pagination';
     let fill_json_data_array = [];
@@ -10,48 +10,20 @@
 	}
     let current = 1;
     let per_page=1;
-    export let fileContents;
     export let cxpb = 0.8, psize = 20, mutpb = 0.4, ngen = 100;
     function showGA() {
-        if(fileContents!==undefined && ngen!==undefined){
-            load_run_ga(fileContents, psize, ngen, mutpb, cxpb);
+        if(best_matches){
+            load_run_ga(psize, ngen, mutpb, cxpb);
             document.getElementById('input_ga').style.display = "none";
         }else{
-            alert('Preencha a geração e selecione um arquivo')
+            alert('Selecione um arquivo')
         }
     }
     function reset_ga(){
         fill_json_data_array = [];
         document.getElementById('input_ga').style.display = "block";
     }
-	window.onload = function () {
-        //Check the support for the File API support
-        if (window.File && window.FileReader && window.FileList && window.Blob) {
-            let fileSelected = document.getElementById('file_input_ga');
-            fileSelected.addEventListener('change', function (e) {
-                //Set the extension for the file
-                let fileExtension = /text.*/;
-                //Get the file object
-                let fileTobeRead = fileSelected.files[0];
-                //Check of the extension match
-                if (fileTobeRead.type.match(fileExtension)) {
-                    //Initialize the FileReader object to read the 2file
-                    let fileReader = new FileReader();
-                    fileReader.onload = function (e) {
-                        fileContents = fileReader.result;
-                    }
-                    fileReader.readAsText(fileTobeRead);
-                }
-                else {
-                    alert('Por favor selecione arquivo texto');
-                }
 
-            }, false);
-        }
-        else {
-            alert('Arquivo(s) não suportado(s)');
-        }
-    }
 </script>
 
 <svelte:head>
@@ -63,13 +35,6 @@
             <div class="flex flex-col">
                 <div id="converters-area" class="px-4 py-5">
                     <div class="flex flex-col text-white">
-
-                        <div class="flex items-center justify-between ml-40 mb-5">
-                            <div class="flex flex-col text-center w-5/6 px-2">
-                                <label for='file_input_ga' class='form-label'>Selecione um arquivo</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' type='file' id='file_input_ga' >
-                            </div>
-                        </div>
 
                         <div class="flex items-center justify-between mb-5">
                             <div class="flex flex-col text-center w-3/6 px-2">

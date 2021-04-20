@@ -2,21 +2,19 @@ import { writable } from 'svelte/store';
 import { init_ga, run_ga } from './genetic';
 import { init_sa, run_sa } from './s_annealing';
 
-let best_matches = {}
+export let best_matches = {}
 export let store = writable([])
-export function load_run_ga(text, psize, ngen, mutpb, cxpb){
-    load(text);
+export function load_run_ga(psize, ngen, mutpb, cxpb){
     init_ga(psize, ngen, best_matches, mutpb, cxpb);
     run_ga();
 }
 
-export function load_run_sa(text, niter, decrease_factor){
-    load(text);
+export function load_run_sa(niter, decrease_factor){
     init_sa(niter, best_matches, decrease_factor);
     run_sa();
 }
 
-const load = (text) => {
+export const load = (text) => {
     let lines = text.trim().split('\n');
     let size = lines[0];
     let best_a = [];

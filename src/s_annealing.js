@@ -22,6 +22,15 @@ let energy = 0;
 let breeze = 0.5;
 let acc_worse = false;
 
+const clean = () => {
+    acc_worse = false;
+    roommate = [];
+    neighbour_roommate = [];
+    h = undefined;
+    temperature = 100.0;
+    energy = 0;
+}
+
 //chromosome heuristic
 const heuristic = (roommates) => {//min
     let [aptitude_a, aptitude_b] = [0, 0];
@@ -44,6 +53,7 @@ const heuristic = (roommates) => {//min
 
 
 export const init_sa = (niter, best_matches, decrease_factor) => {
+    clean();
     //fill globals
     ITERATIONS = niter;
     r_size = best_matches.size;
