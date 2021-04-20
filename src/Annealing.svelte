@@ -1,11 +1,9 @@
 <script>
 	import { load_run_sa } from './store';
-	import { storep } from './genetic';
+	import { storep } from './s_annealing';
     let fill_json_cycle_array = [];
     storep.subscribe(fill_json_cycle => {fill_json_cycle_array = fill_json_cycle });
-    function json_data(i) {
-		return fill_json_cycle_array[i]
-	}
+    
     let current = 1;
     let per_page=1;
     export let fileContents;
@@ -20,7 +18,6 @@
         }
     }
     function reset(){
-        [decrease_factor, niter, fileContents] = null;
         fill_json_cycle_array = [];
         document.getElementById('inputs').style.display = "block";
     }
@@ -45,7 +42,6 @@
                 else {
                     alert('Por favor selecione arquivo texto');
                 }
-
             }, false);
         }
         else {
@@ -77,7 +73,7 @@
 	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' min='1' type='number' id='niters' bind:value={niter}>
                             </div>
                             <div class="flex flex-col text-center w-3/6 px-2">
-                                <label for='decrease_heat' class='form-label'>Chance de crossover</label>
+                                <label for='decrease_heat' class='form-label'>Resfriamento</label>
 	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' step='0.01' min='0.01' max='1' type='number' id='decrease_heat' bind:value={decrease_factor}>
                             </div>
                         </div>
@@ -107,6 +103,13 @@
                         <th class='px-4 py-3'>Temperatura</th>
                         <th class='p-0' width='110px'>Heurística</th>
                     </tr>
+                    {#each fill_json_cycle_array as cycle, i}
+                        <tr class='bg-gray-100 border-b border-gray-200'>
+                            <td class='px-4 py-3'>{cycle.cycle}</td>
+                            <td class='px-4 py-3'>{cycle.temperature}</td>
+                            <td class='px-4 py-3'>{cycle.h}</td>
+                        </tr>
+                    {/each}
                 </table>
             {/if}
         </div>
