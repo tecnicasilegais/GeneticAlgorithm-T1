@@ -1,7 +1,7 @@
 //imports
 import { writable } from 'svelte/store';
-import { generate_random_population, fill_json_cycle, decodify_individual } from './util.js';
-import { random, randomInt } from 'mathjs';
+import { generate_random_population, fill_json_cycle, decodify_chromosome } from './util.js';
+import { random } from 'mathjs';
 
 export let storep = writable([])
 export let store_solution = writable([])
@@ -22,12 +22,12 @@ let energy = 0;
 let breeze = 0.5;
 let acc_worse = false;
 
-//individual heuristic
-const heuristic = (individual) => {//min
+//chromosome heuristic
+const heuristic = (roommates) => {//min
     let [aptitude_a, aptitude_b] = [0, 0];
-    //iterates individual (i = index of A, individual[i] = index of B, values = i+1 and individual[i]+1)
-    for(let a=0; a<individual.length; a++){
-        let b = individual[a]; //b person (B1, B2 etc.)
+    //iterates chromosome (i = index of A, chromosome[i] = index of B, values = i+1 and chromosome[i]+1)
+    for(let a=0; a<roommates.length; a++){
+        let b = roommates[a]; //b person (B1, B2 etc.)
         for(let i=0; i<dados_a[a].length; i++){
             if(dados_a[a][i] == b){//B
                 aptitude_a += i;
@@ -59,14 +59,14 @@ const simulate = (i) => {
 
     h = heuristic(roommate);
 
-    storep.update([fill_json_cycle(i, temperature, roommate, h, acc_worse)])
+    storep.update([fill_json_cycle(i, temperature, roommate, h.toFixed(6), acc_worse)])
     acc_worse = false;
 
     if (h === 0){
         store_solution.set({
             'roommates': roommate,
             'h': 0,
-            'decodified': decodify_individual(roommate),
+            'decodified': decodify_chromosome(roommate),
         })
         return true;
     }
@@ -100,11 +100,10 @@ export const run_sa = () => {
         if(end === true){break;}
     }
     if(end === false){//todo
-        let m = fitness.argmin();
         store_solution.set({
-            'individual': population[m],
-            'h': fitness[m],
-            'decodified': decodify_individual(population[m]),
+            'chromosome': roommate,
+            'h': h.toFixed(6),
+            'decodified': decodify_chromosome(roomate),
         })
     }
 }
