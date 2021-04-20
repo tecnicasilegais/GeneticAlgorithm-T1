@@ -14,14 +14,13 @@
     export let cc,pz,cm,gz;
     function showTable() {
         if(fileContents != null && gz != null){
-            textTolist(fileContents, pz, cc, cm,gz);
+            textTolist(fileContents, pz, cc, cm, gz);
             document.getElementById('inputs').style.display = "none";
         }else{
             alert('Preencha a geração e selecione um arquivo')
         }
     }
     function reset(){
-        let cc,pz,cm,gz,fileContents = null;
         fill_json_data_array = [];
         document.getElementById('inputs').style.display = "block";
     }
