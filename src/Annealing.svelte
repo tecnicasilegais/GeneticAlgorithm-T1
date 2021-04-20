@@ -6,25 +6,25 @@
     
     let current = 1;
     let per_page=1;
-    export let fileContents;
-    export let decrease_factor, niter;
-    function showTable() {
-        if(fileContents != null && niter != null){
-            load_run_sa(fileContents, niter, decrease_factor);
+    export let fileContent;
+    export let decrease_factor=0.6, niter=40;
+    function showSA() {
+        if(fileContent !== undefined && niter !== undefined){
+            load_run_sa(fileContent, niter, decrease_factor);
             console.log(fill_json_cycle_array);
-            document.getElementById('inputs').style.display = "none";
+            document.getElementById('input_sa').style.display = "none";
         }else{
             alert('Preencha a geração e selecione um arquivo')
         }
     }
-    function reset(){
+    function reset_sa(){
         fill_json_cycle_array = [];
-        document.getElementById('inputs').style.display = "block";
+        document.getElementById('input_sa').style.display = "block";
     }
 	window.onload = function () {
         //Check the support for the File API support
         if (window.File && window.FileReader && window.FileList && window.Blob) {
-            let fileSelected = document.getElementById('txtfiletoread');
+            let fileSelected = document.getElementById('file_input_sa');
             fileSelected.addEventListener('change', function (e) {
                 //Set the extension for the file
                 let fileExtension = /text.*/;
@@ -35,7 +35,7 @@
                     //Initialize the FileReader object to read the 2file
                     let fileReader = new FileReader();
                     fileReader.onload = function (e) {
-                        fileContents = fileReader.result;
+                        fileContent = fileReader.result;
                     }
                     fileReader.readAsText(fileTobeRead);
                 }
@@ -55,15 +55,15 @@
 </svelte:head>
 <main>
     <div class="flex flex-col" >
-        <div class="w-100 bg-gradient-to-b mr-3" id="inputs">
+        <div class="w-100 bg-gradient-to-b mr-3" id="input_sa">
             <div class="flex flex-col">
                 <div id="converters-area" class="px-4 py-5">
                     <div class="flex flex-col text-white">
 
                         <div class="flex items-center justify-between ml-40 mb-5">
                             <div class="flex flex-col text-center w-5/6 px-2">
-                                <label for='txtfiletoread' class='form-label'>Selecione um arquivo</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' type='file' id='txtfiletoread' >
+                                <label for='file_input_sa' class='form-label'>Selecione um arquivo</label>
+	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' type='file' id='file_input_sa' >
                             </div>
                         </div>
 
@@ -79,7 +79,7 @@
                         </div>
                         <div class="justify-between mb-5">
                             <div class="flex flex-col text-right items-center w-100 px-2">
-                                <button on:click={showTable} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
+                                <button on:click={showSA} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
                                     Enviar
                                 </button>
                             </div>
@@ -92,7 +92,7 @@
             {#if fill_json_cycle_array.length > 0}
                 <div class="flex items-center justify-inline self-center w-5/6 ">
                     <div class="grid grid-cols-2 px-2">
-                        <button on:click={reset} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
+                        <button on:click={reset_sa} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
                             Reset
                         </button>
                     </div>

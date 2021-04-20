@@ -12,22 +12,22 @@
     let per_page=1;
     export let fileContents;
     export let cxpb = 0.8, psize = 20, mutpb = 0.4, ngen = 100;
-    function showTable() {
-        if(fileContents != null && ngen != null){
+    function showGA() {
+        if(fileContents!==undefined && ngen!==undefined){
             load_run_ga(fileContents, psize, ngen, mutpb, cxpb);
-            document.getElementById('inputs').style.display = "none";
+            document.getElementById('input_ga').style.display = "none";
         }else{
             alert('Preencha a geração e selecione um arquivo')
         }
     }
-    function reset(){
+    function reset_ga(){
         fill_json_data_array = [];
-        document.getElementById('inputs').style.display = "block";
+        document.getElementById('input_ga').style.display = "block";
     }
 	window.onload = function () {
         //Check the support for the File API support
         if (window.File && window.FileReader && window.FileList && window.Blob) {
-            let fileSelected = document.getElementById('txtfiletoread');
+            let fileSelected = document.getElementById('file_input_ga');
             fileSelected.addEventListener('change', function (e) {
                 //Set the extension for the file
                 let fileExtension = /text.*/;
@@ -59,15 +59,15 @@
 </svelte:head>
 <main>
     <div class="flex flex-col" >
-        <div class="w-100 bg-gradient-to-b mr-3" id="inputs">
+        <div class="w-100 bg-gradient-to-b mr-3" id="input_ga">
             <div class="flex flex-col">
                 <div id="converters-area" class="px-4 py-5">
                     <div class="flex flex-col text-white">
 
                         <div class="flex items-center justify-between ml-40 mb-5">
                             <div class="flex flex-col text-center w-5/6 px-2">
-                                <label for='txtfiletoread' class='form-label'>Selecione um arquivo</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' type='file' id='txtfiletoread' >
+                                <label for='file_input_ga' class='form-label'>Selecione um arquivo</label>
+	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' type='file' id='file_input_ga' >
                             </div>
                         </div>
 
@@ -91,7 +91,7 @@
                         </div>
                         <div class="justify-between mb-5">
                             <div class="flex flex-col text-right items-center w-100 px-2">
-                                <button on:click={showTable} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
+                                <button on:click={showGA} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
                                     Enviar
                                 </button>
                             </div>
@@ -105,7 +105,7 @@
                 <div class="flex items-center justify-inline self-center w-5/6 ">
                     <div class="grid grid-cols-2 px-2">
                         <p class='text-lg text-center font-bold m-5'>Geração: {json_data(current-1).generation}</p>
-                        <button on:click={reset} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
+                        <button on:click={reset_ga} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
                             Reset
                         </button>
                     </div>
