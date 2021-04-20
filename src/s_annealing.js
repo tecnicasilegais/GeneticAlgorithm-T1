@@ -43,7 +43,7 @@ const heuristic = (roommates) => {//min
 }
 
 
-export const init = (niter, best_matches, decrease_factor) => {
+export const init_sa = (niter, best_matches, decrease_factor) => {
     //fill globals
     ITERATIONS = niter;
     r_size = best_matches.size;

@@ -11,17 +11,17 @@
     let current = 1;
     let per_page=1;
     export let fileContents;
-    export let cc,pz,cm,gz;
+    export let cxpb,psize,mutpb,ngen;
     function showTable() {
-        if(fileContents != null && gz != null){
-            load_run_ga(fileContents, pz, cc, cm,gz);
+        if(fileContents != null && ngen != null){
+            load_run_ga(fileContents, psize, ngen, mutpb, cxpb);
             document.getElementById('inputs').style.display = "none";
         }else{
             alert('Preencha a geração e selecione um arquivo')
         }
     }
     function reset(){
-        let cc,pz,cm,gz,fileContents = null;
+        let cxpb,psize,mutpb,ngen,fileContents = null;
         fill_json_data_array = [];
         document.getElementById('inputs').style.display = "block";
     }
@@ -75,19 +75,19 @@
                         <div class="flex items-center justify-between mb-5">
                             <div class="flex flex-col text-center w-3/6 px-2">
                                 <label for='popsize' class='form-label'>População</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' min='1' type='number' id='popsize' bind:value={pz}>
+	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' min='1' type='number' id='popsize' bind:value={psize}>
                             </div>
                             <div class="flex flex-col text-center w-3/6 px-2">
                                 <label for='popsize' class='form-label'>Gerações</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' min='1' type='number' id='gesize' bind:value={gz}>
+	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' min='1' type='number' id='gesize' bind:value={ngen}>
                             </div>
                             <div class="flex flex-col text-center w-3/6 px-2">
                                 <label for='mutcha' class='form-label'>Chance de mutação</label>
-                                <input class='border-2 border-gray-300 py-1 bg-white text-black' step='0.01' min='0' max='1' type='number' id='mutcha' bind:value={cm}>
+                                <input class='border-2 border-gray-300 py-1 bg-white text-black' step='0.01' min='0' max='1' type='number' id='mutcha' bind:value={mutpb}>
                             </div>
                             <div class="flex flex-col text-center w-3/6 px-2">
                                 <label for='crosscha' class='form-label'>Chance de crossover</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' step='0.01' min='0' max='1' type='number' id='crosscha' bind:value={cc}>  
+	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' step='0.01' min='0' max='1' type='number' id='crosscha' bind:value={cxpb}>
                             </div>
                         </div>
                         <div class="justify-between mb-5">
