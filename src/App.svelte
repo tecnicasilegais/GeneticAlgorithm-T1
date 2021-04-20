@@ -2,14 +2,18 @@
     import Gen from './Gen.svelte';
     import Annealing from './Annealing.svelte';
     import { load } from './store.js';
-
+    const active_btn = 'inline-block border border-blue-500 rounded py-1 px-3 bg-blue-500 text-white';
+    const inactive_btn = 'inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3';
+    let current = 'ga';
     const showAnnealing = () => {
         document.getElementById('genetic').style.display='none';
         document.getElementById('annealing').style.display='';
+        current = 'sa';
     }
     const showGenetic = () => {
         document.getElementById('annealing').style.display='none';
         document.getElementById('genetic').style.display='';
+        current = 'ga';
     }
     window.onload = function () {
         //Check the support for the File API support
@@ -43,10 +47,10 @@
 </script>
 <ul class="flex">
     <li class="mr-3">
-        <button class="inline-block border border-blue-500 rounded py-1 px-3 bg-blue-500 text-white" on:click={showGenetic} >Algoritmo Genetico</button>
+        <button class={current === 'ga' ? active_btn : inactive_btn} on:click={showGenetic} >Algoritmo Genetico</button>
     </li>
     <li class="mr-3">
-        <button class="inline-block border border-white rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3" on:click={showAnnealing} >Simulated Annealing</button>
+        <button class={current === 'sa' ? active_btn : inactive_btn} on:click={showAnnealing} >Simulated Annealing</button>
     </li>
 </ul>
 
