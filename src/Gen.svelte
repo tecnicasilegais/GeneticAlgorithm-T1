@@ -21,7 +21,6 @@
         }
     }
     function reset(){
-        let cxpb,psize,mutpb,ngen,fileContents = null;
         fill_json_data_array = [];
         document.getElementById('inputs').style.display = "block";
     }
