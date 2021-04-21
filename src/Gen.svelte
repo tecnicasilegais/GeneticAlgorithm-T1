@@ -115,8 +115,27 @@
                             Fitness:<List><ListItem>{json_solution.halloffame.fitness}</ListItem></List>
                         </Col>
                     </Row>
+                    <div class="d-flex justify-center">
+                        <List dense class="elevation-2" style="width:300px">
+                            {#each json_solution.decod_hof as dec, i}
+                                {#if json_solution.decod_hof.length <= 10}
+                                    <ListItem><p>A{i+1} -> {dec}</p></ListItem>
+                                {:else}
+                                    {#if i < json_solution.decod_hof.length/2 }
+                                    <Row noGutters>
+                                        <Col md={4}>
+                                            <ListItem><p>A{i+1} -> {dec}</p></ListItem>
+                                        </Col>
+                                        <Col class="ml-auto" md={4}>
+                                            <ListItem><p>A{i+json_solution.decod_hof.length/2+1} -> {json_solution.decod_hof[json_solution.decod_hof.length/2+i]}</p></ListItem> 
+                                        </Col>
+                                    </Row>
+                                    {/if}
+                                {/if}
+                            {/each}
+                        </List>
+                    </div>
                 </div>
-                    <!-- <p>{json_solution.decod_hof}</p><br/> -->
             {/if}
         </Card>
         {/if}
