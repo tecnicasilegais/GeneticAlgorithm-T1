@@ -26,6 +26,7 @@ export class Genetic {
         this.mutations = [];
         this.convergence = 0.8; //80%
         this.conv_history = [];
+        this.max_mut = pop_size/2;
 
         this.population = generate_random_population(pop_size, this.CHROMOSOME);
         this.fitness_func();
@@ -119,7 +120,7 @@ export class Genetic {
     }
 
     handle_mutation(){
-        for(let i=0; i<this.population.length; i++){
+        for(let i=0; i<this.max_mut; i++){
             let chance = random(); //random between 0..1
 
             if(chance < this.MTPB){

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error Found</title>
+</head>
+<body style="background-color: rgb(33,33,33); color: white">
+<div class="center">
+    <p>Algo inesperado aconteceu!!.</p>
+    <img id="error" alt="Error Image" src=""/>
+    <div class="someSpace">
+        <button onclick="redirect()">Voltar ao App</button>
+    </div>
+</div>
+
+</body>
+<style>
+    .center {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+        padding: 10px;
+    }
+    .someSpace {
+        padding: 10px;
+        margin: 30px;
+    }
+</style>
+<script>
+    var errors = [400, 429, 503, 444, 425, 423, 417];
+
+    var imgsrc = "https://http.cat/" + errors[Math.floor(Math.random() * errors.length)];
+
+    document.getElementById("error").src = imgsrc;
+
+    function redirect() {
+        location.replace("https://tecnicasilegais.github.io/GeneticAlgorithm-T1/")
+    }
+</script>
+</html>
