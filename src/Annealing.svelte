@@ -21,9 +21,6 @@
 
 </script>
 
-<svelte:head>
-    <link href='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css' rel='stylesheet'>
-</svelte:head>
 <main>
     <div class="flex flex-col" >
         <div class="w-100 bg-gradient-to-b mr-3" id="input_sa">
