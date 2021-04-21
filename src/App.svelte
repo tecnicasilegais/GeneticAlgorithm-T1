@@ -1,7 +1,7 @@
 <script>
-	import { MaterialApp } from 'svelte-materialify';
+	import { Tabs, Tab, Window, WindowItem, AppBar, MaterialApp } from 'svelte-materialify';
   	let theme = 'dark';
-
+	  let value = 0;
   	function toggleTheme() {
     	if (theme === 'light') theme = 'dark';
     	else theme = 'light';
@@ -57,29 +57,28 @@
     <link href='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css' rel='stylesheet'>
 </svelte:head>
 <MaterialApp {theme}>
-<ul class="flex">
-	<li class="mr-3">
-		<button class={current === 'ga' ? active_btn : inactive_btn} on:click={showGenetic} >Algoritmo Genetico</button>
-	</li>
-	<li class="mr-3">
-		<button class={current === 'sa' ? active_btn : inactive_btn} on:click={showAnnealing} >Simulated Annealing</button>
-	</li>
-</ul>
-
-<div class="flex items-center justify-between ml-40 mb-5">
-	<div class="flex flex-col text-center w-5/6 px-2">
-		<label for='file_input_ga' class='form-label'>Selecione um arquivo</label>
-		<input class='border-2 border-gray-300 py-1 bg-white text-black' type='file' id='file_input_ga' >
+	
+	<Tabs class="green-text" bind:value fixedTabs>
+	<div slot="tabs">
+	  <Tab>Genetico</Tab>
+	  <Tab>Annealing</Tab>
 	</div>
-</div>
-
-<div id="annealing" style="display: none">
-	<Annealing />
-</div>
-
-<div id="genetic">
-	<Gen />
-</div>
+	</Tabs>
+	
+	<div class="flex items-center justify-between ml-40 mb-5">
+		<div class="flex flex-col text-center w-5/6 px-2">
+			<label for='file_input_ga' class='form-label'>Selecione um arquivo</label>
+			<input class='border-2 border-gray-300 py-1 bg-white text-black' type='file' id='file_input_ga' >
+		</div>
+	</div>
+	<Window {value} class="ma-4">
+		<WindowItem>
+			<Gen />
+		</WindowItem>
+		<WindowItem>
+			<Annealing />
+		</WindowItem>
+	</Window>
 </MaterialApp>
 <style>
 	
