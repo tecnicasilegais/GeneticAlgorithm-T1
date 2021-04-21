@@ -1,9 +1,9 @@
 <script>
 	import { load_run_sa, color_worse, best_matches} from './store';
-    import { Dialog } from 'svelte-materialify';
+    import { Dialog, List, ListItem, Row, Col} from 'svelte-materialify';
 	import { storep, json_solution } from './s_annealing';
     let active1;
-
+    let tabs = 0;
     let fill_json_cycle_array = [];
     storep.subscribe(n => {fill_json_cycle_array = n });
 
@@ -84,10 +84,29 @@
                 </table>
                 <Dialog class="pa-4 text-center" bind:active={active1}>
                     <!-- <p>Roomates {json_solution.chromosome}</p><br/> -->
-                    <p>h {json_solution.h}</p><br/>
-                    {#each json_solution.decodified as dec, i}
-                        <p>A{i+1} -> {dec}</p>
-                    {/each}
+                    <div class="text-center">
+                        Heurística - {json_solution.h}
+                    </div>
+                    <div class="d-flex justify-center">
+                        <List dense class="elevation-2" style="width:300px">
+                           
+                            {#each json_solution.decodified as dec, i}
+                                {#if json_solution.decodified.length <= 10}
+                                    <ListItem><p>A{i+1} -> {dec}</p></ListItem>
+                                {:else}
+                                    {#if i < json_solution.decodified.length/2 }
+                                    <Row noGutters>
+                                        <Col md={4}>
+                                            <ListItem><p>A{i+1} -> {dec}</p></ListItem>
+                                        </Col>
+                                        <Col class="ml-auto" md={4}>
+                                            <ListItem><p>A{i+json_solution.decodified.length/2+1} -> {json_solution.decodified[json_solution.decodified.length/2+i]}</p></ListItem> 
+                                        </Col>
+                                    </Row>
+                                    {/if}
+                                {/if}
+                            {/each}
+                        </List>
                 </Dialog>
             {/if}
         </div>
