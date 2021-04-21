@@ -65,14 +65,14 @@
                     <tr class='text-left border-b-2 border-gray-300 ' >
                         <th class='px-4 py-3'>Ciclo</th>
                         <th class='px-4 py-3'>Temperatura</th>
-                        <th class='px-4 py-3'>Individuo</th>
+                        <!--<th class='px-4 py-3'>Individuo</th>-->
                         <th class='p-0' width='110px'>Heurística</th>
                     </tr>
                     {#each fill_json_cycle_array as cycle, i}
                         <tr class='{color_worse(cycle.acc_worse)} border-b border-gray-200'>
                             <td class='px-4 py-3'>{cycle.cycle}</td>
                             <td class='px-4 py-3'>{cycle.temperature}</td>
-                            <td class='px-4 py-3'>{cycle.roommate}</td>
+                            <!--<td class='px-4 py-3'>{cycle.roommate}</td>-->
                             <td class='px-4 py-3'>{cycle.h}</td>
                         </tr>
                     {/each}
