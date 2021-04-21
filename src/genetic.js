@@ -1,6 +1,6 @@
 //imports
 import { writable } from 'svelte/store';
-import { generate_random_population, fill_json_data, decodify_chromosome } from './util.js';
+import { generate_random_population, fill_json_data, decodify_chromosome, calc_frequence, converged } from './util.js';
 import { random, randomInt } from 'mathjs';
 
 export let storep = writable([])
@@ -17,7 +17,8 @@ let population_size = 0;
 let offspring = [];
 let fitness = []; //fitness of each chromosome from the population
 let mutations = [];
-let convergence = 0;
+let convergence = 0.7; //90%
+let conv_history = [];
 
 let GENERATIONS = 50;
 let CHROMOSOME = 0;
@@ -29,10 +30,9 @@ const clean = () => {
     reset_variables();
     hall_of_fame = {};
     population = [];
+    conv_history = [];
     population_size = 0;
-    convergence = 0;
     GENERATIONS = 50;
-    CHROMOSOME = 0;
     MTPB = 1; //chance of mutation 0..1
     CXPB = 1; //chance of crossover
 }
@@ -41,6 +41,20 @@ const reset_variables = () => {
     offspring = [];
     fitness = [];
     mutations = [];
+}
+
+const handle_convergence = (gen) => {
+    if(gen >= 15){
+        let conv_percentage = calc_frequence(fitness);
+        conv_history.push(conv_percentage);
+        if(conv_history.length >= 5){
+            console.log(conv_history);
+            conv_history = conv_history.slice(conv_history.length-5);
+
+            return converged(conv_history, convergence);
+        }
+    }
+    return false;
 }
 
 const update_hall_of_fame = (gen) => {
@@ -183,6 +197,11 @@ const next_generation = (gen) => {
 
     storep.update(n => [...n, fill_json_data(gen, population, fitness, mutations, convergence)]);
 
+    if(handle_convergence(gen)) {
+
+        return [true,true];
+    }
+
     if(solution_found()){
         let solution = population[fitness.argmin()];
         store_solution.set({
@@ -199,9 +218,9 @@ const next_generation = (gen) => {
             'halloffame': hall_of_fame,
             'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
         })
-        return true;
+        return [true,false];
     }
-
+    return [false,false];
 }
 
 export const init_ga = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => {
@@ -235,15 +254,27 @@ export const init_ga = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) 
         })
         return true;
     }
+
     storep.set([fill_json_data(0, population, fitness, mutations, convergence)]);
-    //console.log(fill_json_data(0, population, fitness, mutations, convergence));
 }
 
 export const run_ga = () => {
-    let end = false;
+    let [end, endByConvergence] = [false,false];
     for(let i=1; i<=GENERATIONS; i++){
-        end = next_generation(i);
+        [end, endByConvergence] = next_generation(i);
         if(end === true){break;}
+    }
+    if(endByConvergence === true){
+        let m = fitness.argmin();
+        store_solution.set({
+            'chromosome': population[m],
+            'fitness': fitness[m],
+            'decodified': decodify_chromosome(population[m]),
+            'halloffame': hall_of_fame,
+            'decod_hof': decodify_chromosome(hall_of_fame.chromosome),
+            'by_convergence': true,
+
+        })
     }
     if(end === false){
         let m = fitness.argmin();

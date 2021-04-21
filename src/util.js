@@ -28,6 +28,20 @@ export const decodify_chromosome = (chromosome) => {
     return di_json;
 }
 
+export const calc_frequence = (fitness) => {
+    return fitness.maxFrequence();
+}
+
+export const converged = (history, conv) => {
+    for(let c of history){
+        if( c < conv){
+            return false;
+        }
+    }
+    return true;
+}
+
+
 /**
  * Generates a random population
  * @param k_population size of population
@@ -93,3 +107,21 @@ if(typeof(Array.prototype.doubleMin) === 'undefined'){
         return [i_min, min];
     }
 }
+
+if(typeof(Array.prototype.maxFrequence) === 'undefined'){
+    Array.prototype.maxFrequence = function(){
+        if (this.length == 0){
+            return -1;
+        }
+        let  k = {};
+        let max = '';
+        let i_max = 0;
+
+        for(let el of this){
+            if(k[el]) k[el]++; else k[el]=1;
+            if(i_max < k[el]){ max=el; i_max = k[el];}
+        }
+        return i_max/this.length;
+    }
+}
+
