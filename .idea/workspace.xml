@@ -2,17 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b25f0eee-23ab-4b4b-8ffc-744cc4254945" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Annealing.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Gen.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/genetic.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/s_annealing.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/store.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/svelte.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/util.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gh-pages.js" beforeDir="false" afterPath="$PROJECT_DIR$/gh-pages.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.svelte" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +33,7 @@
       <recent name="D:\Facul\Repos\Test\GeneticAlgorithm-T1\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.build">
+  <component name="RunManager" selected="npm.publish-gh">
     <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -62,6 +54,16 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="publish-gh" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="publish-gh" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <configuration name="svelte-build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -74,6 +76,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.publish-gh" />
         <item itemvalue="npm.dev" />
         <item itemvalue="npm.build" />
         <item itemvalue="npm.svelte-build" />
@@ -89,7 +92,7 @@
       <option name="presentableId" value="Default" />
       <updated>1618965778185</updated>
       <workItem from="1618965780257" duration="149000" />
-      <workItem from="1618965955561" duration="1460000" />
+      <workItem from="1618965955561" duration="1850000" />
     </task>
     <servers />
   </component>

@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
-    "publish-gh": "npm ./gh-pages.js",
+    "publish-gh": "node ./gh-pages.js",
     "dev": "webpack serve --content-base public"
   },
   "dependencies": {

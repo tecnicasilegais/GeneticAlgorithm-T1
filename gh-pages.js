@@ -7,6 +7,11 @@ ghpages.publish(
         repo: 'git@github.com:tecnicasilegais/GeneticAlgorithm-T1.git', // Update to point to your repository
     },
     (err) => {
-        console.log('Deploy Complete!', err)
+        if(err)
+        {
+            console.log("problema:", err);
+            return;
+        }
+        console.log('Deploy Complete!');
     }
 )
