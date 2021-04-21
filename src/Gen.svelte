@@ -1,7 +1,7 @@
 <script>
 	import { load_run_ga, color_mutations, best_matches } from './store';
 	import { storep, json_solution } from './genetic';
-    import { Dialog } from 'svelte-materialify';
+    import { Dialog,Row,Col,TextField,Button } from 'svelte-materialify';
 	import Pagination from '@fouita/pagination';
     let active2;
     let fill_json_data_array = [];
@@ -30,53 +30,40 @@
 
 
 <main>
-    <div class="flex flex-col" >
-        <div class="w-100 bg-gradient-to-b mr-3" id="input_ga">
-            <div class="flex flex-col">
-                <div id="converters-area" class="px-4 py-5">
-                    <div class="flex flex-col text-white">
-
-                        <div class="flex items-center justify-between mb-5">
-                            <div class="flex flex-col text-center w-3/6 px-2">
-                                <label for='popsize' class='form-label'>População</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' min='1' type='number' id='popsize' bind:value={psize}>
-                            </div>
-                            <div class="flex flex-col text-center w-3/6 px-2">
-                                <label for='popsize' class='form-label'>Gerações</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' min='1' type='number' id='gesize' bind:value={ngen}>
-                            </div>
-                            <div class="flex flex-col text-center w-3/6 px-2">
-                                <label for='mutcha' class='form-label'>Chance de mutação</label>
-                                <input class='border-2 border-gray-300 py-1 bg-white text-black' step='0.01' min='0' max='1' type='number' id='mutcha' bind:value={mutpb}>
-                            </div>
-                            <div class="flex flex-col text-center w-3/6 px-2">
-                                <label for='crosscha' class='form-label'>Chance de crossover</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' step='0.01' min='0' max='1' type='number' id='crosscha' bind:value={cxpb}>
-                            </div>
-                        </div>
-                        <div class="justify-between mb-5">
-                            <div class="flex flex-col text-right items-center w-100 px-2">
-                                <button on:click={showGA} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
-                                    Enviar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+ 
+        <div class="w-100" id="input_ga">
+            <Row>             
+                <Col>
+                    <TextField type="number"  min='1' bind:value={psize} outlined>População</TextField>
+                </Col>
+                <Col>
+                    <TextField step='0.01' min='0' max='1' type='number' bind:value={ngen} outlined>Gerações</TextField>
+                </Col>
+                <Col>
+                    <TextField step='0.01' min='0' max='1' type='number' id='crosscha' bind:value={mutpb} outlined>Chance de mutação</TextField>
+                </Col>
+                <Col>
+                    <TextField type='number' step='0.01' min='0' max='1'  id='crosscha' bind:value={cxpb} outlined>Chance de crossover</TextField>
+                </Col>
+            </Row>
+            <Button class="primary-color" on:click={showGA}>Enviar</Button> 
         </div>
         <div id='show' >
             {#if fill_json_data_array.length > 0}
-                <div class="flex items-center justify-inline self-center w-5/6 ">
-                    <div class="grid grid-cols-2 px-2">
-                        <p class='text-lg text-center font-bold m-5'>Geração: {json_data(current-1).generation}</p>
-                        <button on:click={() => (active2 = true)} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
-                            Melhor
-                        </button>
-                        <button on:click={reset_ga} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
-                            Reset
-                        </button>
-                    </div>
+                <div class='w-50'>
+                    <Row>
+                        <Col>
+                            <p class='text-lg text-center'>Geração: {json_data(current-1).generation}</p>
+                        </Col>      
+                        <Col>
+                            <p class='text-lg text-center'><Button class="primary-color" on:click={() => (active2 = true)}>Melhor</Button>
+                        </Col>
+                        <Col>
+                            <p class='text-lg text-center'><Button class="primary-color" on:click={reset_ga}>Reset</Button></p>
+                        </Col>
+                        <Col>
+                        </Col>    
+                    </Row> 
                 </div>
                 <table class='rounded-t-lg m-5 w-5/6 mx-auto bg-gray-200 text-gray-800'>
                     <tr class='text-left border-b-2 border-gray-300 ' >
@@ -110,7 +97,6 @@
                 <p>A{i+1} -> {dec}</p>
             {/each}
         </Dialog>
-    </div>
 </main>
 
 <style>

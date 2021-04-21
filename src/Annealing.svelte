@@ -1,6 +1,6 @@
 <script>
 	import { load_run_sa, color_worse, best_matches} from './store';
-    import { Dialog, List, ListItem, Row, Col, TextField,Button} from 'svelte-materialify';
+    import { Dialog, List, ListItem, Row, Col, TextField, Button} from 'svelte-materialify';
 	import { storep, json_solution } from './s_annealing';
     let active1;
     let tabs = 0;
@@ -38,20 +38,23 @@
             </Row>            
             <Button class="primary-color" on:click={showSA}>Enviar</Button> 
         </div>
-                    
         <div id='show' >
             {#if fill_json_cycle_array.length > 0}
-                <div class="flex items-center justify-inline self-center w-5/6 ">
-                    <div class="grid grid-cols-2 px-2">
-                        <button on:click={() => (active1 = true)} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
-                            Melhor
-                        </button>
-                        <button on:click={reset_sa} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
-                            Reset
-                        </button>
-                    </div>
+                <div class="w-50">
+                    <Row>
+                        <Col>
+                        </Col>      
+                        <Col>
+                            <Button class="primary-color" on:click={() => (active1 = true)}>Melhor</Button> 
+                        </Col>
+                        <Col>
+                            <Button class="primary-color" on:click={reset_sa}>Reset</Button>    
+                        </Col>
+                        <Col>
+                        </Col>    
+                    </Row> 
                 </div>
-                <table on:click={showSolution} class='rounded-t-lg m-5 w-5/6 mx-auto bg-gray-200 text-gray-800'>
+                <table class='rounded-t-lg m-5 w-5/6 mx-auto bg-gray-200 text-gray-800'>
                     <tr class='text-left border-b-2 border-gray-300 ' >
                         <th class='px-4 py-3'>Ciclo</th>
                         <th class='px-4 py-3'>Temperatura</th>
@@ -74,7 +77,6 @@
                     </div>
                     <div class="d-flex justify-center">
                         <List dense class="elevation-2" style="width:300px">
-                           
                             {#each json_solution.decodified as dec, i}
                                 {#if json_solution.decodified.length <= 10}
                                     <ListItem><p>A{i+1} -> {dec}</p></ListItem>
