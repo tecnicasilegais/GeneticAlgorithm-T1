@@ -32,7 +32,7 @@ module.exports = {
 							dev: !prod
 						},
 						emitCss: prod,
-						preprocess: prod,
+						preprocess,
 						hotReload: !prod
 					}
 				}
