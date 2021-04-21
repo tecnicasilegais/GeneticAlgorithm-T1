@@ -3,9 +3,6 @@ import { writable } from 'svelte/store';
 import { generate_random_population, fill_json_cycle, decodify_chromosome } from './util.js';
 import { random, randomInt } from 'mathjs';
 
-export let storep = writable([])
-export let json_solution = {};
-
 export class Annealing {
     //attrs
     constructor(niter, best_matches, decrease_factor){
@@ -21,10 +18,10 @@ export class Annealing {
         this.energy = 0;
         this.breeze = 0.5;
         this.acc_worse = false;
+        this.json_solution = {};
 
         this.roommate = generate_random_population(1, this.r_size)[0];
-
-        storep.set([]);
+        this.steps = [];
 
     }
 
@@ -63,11 +60,11 @@ export class Annealing {
 
         this.h = this.heuristic(this.roommate);
 
-        storep.update(n=>[...n, fill_json_cycle(i, this.temperature, this.roommate, this.h.toFixed(6), this.acc_worse)])
+        this.steps.push(fill_json_cycle(i, this.temperature, this.roommate, this.h.toFixed(6), this.acc_worse));
         this.acc_worse = false;
 
         if (this.h === 0){
-            json_solution = {
+            this.json_solution = {
                 'roommates': this.roommate,
                 'h': 0,
                 'decodified': decodify_chromosome(this.roommate),
@@ -105,13 +102,14 @@ export class Annealing {
             if(end === true){break;}
         }
         if(end === false){//todo
-            json_solution = {
+            this.json_solution = {
                 'chromosome': this.roommate,
                 'h': this.h.toFixed(6),
                 'decodified': decodify_chromosome(this.roommate),
             }
 
         }
+        return [this.steps, this.json_solution];
     }
 
 }

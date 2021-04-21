@@ -6,12 +6,12 @@ export let best_matches = {}
 export let store = writable([])
 export function load_run_ga(psize=20, ngen=100, mutpb=0.4, cxpb=0.6){
     const ga = new Genetic(psize, ngen, best_matches, mutpb, cxpb)
-    ga.run_ga();
+    return ga.run_ga();
 }
 
 export function load_run_sa(niter, decrease_factor){
     const sa = new Annealing(niter, best_matches, decrease_factor);
-    sa.run_sa();
+    return sa.run_sa();
 }
 
 export const load = (text) => {

@@ -3,10 +3,6 @@ import { writable } from 'svelte/store';
 import { generate_random_population, fill_json_data, decodify_chromosome, calc_frequence, converged } from './util.js';
 import { random, randomInt } from 'mathjs';
 
-export let storep = writable([]);
-export let store_solution = writable([]);
-export let json_solution = {};
-
 export class Genetic {
 
     constructor(pop_size, ngen, best_matches, mutpb, cxpb) {
@@ -39,7 +35,10 @@ export class Genetic {
             'fitness': min,
         }
 
-        storep.set([fill_json_data(0, this.population, this.fitness, this.mutations)]);
+        this.json_solution = {};
+        this.steps = [];
+
+        this.steps.push(fill_json_data(0, this.population, this.fitness, this.mutations));
     }
 
     reset_variables(){
@@ -199,7 +198,7 @@ export class Genetic {
 
         this.update_hall_of_fame(gen);
 
-        storep.update(n => [...n, fill_json_data(gen, this.population, this.fitness, this.mutations)]);
+        this.steps.push(fill_json_data(gen, this.population, this.fitness, this.mutations));
 
         if(this.handle_convergence(gen)) {
             return [true,true];
@@ -207,7 +206,7 @@ export class Genetic {
 
         if(this.solution_found()){
             let solution = this.population[this.fitness.argmin()];
-            json_solution = {
+            this.json_solution = {
                 'chromosome': solution,
                 'fitness': 0,
                 'decodified': decodify_chromosome(solution)
@@ -221,12 +220,12 @@ export class Genetic {
     run_ga(){
         if(this.solution_found()){
             let solution = this.population[this.fitness.argmin()];
-            json_solution = {
+            this.json_solution = {
                 'chromosome': solution,
                 'fitness': 0,
                 'decodified': decodify_chromosome(solution),
             }
-            return;
+            return [this.steps, this.json_solution];
         }
         let [end, endByConvergence] = [false,false];
         for(let i=1; i<=this.GENERATIONS; i++){
@@ -235,7 +234,7 @@ export class Genetic {
         }
         if(endByConvergence === true){
             let m = this.fitness.argmin();
-            json_solution ={
+            this.json_solution ={
                 'chromosome': this.population[m],
                 'fitness': this.fitness[m],
                 'decodified': decodify_chromosome(this.population[m]),
@@ -247,7 +246,7 @@ export class Genetic {
         }
         if(end === false){
             let m = this.fitness.argmin();
-            json_solution = {
+            this.json_solution = {
                 'chromosome': this.population[m],
                 'fitness': this.fitness[m],
                 'decodified': decodify_chromosome(this.population[m]),
@@ -255,6 +254,7 @@ export class Genetic {
                 'decod_hof': decodify_chromosome(this.hall_of_fame.chromosome)
             }
         }
+        return [this.steps, this.json_solution];
     }
 }
 

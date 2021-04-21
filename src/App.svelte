@@ -40,12 +40,12 @@
 			alert('Arquivo(s) não suportado(s)');
 		}
 	}
-	onMount(() => {
-		window.onunhandledrejection = (e) => {
-			console.log(e);
-			location.replace("https://tecnicasilegais.github.io/GeneticAlgorithm-T1/error.html");
-		}
-	})
+	window.addEventListener('unhandledrejection', function (event) {
+		console.log(event);
+		location.replace("https://tecnicasilegais.github.io/GeneticAlgorithm-T1/error.html");
+
+		event.preventDefault();
+	});
 </script>
 
 <svelte:head>

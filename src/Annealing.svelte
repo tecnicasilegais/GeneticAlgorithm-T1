@@ -1,16 +1,15 @@
 <script>
 	import { load_run_sa, color_worse, best_matches} from './store';
     import { Dialog, List, ListItem, Row, Col, TextField, Button} from 'svelte-materialify';
-	import { storep, json_solution } from './s_annealing';
     let active1;
     let tabs = 0;
     let fill_json_cycle_array = [];
-    storep.subscribe(n => {fill_json_cycle_array = n });
+    let json_solution;
 
     export let decrease_factor=0.6, niter=40;
     function showSA() {
         if(best_matches){
-            load_run_sa(niter, decrease_factor);
+            [fill_json_cycle_array, json_solution ]= load_run_sa(niter, decrease_factor);
             document.getElementById('input_sa').style.display = "none";
         }else{
             alert('Selecione um arquivo!')

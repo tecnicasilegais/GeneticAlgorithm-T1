@@ -1,14 +1,13 @@
 <script>
 	import { load_run_ga, color_mutations, best_matches } from './store';
-	import { storep, json_solution } from './genetic';
     import { Dialog,Row,Col,TextField,Button, List, ListItem, Divider, Card, CardActions, Icon } from 'svelte-materialify';
     import { slide } from 'svelte/transition';
 	import Pagination from '@fouita/pagination';
     let active2;
     let value_expansion = false;
     let fill_json_data_array = [];
-    storep.subscribe(fill_json_data => {fill_json_data_array = fill_json_data });
- 
+    let json_solution;
+
     function json_data(i) {
 		return fill_json_data_array[i]
 	}
@@ -17,7 +16,7 @@
     export let cxpb = 0.8, psize = 20, mutpb = 0.4, ngen = 100;
     function showGA() {
         if(best_matches){
-            load_run_ga(psize, ngen, mutpb, cxpb);
+            [fill_json_data_array, json_solution] = load_run_ga(psize, ngen, mutpb, cxpb);
             document.getElementById('input_ga').style.display = "none";
         }else{
             alert('Selecione um arquivo')
