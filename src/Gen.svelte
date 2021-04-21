@@ -1,8 +1,9 @@
 <script>
 	import { load_run_ga, color_mutations, best_matches } from './store';
-	import { storep } from './genetic';
+	import { storep, json_solution } from './genetic';
+    import { Dialog } from 'svelte-materialify';
 	import Pagination from '@fouita/pagination';
-
+    let active2;
     let fill_json_data_array = [];
     storep.subscribe(fill_json_data => {fill_json_data_array = fill_json_data });
  
@@ -69,7 +70,7 @@
                 <div class="flex items-center justify-inline self-center w-5/6 ">
                     <div class="grid grid-cols-2 px-2">
                         <p class='text-lg text-center font-bold m-5'>Geração: {json_data(current-1).generation}</p>
-                        <button on:click={reset_ga} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
+                        <button on:click={() => (active2 = true)} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
                             Melhor
                         </button>
                         <button on:click={reset_ga} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
@@ -96,6 +97,19 @@
                 </div>
             {/if}
         </div>
+        <Dialog class="pa-4 text-center" bind:active={active2}>
+            <!-- <p>Roomates {json_solution.chromosome}</p><br/> -->
+            <p>{json_solution.chromosome}</p><br/>
+            <p>{json_solution.fitness}</p><br/>
+            <p>{json_solution.halloffame.gen}</p><br/>
+            <p>{json_solution.halloffame.chromosome}</p><br/>
+            <p>{json_solution.halloffame.fitness}</p><br/>
+            <p>{json_solution.decod_hof}</p><br/>
+            <p>{json_solution.by_convergence? 'Parou por convergencia': ''}</p><br/>
+            {#each json_solution.decodified as dec, i}
+                <p>A{i+1} -> {dec}</p>
+            {/each}
+        </Dialog>
     </div>
 </main>
 

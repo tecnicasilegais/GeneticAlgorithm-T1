@@ -3,8 +3,9 @@ import { writable } from 'svelte/store';
 import { generate_random_population, fill_json_data, decodify_chromosome, calc_frequence, converged } from './util.js';
 import { random, randomInt } from 'mathjs';
 
-export let storep = writable([])
-export let store_solution = writable([])
+export let storep = writable([]);
+export let store_solution = writable([]);
+export let json_solution = {};
 
 //globals
 let hall_of_fame = {}
@@ -35,6 +36,7 @@ const clean = () => {
     GENERATIONS = 50;
     MTPB = 1; //chance of mutation 0..1
     CXPB = 1; //chance of crossover
+    json_solution = {};
 }
 
 const reset_variables = () => {
@@ -204,20 +206,13 @@ const next_generation = (gen) => {
 
     if(solution_found()){
         let solution = population[fitness.argmin()];
-        store_solution.set({
+        json_solution = {
             'chromosome': solution,
             'fitness': 0,
             'decodified': decodify_chromosome(solution),
             //'halloffame': hall_of_fame,
             //'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
-        })
-        console.log({
-            'chromosome': solution,
-            'fitness': 0,
-            'decodified': decodify_chromosome(solution),
-            'halloffame': hall_of_fame,
-            'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
-        })
+        }
         return [true,false];
     }
     return [false,false];
@@ -245,13 +240,13 @@ export const init_ga = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) 
 
     if(solution_found()){
         let solution = population[fitness.argmin()];
-        store_solution.set({
+        json_solution = {
             'chromosome': solution,
             'fitness': 0,
             'decodified': decodify_chromosome(solution),
             //'halloffame': hall_of_fame,
             //'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
-        })
+        }
         return true;
     }
 
@@ -266,7 +261,7 @@ export const run_ga = () => {
     }
     if(endByConvergence === true){
         let m = fitness.argmin();
-        store_solution.set({
+        json_solution ={
             'chromosome': population[m],
             'fitness': fitness[m],
             'decodified': decodify_chromosome(population[m]),
@@ -274,17 +269,17 @@ export const run_ga = () => {
             'decod_hof': decodify_chromosome(hall_of_fame.chromosome),
             'by_convergence': true,
 
-        })
+        }
     }
     if(end === false){
         let m = fitness.argmin();
-        store_solution.set({
+        json_solution = {
             'chromosome': population[m],
             'fitness': fitness[m],
             'decodified': decodify_chromosome(population[m]),
             'halloffame': hall_of_fame,
             'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
-        })
+        }
     }
 }
 

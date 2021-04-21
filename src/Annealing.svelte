@@ -1,11 +1,8 @@
 <script>
 	import { load_run_sa, color_worse, best_matches} from './store';
     import { Dialog } from 'svelte-materialify';
-	import { storep,store_solution, json_solution } from './s_annealing';
+	import { storep, json_solution } from './s_annealing';
     let active1;
-
-    let solution;
-    store_solution.subscribe(x => {solution = x });
 
     let fill_json_cycle_array = [];
     storep.subscribe(n => {fill_json_cycle_array = n });

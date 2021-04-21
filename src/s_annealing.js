@@ -4,8 +4,7 @@ import { generate_random_population, fill_json_cycle, decodify_chromosome } from
 import { random, randomInt } from 'mathjs';
 
 export let storep = writable([])
-export let store_solution = writable([])
-
+export let json_solution = {};
 //globals
 
 let dados_b = [];
@@ -21,7 +20,6 @@ let temperature = 100.0;
 let energy = 0;
 let breeze = 0.5;
 let acc_worse = false;
-export let json_solution = {}
 
 const clean = () => {
     acc_worse = false;
@@ -30,6 +28,7 @@ const clean = () => {
     h = undefined;
     temperature = 100.0;
     energy = 0;
+    json_solution = {};
 }
 
 //chromosome heuristic
