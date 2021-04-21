@@ -1,4 +1,11 @@
 <script>
+	import { MaterialApp } from 'svelte-materialify';
+  	let theme = 'dark';
+
+  	function toggleTheme() {
+    	if (theme === 'light') theme = 'dark';
+    	else theme = 'light';
+  	}
 	import Gen from './Gen.svelte';
 	import Annealing from './Annealing.svelte';
 	import { load } from './store.js';
@@ -45,6 +52,11 @@
 		}
 	}
 </script>
+
+<svelte:head>
+    <link href='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css' rel='stylesheet'>
+</svelte:head>
+<MaterialApp {theme}>
 <ul class="flex">
 	<li class="mr-3">
 		<button class={current === 'ga' ? active_btn : inactive_btn} on:click={showGenetic} >Algoritmo Genetico</button>
@@ -68,8 +80,7 @@
 <div id="genetic">
 	<Gen />
 </div>
-
+</MaterialApp>
 <style>
-
-
+	
 </style>
