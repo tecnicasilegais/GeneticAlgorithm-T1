@@ -1,5 +1,5 @@
 <script>
-	import { Tabs, Tab, Window, WindowItem, Container, MaterialApp } from 'svelte-materialify';
+	import { Tabs, Tab, Window, WindowItem, Container, MaterialApp, TextField } from 'svelte-materialify';
   	let theme = 'dark';
 	  let value = 0;
   	function toggleTheme() {
@@ -46,7 +46,7 @@
 </svelte:head>
 <MaterialApp {theme}>
 	<Container>
-		<Tabs class="green-text" bind:value fixedTabs>
+		<Tabs class="deep-purple-text" bind:value fixedTabs>
 		<div slot="tabs">
 		  <Tab>Genetico</Tab>
 		  <Tab>Annealing</Tab>
@@ -55,8 +55,7 @@
 
 		<div class="flex items-center justify-between ml-40 mb-5">
 			<div class="flex flex-col text-center w-5/6 px-2">
-				<label for='file_input_ga' class='form-label'>Selecione um arquivo</label>
-				<input class='border-2 border-gray-300 py-1 bg-white text-black' type='file' id='file_input_ga' >
+				<TextField type='file' class="m-5" id='file_input_ga' outlined></TextField>
 			</div>
 		</div>
 		<Window {value} class="ma-4">
@@ -70,5 +69,8 @@
 	</Container>
 </MaterialApp>
 <style>
-	
+	:global(body) {
+		background-color: rgb(33, 41, 56);
+        color: white;
+	}
 </style>

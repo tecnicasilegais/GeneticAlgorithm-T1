@@ -1,6 +1,6 @@
 <script>
 	import { load_run_sa, color_worse, best_matches} from './store';
-    import { Dialog, List, ListItem, Row, Col} from 'svelte-materialify';
+    import { Dialog, List, ListItem, Row, Col, TextField} from 'svelte-materialify';
 	import { storep, json_solution } from './s_annealing';
     let active1;
     let tabs = 0;
@@ -35,12 +35,10 @@
 
                         <div class="flex items-center justify-between mb-5">
                             <div class="flex flex-col text-center w-3/6 px-2">
-                                <label for='niters' class='form-label'>Iterações</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' min='1' type='number' id='niters' bind:value={niter}>
+                                <TextField type="number"  min='1'  bind:value={niter} outlined>Iterações</TextField>
                             </div>
                             <div class="flex flex-col text-center w-3/6 px-2">
-                                <label for='decrease_heat' class='form-label'>Resfriamento</label>
-	            	            <input class='border-2 border-gray-300 py-1 bg-white text-black' step='0.01' min='0.01' max='1' type='number' id='decrease_heat' bind:value={decrease_factor}>
+                                <TextField type="number" step='0.01' min='0.01' max='1' bind:value={decrease_factor} outlined>Resfriamento</TextField>
                             </div>
                         </div>
                         <div class="justify-between mb-5">
@@ -114,8 +112,5 @@
 </main>
 
 <style>
-    :global(body) {
-		background-color: rgb(33, 41, 56);
-        color: white;
-	}
+    
 </style>
