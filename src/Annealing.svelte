@@ -1,6 +1,6 @@
 <script>
 	import { load_run_sa, color_worse, best_matches} from './store';
-    import { Dialog, List, ListItem, Row, Col, TextField} from 'svelte-materialify';
+    import { Dialog, List, ListItem, Row, Col, TextField,Button} from 'svelte-materialify';
 	import { storep, json_solution } from './s_annealing';
     let active1;
     let tabs = 0;
@@ -27,31 +27,18 @@
 </script>
 
 <main>
-    <div class="flex flex-col" >
-        <div class="w-100 bg-gradient-to-b mr-3" id="input_sa">
-            <div class="flex flex-col">
-                <div id="converters-area" class="px-4 py-5">
-                    <div class="flex flex-col text-white">
-
-                        <div class="flex items-center justify-between mb-5">
-                            <div class="flex flex-col text-center w-3/6 px-2">
-                                <TextField type="number"  min='1'  bind:value={niter} outlined>Iterações</TextField>
-                            </div>
-                            <div class="flex flex-col text-center w-3/6 px-2">
-                                <TextField type="number" step='0.01' min='0.01' max='1' bind:value={decrease_factor} outlined>Resfriamento</TextField>
-                            </div>
-                        </div>
-                        <div class="justify-between mb-5">
-                            <div class="flex flex-col text-right items-center w-100 px-2">
-                                <button on:click={showSA} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
-                                    Enviar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="w-100" id="input_sa">
+            <Row>             
+                <Col>
+                    <TextField type="number"  min='1'  bind:value={niter} outlined>Iterações</TextField>
+                </Col>
+                <Col>
+                    <TextField type="number" step='0.01' min='0.01' max='1' bind:value={decrease_factor} outlined>Resfriamento</TextField>
+                </Col>
+            </Row>            
+            <Button class="primary-color" on:click={showSA}>Enviar</Button> 
         </div>
+                    
         <div id='show' >
             {#if fill_json_cycle_array.length > 0}
                 <div class="flex items-center justify-inline self-center w-5/6 ">
@@ -108,7 +95,7 @@
                 </Dialog>
             {/if}
         </div>
-    </div>
+    
 </main>
 
 <style>

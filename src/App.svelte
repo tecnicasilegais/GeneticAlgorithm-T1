@@ -53,9 +53,9 @@
 		</div>
 		</Tabs>
 
-		<div class="flex items-center justify-between ml-40 mb-5">
-			<div class="flex flex-col text-center w-5/6 px-2">
-				<TextField type='file' class="m-5" id='file_input_ga' outlined></TextField>
+		<div class="flex items-center justify-between ml-40 mb-2">
+			<div class="flex flex-col text-center w-5/6">
+				<TextField type='file' class="mt-3 mb-2" id='file_input_ga' outlined></TextField>
 			</div>
 		</div>
 		<Window {value} class="ma-4">
