@@ -208,8 +208,8 @@ const next_generation = (gen) => {
             'chromosome': solution,
             'fitness': 0,
             'decodified': decodify_chromosome(solution),
-            'halloffame': hall_of_fame,
-            'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
+            //'halloffame': hall_of_fame,
+            //'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
         })
         console.log({
             'chromosome': solution,
@@ -249,8 +249,8 @@ export const init_ga = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) 
             'chromosome': solution,
             'fitness': 0,
             'decodified': decodify_chromosome(solution),
-            'halloffame': hall_of_fame,
-            'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
+            //'halloffame': hall_of_fame,
+            //'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
         })
         return true;
     }
