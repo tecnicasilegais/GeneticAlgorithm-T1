@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b25f0eee-23ab-4b4b-8ffc-744cc4254945" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Annealing.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/Annealing.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/genetic.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/genetic.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,7 +23,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/package.json" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -91,7 +91,7 @@
       <option name="presentableId" value="Default" />
       <updated>1618965778185</updated>
       <workItem from="1618965780257" duration="149000" />
-      <workItem from="1618965955561" duration="2611000" />
+      <workItem from="1618965955561" duration="3823000" />
     </task>
     <servers />
   </component>

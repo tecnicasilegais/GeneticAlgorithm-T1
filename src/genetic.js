@@ -31,6 +31,10 @@ const clean = () => {
     population = [];
     population_size = 0;
     convergence = 0;
+    GENERATIONS = 50;
+    CHROMOSOME = 0;
+    MTPB = 1; //chance of mutation 0..1
+    CXPB = 1; //chance of crossover
 }
 
 const reset_variables = () => {
@@ -94,7 +98,7 @@ const swap_mutation = (chromosome) => {
 }
 
 const handle_elitism = () => {
-    offspring[0] = population[fitness.argmin()]
+    offspring[0] = population[fitness.argmin()];
 }
 
 const handle_mutation = () => {
@@ -201,7 +205,7 @@ const next_generation = (gen) => {
 }
 
 export const init_ga = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => {
-    clean();
+    clean(); //WARNING: must be first to execute!!!!!!!!
     //fill globals
     population_size = pop_size;
     GENERATIONS = ngen;
