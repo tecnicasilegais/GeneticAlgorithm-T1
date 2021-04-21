@@ -73,7 +73,7 @@
                 <Dialog class="pa-4 text-center" bind:active={active1}>
                     <!-- <p>Roomates {json_solution.chromosome}</p><br/> -->
                     <div class="text-center">
-                        Heurística - {json_solution.h}
+                        Heurística:<List><ListItem>{json_solution.h}</ListItem></List>
                     </div>
                     <div class="d-flex justify-center">
                         <List dense class="elevation-2" style="width:300px">
@@ -94,6 +94,7 @@
                                 {/if}
                             {/each}
                         </List>
+                    </div>
                 </Dialog>
             {/if}
         </div>
