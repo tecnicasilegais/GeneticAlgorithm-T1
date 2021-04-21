@@ -21,6 +21,7 @@ let temperature = 100.0;
 let energy = 0;
 let breeze = 0.5;
 let acc_worse = false;
+export let json_solution = {}
 
 const clean = () => {
     acc_worse = false;
@@ -86,11 +87,11 @@ const simulate = (i) => {
     acc_worse = false;
 
     if (h === 0){
-        store_solution.set({
+        json_solution = {
             'roommates': roommate,
             'h': 0,
             'decodified': decodify_chromosome(roommate),
-        })
+        }
         return true;
     }
 
@@ -113,6 +114,7 @@ const simulate = (i) => {
         }
     }
     temperature *= breeze;
+    return false;
 
 }
 
@@ -123,10 +125,12 @@ export const run_sa = () => {
         if(end === true){break;}
     }
     if(end === false){//todo
-        store_solution.set({
+        console.log(roommate)
+        json_solution = {
             'chromosome': roommate,
             'h': h.toFixed(6),
-            'decodified': decodify_chromosome(roomate),
-        })
+            'decodified': decodify_chromosome(roommate),
+        }
+        
     }
 }

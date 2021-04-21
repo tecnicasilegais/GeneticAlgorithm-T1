@@ -1,9 +1,14 @@
 <script>
 	import { load_run_sa, color_worse, best_matches} from './store';
-	import { storep } from './s_annealing';
+    import { Dialog } from 'svelte-materialify';
+	import { storep,store_solution, json_solution } from './s_annealing';
+    let active1;
+
+    let solution;
+    store_solution.subscribe(x => {solution = x });
 
     let fill_json_cycle_array = [];
-    storep.subscribe(fill_json_cycle => {fill_json_cycle_array = fill_json_cycle });
+    storep.subscribe(n => {fill_json_cycle_array = n });
 
     export let decrease_factor=0.6, niter=40;
     function showSA() {
@@ -13,6 +18,9 @@
         }else{
             alert('Selecione um arquivo!')
         }
+    }
+    function showSolution(){
+        console.log(json_solution)
     }
     function reset_sa(){
         fill_json_cycle_array = [];
@@ -53,12 +61,15 @@
             {#if fill_json_cycle_array.length > 0}
                 <div class="flex items-center justify-inline self-center w-5/6 ">
                     <div class="grid grid-cols-2 px-2">
+                        <button on:click={() => (active1 = true)} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
+                            Melhor
+                        </button>
                         <button on:click={reset_sa} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
                             Reset
                         </button>
                     </div>
                 </div>
-                <table class='rounded-t-lg m-5 w-5/6 mx-auto bg-gray-200 text-gray-800'>
+                <table on:click={showSolution} class='rounded-t-lg m-5 w-5/6 mx-auto bg-gray-200 text-gray-800'>
                     <tr class='text-left border-b-2 border-gray-300 ' >
                         <th class='px-4 py-3'>Ciclo</th>
                         <th class='px-4 py-3'>Temperatura</th>
@@ -74,6 +85,13 @@
                         </tr>
                     {/each}
                 </table>
+                <Dialog class="pa-4 text-center" bind:active={active1}>
+                    <!-- <p>Roomates {json_solution.chromosome}</p><br/> -->
+                    <p>h {json_solution.h}</p><br/>
+                    {#each json_solution.decodified as dec, i}
+                        <p>A{i+1} -> {dec}</p>
+                    {/each}
+                </Dialog>
             {/if}
         </div>
     </div>

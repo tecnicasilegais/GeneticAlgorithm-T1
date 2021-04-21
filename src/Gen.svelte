@@ -70,6 +70,9 @@
                     <div class="grid grid-cols-2 px-2">
                         <p class='text-lg text-center font-bold m-5'>Geração: {json_data(current-1).generation}</p>
                         <button on:click={reset_ga} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
+                            Melhor
+                        </button>
+                        <button on:click={reset_ga} class="bg-blue-900 hover:bg-blue-700 self-center border-blue-900 hover:border-blue-700 text-white  font-bold py-2 px-4 rounded">
                             Reset
                         </button>
                     </div>
