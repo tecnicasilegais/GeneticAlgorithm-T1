@@ -7,278 +7,252 @@ export let storep = writable([]);
 export let store_solution = writable([]);
 export let json_solution = {};
 
-//globals
-let hall_of_fame = {}
+export class Genetic {
 
-let dados_b = [];
-let dados_a = [];
+    constructor(pop_size, ngen, best_matches, mutpb, cxpb) {
+        //param attributes
 
-let population = [];
-let population_size = 0;
-let offspring = [];
-let fitness = []; //fitness of each chromosome from the population
-let mutations = [];
-let convergence = 0.7; //90%
-let conv_history = [];
+        this.population_size = pop_size;
+        this.GENERATIONS = ngen;
+        this.CHROMOSOME = best_matches.size;
+        this.dados_a = best_matches.best_a;
+        this.dados_b = best_matches.best_b;
+        this.MTPB = mutpb;
+        this.CXPB = cxpb;
 
-let GENERATIONS = 50;
-let CHROMOSOME = 0;
+        //empty attributes
+        this.offspring = [];
+        this.fitness = []; //fitness of each chromosome from the population
+        this.mutations = [];
+        this.convergence = 0.8; //80%
+        this.conv_history = [];
 
-let MTPB = 1; //chance of mutation 0..1
-let CXPB = 1; //chance of crossover
+        this.population = generate_random_population(pop_size, this.CHROMOSOME);
+        this.fitness_func();
 
-const clean = () => {
-    reset_variables();
-    hall_of_fame = {};
-    population = [];
-    conv_history = [];
-    population_size = 0;
-    GENERATIONS = 50;
-    MTPB = 1; //chance of mutation 0..1
-    CXPB = 1; //chance of crossover
-    json_solution = {};
-}
+        //initialize hall of fame
+        let [idx, min] = this.fitness.doubleMin();
+        this.hall_of_fame = {
+            'gen': 0,
+            'chromosome': this.population[idx],
+            'fitness': min,
+        }
 
-const reset_variables = () => {
-    offspring = [];
-    fitness = [];
-    mutations = [];
-}
+        storep.set([fill_json_data(0, this.population, this.fitness, this.mutations)]);
+    }
 
-const handle_convergence = (gen) => {
-    if(gen >= 15){
-        let conv_percentage = calc_frequence(fitness);
-        conv_history.push(conv_percentage);
-        if(conv_history.length >= 5){
-            console.log(conv_history);
-            conv_history = conv_history.slice(conv_history.length-5);
+    reset_variables(){
+        this.offspring = [];
+        this.fitness = [];
+        this.mutations = [];
+    }
 
-            return converged(conv_history, convergence);
+    handle_convergence(gen){
+        if(gen >= 15){
+            let conv_percentage = calc_frequence(this.fitness);
+            this.conv_history.push(conv_percentage);
+            if(this.conv_history.length >= 5){
+                this.conv_history = this.conv_history.slice(this.conv_history.length-5);
+
+                return converged(this.conv_history, this.convergence);
+            }
+        }
+        return false;
+    }
+
+    update_hall_of_fame(gen){
+        let [index, fit] = this.fitness.doubleMin();
+        if(fit < this.hall_of_fame.fitness){
+            this.hall_of_fame.gen = gen;
+            this.hall_of_fame.chromosome = this.population[index];
+            this.hall_of_fame.fitness = fit;
         }
     }
-    return false;
-}
-
-const update_hall_of_fame = (gen) => {
-    let [index, fit] = fitness.doubleMin();
-    if(fit < hall_of_fame.fitness){
-        hall_of_fame.gen = gen;
-        hall_of_fame.chromosome = population[index];
-        hall_of_fame.fitness = fit;
-    }
-}
 
 //checks if this generation contains the solution
-const solution_found = () => {
-    return (Math.min(...fitness) === 0);
-}
+    solution_found(){
+        return (Math.min(...this.fitness) === 0);
+    }
 
 //population fitness
-const fitness_func = () => {
-    for(let i=0; i<population.length; i++){
-        fitness[i] = fitness_chromosome(population[i]);
+    fitness_func(){
+        for(let i=0; i<this.population.length; i++){
+            this.fitness[i] = this.fitness_chromosome(this.population[i]);
+        }
     }
-}
 
 //chromosome fitness
-const fitness_chromosome = (chromosome) => {//min
-    let [aptitude_a, aptitude_b] = [0, 0];
-    //iterates chromosome (i = index of A, chromosome[i] = index of B, values = i+1 and chromosome[i]+1)
-    for(let a=0; a<chromosome.length; a++){
-        let b = chromosome[a]; //b person (B1, B2 etc.)
-        for(let i=0; i<dados_a[a].length; i++){
-            if(dados_a[a][i] == b){//B
-                aptitude_a += i;
-                break;
+    fitness_chromosome(chromosome){//min
+        let [aptitude_a, aptitude_b] = [0, 0];
+        //iterates chromosome (i = index of A, chromosome[i] = index of B, values = i+1 and chromosome[i]+1)
+        for(let a=0; a<chromosome.length; a++){
+            let b = chromosome[a]; //b person (B1, B2 etc.)
+            for(let i=0; i<this.dados_a[a].length; i++){
+                if(this.dados_a[a][i] == b){//B
+                    aptitude_a += i;
+                    break;
+                }
+            }
+            for(let i=0; i<this.dados_b[b].length; i++){
+                if(this.dados_b[b][i] == a){//A
+                    aptitude_b += i;
+                    break;
+                }
             }
         }
-        for(let i=0; i<dados_b[b].length; i++){
-            if(dados_b[b][i] == a){//A
-                aptitude_b += i;
-                break;
+        return 2*(aptitude_a + aptitude_b);
+    }
+
+    /**
+     * Mutate by swapping two random positions of chromosome's genes
+     * @param chromosome
+     */
+    swap_mutation(chromosome){
+
+        let [i, j] = randomInt([2], 0, this.CHROMOSOME);
+        [chromosome[i], chromosome[j]] = [chromosome[j], chromosome[i]];
+
+    }
+
+    handle_elitism(){
+        this.offspring[0] = this.population[this.fitness.argmin()];
+    }
+
+    handle_mutation(){
+        for(let i=0; i<this.population.length; i++){
+            let chance = random(); //random between 0..1
+
+            if(chance < this.MTPB){
+                let index = randomInt(this.population.length);
+                this.mutations.push(index);
+                this.swap_mutation(this.population[index]);
             }
         }
     }
-    return 2*(aptitude_a + aptitude_b);
-}
 
-/**
- * Mutate by swapping two random positions of chromosome's genes
- * @param chromosome
- */
-const swap_mutation = (chromosome) => {
+    cycle_crossover(parent1, parent2){
+        let initial = randomInt(this.CHROMOSOME);
+        let curr = initial;
+        let cycle = [initial];
+        let last_p2_element = parent2[initial];
+        let [child1, child2] = [[] , []];
 
-    let [i, j] = randomInt([2], 0, CHROMOSOME);
-    [chromosome[i], chromosome[j]] = [chromosome[j], chromosome[i]];
-
-}
-
-const handle_elitism = () => {
-    offspring[0] = population[fitness.argmin()];
-}
-
-const handle_mutation = () => {
-    for(let i=0; i<population.length; i++){
-        let chance = random(); //random between 0..1
-
-        if(chance < MTPB){
-            let index = randomInt(population.length);
-            mutations.push(index);
-            swap_mutation(population[index]);
+        let index=1;
+        while(last_p2_element != parent1[initial]){
+            curr = parent1.indexOf(last_p2_element);
+            cycle[index] = curr;
+            index++;
+            last_p2_element = parent2[curr];
         }
-    }
-}
 
-const cycle_crossover = (parent1, parent2) => {
-    let initial = randomInt(CHROMOSOME);
-    let curr = initial;
-    let cycle = [initial];
-    let last_p2_element = parent2[initial];
-    let [child1, child2] = [[] , []];
-
-    let index=1;
-    while(last_p2_element != parent1[initial]){
-        curr = parent1.indexOf(last_p2_element);
-        cycle[index] = curr;
-        index++;
-        last_p2_element = parent2[curr];
+        for( let i=0; i<this.CHROMOSOME; i++){
+            if(cycle.indexOf(i) != -1){//if its not part of the cycle, enchanges values between parents
+                [child1[i], child2[i]] = [parent2[i], parent1[i]];
+            }else{
+                [child1[i], child2[i]] = [parent1[i], parent2[i]];
+            }
+        }
+        return [child1, child2];
     }
 
-    for( let i=0; i<CHROMOSOME; i++){
-        if(cycle.indexOf(i) != -1){//if its not part of the cycle, enchanges values between parents
-            [child1[i], child2[i]] = [parent2[i], parent1[i]];
+    tournament(){
+        let [i, j] = randomInt([2], 0, this.population_size);
+
+        if(this.fitness[i] < this.fitness[j]) {
+            return i;
         }else{
-            [child1[i], child2[i]] = [parent1[i], parent2[i]];
+            return j;
         }
     }
-    return [child1, child2];
-}
 
-const tournament = () => {
-    let [i, j] = randomInt([2], 0, population_size);
+    selection(){
+        this.handle_elitism();
 
-    if(fitness[i] < fitness[j]) {
-        return i;
-    }else{
-        return j;
-    }
-}
+        for( let i=0; i<this.population.length; i+=2){
+            let [tourn1, tourn2] = [this.tournament(), this.tournament()];
+            let [parent1, parent2] = [this.population[tourn1], this.population[tourn2]];
 
-const selection = () => {
-    handle_elitism();
-
-    for( let i=0; i<population.length; i+=2){
-        let [tourn1, tourn2] = [tournament(), tournament()];
-        let [parent1, parent2] = [population[tourn1], population[tourn2]];
-
-        if(random() < CXPB) { //crossover
-            [offspring[i], offspring[i+1]] = cycle_crossover(parent1, parent2);
-        }else{
-            [offspring[i], offspring[i+1]] = [parent1, parent2];
+            if(random() < this.CXPB) { //crossover
+                [this.offspring[i], this.offspring[i+1]] = this.cycle_crossover(parent1, parent2);
+            }else{
+                [this.offspring[i], this.offspring[i+1]] = [parent1, parent2];
+            }
         }
-    }
-    if(population.length % 2 === 0){
-        offspring[population.length-1] = population[tournament()]; //adds a random parent to fill offspring
-    }
+        if(this.population.length % 2 === 0){
+            this.offspring[this.population.length-1] = this.population[this.tournament()]; //adds a random parent to fill offspring
+        }
 
-}
+    }
 
 //selection method
-const next_generation = (gen) => {
-    selection();
+    next_generation(gen){
+        this.selection();
 
-    population = [...offspring]; //population copies the offspring
+        this.population = [...this.offspring]; //population copies the offspring
 
-    reset_variables();
-    //mutation
-    handle_mutation();
+        this.reset_variables();
+        //mutation
+        this.handle_mutation();
 
-    fitness_func();
+        this.fitness_func();
 
-    update_hall_of_fame(gen);
+        this.update_hall_of_fame(gen);
 
-    storep.update(n => [...n, fill_json_data(gen, population, fitness, mutations, convergence)]);
+        storep.update(n => [...n, fill_json_data(gen, this.population, this.fitness, this.mutations)]);
 
-    if(handle_convergence(gen)) {
-
-        return [true,true];
-    }
-
-    if(solution_found()){
-        let solution = population[fitness.argmin()];
-        json_solution = {
-            'chromosome': solution,
-            'fitness': 0,
-            'decodified': decodify_chromosome(solution),
-            //'halloffame': hall_of_fame,
-            //'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
+        if(this.handle_convergence(gen)) {
+            return [true,true];
         }
-        return [true,false];
-    }
-    return [false,false];
-}
 
-export const init_ga = (pop_size = 20, ngen, best_matches, mutpb=0.5, cxpb=0.8) => {
-    clean(); //WARNING: must be first to execute!!!!!!!!
-    //fill globals
-    population_size = pop_size;
-    GENERATIONS = ngen;
-    CHROMOSOME = best_matches.size;
-    dados_a = best_matches.best_a;
-    dados_b = best_matches.best_b;
-    MTPB = mutpb;
-    CXPB = cxpb;
-
-    population = generate_random_population(pop_size, CHROMOSOME);
-    fitness_func();
-    let [idx, min] = fitness.doubleMin();
-    hall_of_fame = {
-        'gen': 0,
-        'chromosome': population[idx],
-        'fitness': min,
-    }
-
-    if(solution_found()){
-        let solution = population[fitness.argmin()];
-        json_solution = {
-            'chromosome': solution,
-            'fitness': 0,
-            'decodified': decodify_chromosome(solution),
-            //'halloffame': hall_of_fame,
-            //'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
+        if(this.solution_found()){
+            let solution = this.population[this.fitness.argmin()];
+            json_solution = {
+                'chromosome': solution,
+                'fitness': 0,
+                'decodified': decodify_chromosome(solution)
+            }
+            return [true,false];
         }
-        return true;
+        return [false,false];
     }
 
-    storep.set([fill_json_data(0, population, fitness, mutations, convergence)]);
-}
 
-export const run_ga = () => {
-    let [end, endByConvergence] = [false,false];
-    for(let i=1; i<=GENERATIONS; i++){
-        [end, endByConvergence] = next_generation(i);
-        if(end === true){break;}
-    }
-    if(endByConvergence === true){
-        let m = fitness.argmin();
-        json_solution ={
-            'chromosome': population[m],
-            'fitness': fitness[m],
-            'decodified': decodify_chromosome(population[m]),
-            'halloffame': hall_of_fame,
-            'decod_hof': decodify_chromosome(hall_of_fame.chromosome),
-            'by_convergence': true,
-
+    run_ga(){
+        if(this.solution_found()){
+            let solution = this.population[this.fitness.argmin()];
+            json_solution = {
+                'chromosome': solution,
+                'fitness': 0,
+                'decodified': decodify_chromosome(solution),
+            }
+            return;
         }
-    }
-    if(end === false){
-        let m = fitness.argmin();
-        json_solution = {
-            'chromosome': population[m],
-            'fitness': fitness[m],
-            'decodified': decodify_chromosome(population[m]),
-            'halloffame': hall_of_fame,
-            'decod_hof': decodify_chromosome(hall_of_fame.chromosome)
+        let [end, endByConvergence] = [false,false];
+        for(let i=1; i<=this.GENERATIONS; i++){
+            [end, endByConvergence] = this.next_generation(i);
+            if(end === true){break;}
+        }
+        if(endByConvergence === true){
+            let m = this.fitness.argmin();
+            json_solution ={
+                'chromosome': this.population[m],
+                'fitness': this.fitness[m],
+                'decodified': decodify_chromosome(this.population[m]),
+                'halloffame': this.hall_of_fame,
+                'decod_hof': decodify_chromosome(this.hall_of_fame.chromosome),
+                'by_convergence': true
+
+            }
+        }
+        if(end === false){
+            let m = this.fitness.argmin();
+            json_solution = {
+                'chromosome': this.population[m],
+                'fitness': this.fitness[m],
+                'decodified': decodify_chromosome(this.population[m]),
+                'halloffame': this.hall_of_fame,
+                'decod_hof': decodify_chromosome(this.hall_of_fame.chromosome)
+            }
         }
     }
 }

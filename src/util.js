@@ -1,12 +1,11 @@
 
-export const fill_json_data = (generation, population, fitnesses, mutations, convergence) => {
+export const fill_json_data = (generation, population, fitnesses, mutations) => {
     return {
         'generation': generation,
         'population': population,
         'fitnesses': fitnesses,
         'best_one': fitnesses.argmin(),
         'mutations': mutations,
-        'convergence': convergence
     };
 }
 

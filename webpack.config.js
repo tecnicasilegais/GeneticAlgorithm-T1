@@ -23,6 +23,14 @@ module.exports = {
 	},
 	module: {
 		rules: [
+			//Allows use of modern javascript
+			{
+				test: /\.js?$/,
+				exclude: /node_modules/, //don't test node_modules folder
+				use: {
+					loader: 'babel-loader',
+				},
+			},
 			{
 				test: /\.svelte$/,
 				use: {

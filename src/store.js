@@ -1,17 +1,17 @@
 import { writable } from 'svelte/store';
-import { init_ga, run_ga } from './genetic';
-import { init_sa, run_sa } from './s_annealing';
+import { Genetic } from './genetic';
+import { Annealing } from './s_annealing';
 
 export let best_matches = {}
 export let store = writable([])
-export function load_run_ga(psize, ngen, mutpb, cxpb){
-    init_ga(psize, ngen, best_matches, mutpb, cxpb);
-    run_ga();
+export function load_run_ga(psize=20, ngen=100, mutpb=0.4, cxpb=0.6){
+    const ga = new Genetic(psize, ngen, best_matches, mutpb, cxpb)
+    ga.run_ga();
 }
 
 export function load_run_sa(niter, decrease_factor){
-    init_sa(niter, best_matches, decrease_factor);
-    run_sa();
+    const sa = new Annealing(niter, best_matches, decrease_factor);
+    sa.run_sa();
 }
 
 export const load = (text) => {
@@ -30,6 +30,7 @@ export const load = (text) => {
     best_matches["best_a"] = best_a;
     best_matches["best_b"] = best_b;
     best_matches["size"] = best_a[0].length;
+
 }
 
 const collect_values = (line) => {

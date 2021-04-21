@@ -88,10 +88,12 @@
             <!-- <p>Roomates {json_solution.chromosome}</p><br/> -->
             <p>{json_solution.chromosome}</p><br/>
             <p>{json_solution.fitness}</p><br/>
-            <p>{json_solution.halloffame.gen}</p><br/>
-            <p>{json_solution.halloffame.chromosome}</p><br/>
-            <p>{json_solution.halloffame.fitness}</p><br/>
-            <p>{json_solution.decod_hof}</p><br/>
+            {#if json_solution.halloffame}
+                <p>{json_solution.halloffame.gen}</p><br/>
+                <p>{json_solution.halloffame.chromosome}</p><br/>
+                <p>{json_solution.halloffame.fitness}</p><br/>
+                <p>{json_solution.decod_hof}</p><br/>
+            {/if}
             <p>{json_solution.by_convergence? 'Parou por convergencia': ''}</p><br/>
             {#each json_solution.decodified as dec, i}
                 <p>A{i+1} -> {dec}</p>
