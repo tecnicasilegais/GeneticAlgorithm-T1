@@ -1,5 +1,5 @@
 <script>
-	import { Tabs, Tab, Dialog, Window, WindowItem, Container, MaterialApp, TextField } from 'svelte-materialify';
+	import { Tabs, Tab, Footer, Window, WindowItem, Container, MaterialApp, TextField } from 'svelte-materialify';
 	import { onMount } from 'svelte';
   	let theme = 'dark';
 	  let value = 0;
@@ -52,6 +52,9 @@
     <link href='https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css' rel='stylesheet'>
 </svelte:head>
 <MaterialApp {theme}>
+	<Footer padding>
+		<p>Integrantes: Lucas Silva, Marcelo Heredia e Michael Rosa</p>
+	</Footer>
 	<Container>
 		<Tabs class="deep-purple-text" bind:value fixedTabs>
 		<div slot="tabs">
