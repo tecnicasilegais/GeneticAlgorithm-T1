@@ -6,12 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f2009af4-9cf6-486d-8a10-352eeb3d5b85" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Annealing.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/Annealing.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/build/bundle.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Gen.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/Gen.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/genetic.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/genetic.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/s_annealing.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/s_annealing.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/store.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +120,7 @@
       <workItem from="1618860335581" duration="29901000" />
       <workItem from="1618922896022" duration="332000" />
       <workItem from="1618946535080" duration="9319000" />
-      <workItem from="1619027700101" duration="20720000" />
+      <workItem from="1619027700101" duration="22292000" />
     </task>
     <servers />
   </component>
